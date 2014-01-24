@@ -10,7 +10,10 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
-<div class="title"><canvas id="mato"></canvas></div>
+<div id="mato-container">
+	<canvas id="mato"></canvas>
+</div>
+<div  class="title"></div>
 <div class="login"></div>
 <script src="{{ url_for('static', filename='js/mato.js') }}"></script>
 <script src="{{ url_for('static', filename='js/season.js') }}"></script>

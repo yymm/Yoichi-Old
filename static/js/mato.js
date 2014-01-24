@@ -1,105 +1,108 @@
-window.onload = function()
-{
-  var canvas = document.getElementById("mato");
-  var browser_width = GetBrowserWidth();
-  var browser_height = GetBrowserHeight();
-  canvas.width = browser_width;
-  canvas.height = browser_height;
-  DrawKasumiMato();
-  //season_changer();
-}
+// Animation
+!function(window, document){
 
-var DrawKasumiMato = function()
-{
-  var centerx = GetBrowserWidth() / 2;
-  var centery = GetBrowserHeight() / 2;
-  var radius = (centery > centery) ? centery*0.4 : centery*0.4;
-  var rad0 = radius / 180 * 180;
-  var rad1 = radius / 180 * 147;
-  var rad2 = radius / 180 * 117;
-  var rad3 = radius / 180 * 102;
-  var rad4 = radius / 180 * 72;
-  var rad5 = radius / 180 * 36;
-  // 外側から180 : 147 : 117 : 102 : 72 : 36
-  /* 外黒 */
-  function draw0(ctx) {
-	  ctx.beginPath();
-	  ctx.fillStyle = 'rgb(50, 50, 50)';
-	  ctx.arc(centerx, centery, rad0, 0, Math.PI*2, true);
-	  ctx.fill();
-  }
-  /* 3の白 */
-  function draw1(ctx) {
-	  ctx.beginPath();
-	  ctx.fillStyle = 'rgb(235, 235, 235)';
-	  ctx.arc(centerx, centery, rad1, 0, Math.PI*2, true);
-	  ctx.fill();
-  }
-  /* 2の黒 */
-  function draw2(ctx) {
-	  ctx.beginPath();
-	  ctx.fillStyle = 'rgb(50, 50, 50)';
-	  ctx.arc(centerx, centery, rad2, 0, Math.PI*2, true);
-	  ctx.fill();
-  }
-  /* 2の白 */
-  function draw3(ctx) {
-	  ctx.beginPath();
-	  ctx.fillStyle = 'rgb(235, 235, 235)';
-	  ctx.arc(centerx, centery, rad3, 0, Math.PI*2, true);
-	  ctx.fill();
-  }
-  /* 1の黒 */
-  function draw4(ctx) {
-	  ctx.beginPath();
-	  ctx.fillStyle = 'rgb(50, 50, 50)';
-	  ctx.arc(centerx, centery, rad4, 0, Math.PI*2, true);
-	  ctx.fill();
-}
-  /* 中白 */
-  function draw5(ctx) {
-	  ctx.beginPath();
-	  ctx.fillStyle = 'rgb(235, 235, 235)';
-	  ctx.arc(centerx, centery, rad5, 0, Math.PI*2, true);
-	  ctx.fill();
+  var container = document.getElementById("mato-container")
+  var canvas = document.getElementById('mato');
+  var ctx = canvas.getContext('2d');
+
+  queue = null,
+  wait = 300;
+   
+  // ページロード時に初期化
+  setCanvasSize();
+   
+  // リサイズ時にCanvasサイズを再設定 
+  window.addEventListener("resize", function() {
+  clearTimeout( queue );
+  queue = setTimeout(function() {
+  setCanvasSize();
+  }, wait );
+  }, false );
+   
+  // class: Circle
+  var circle = function(ctx, color, max_rad, pos){
+	this.ctx = ctx;
+	this.color = color;
+	this.max_rad = max_rad;
+	this.pos = pos;
+  };
+  circle.prototype.draw = function(radius, color){
+	this.ctx.beginPath();
+	this.ctx.fillStyle = (color) ? color : this.color;
+	this.ctx.arc(this.pos, this.pos, radius, 0, Math.PI*2, true);
+	this.ctx.fill();
+  };
+
+  var mato, mato_pos, mato_rad, mato_rad_list, mato_color, mato_num, irad;
+
+  function init_mato(){
+    mato = null;
+    mato_pos = (canvas.height < canvas.width) ? canvas.height / 2 : canvas.width / 2;
+    mato_rad = (canvas.height < canvas.width) ? canvas.height / 2.1 : canvas.width / 2.1;
+    mato_rad_list = [mato_rad, mato_rad/180*147,
+      				 mato_rad/180*117, mato_rad/180*102,
+      			   mato_rad/180*72 , mato_rad/180*36];
+    mato_color = ['rgb(50, 50, 50)', 'rgb(225, 225, 225)'];
+    mato_num = 0;
+    irad = 0;
   }
 
-  function draw()
-  {
-	  var canvas = document.getElementById('mato');
-	  var ctx = canvas.getContext('2d');
-	    draw0(ctx);
-	    draw1(ctx);
-	    draw2(ctx);
-	    draw3(ctx);
-	    draw4(ctx);
-	    draw5(ctx);
+  function setCanvasSize() {
+    canvas.height = container.offsetHeight * 0.8;
+    canvas.width = container.offsetWidth * 0.8;
+	init_mato();
   }
-  return draw;
-}();
 
-function GetBrowserWidth() {
-  if ( window.innerWidth ) {
-    return window.innerWidth;
+  var animate_mato = function(){
+	  if (!mato){
+		  mato = new circle(ctx, mato_color[0], mato_rad, mato_pos);
+	  }
+	  if (irad >= mato.max_rad){
+		  mato_num = mato_num + 1;
+		  mato.max_rad = mato_rad_list[mato_num];
+		  mato.color = mato_color[mato_num % 2];
+		  irad = 0;
+	  }
+	  if (mato_num >= mato_rad_list.length){
+		  return;
+	  }
+	  irad = irad + mato_rad / 50;
+	  mato.draw(irad);
   }
-  else if ( document.documentElement && document.documentElement.clientWidth != 0 ) {
-    return document.documentElement.clientWidth;
-  }
-  else if ( document.body ) {
-    return document.body.clientWidth;
-  }
-  return 0;
-};
 
-function GetBrowserHeight() {
-  if ( window.innerHeight ) {
-    return window.innerHeight;
+
+  // Animate function use requestAnimationFrame
+  function Animate(){
+	  animate_mato();
+	  requestAnimationFrame(Animate);
   }
-  else if ( document.documentElement && document.documentElement.clientHeight != 0 ) {
-    return document.documentElement.clientHeight;
-  }
-  else if ( document.body ) {
-    return document.body.clientHeight;
-  }
-  return 0;
-};
+  Animate();
+
+  // requestAnimationFrame
+  // @see http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+  (function() {
+	  var lastTime = 0;
+	  var vendors = ['ms', 'moz', 'webkit', 'o'];
+	  for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+		  window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+		  window.cancelRequestAnimationFrame = window[vendors[x]+
+			'CancelRequestAnimationFrame'];
+	  }
+  
+	  if (!window.requestAnimationFrame)
+		  window.requestAnimationFrame = function(callback, element) {
+			  var currTime = new Date().getTime();
+			  var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+			  var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+				timeToCall);
+			  lastTime = currTime + timeToCall;
+			  return id;
+		  };
+  
+	  if (!window.cancelAnimationFrame)
+		  window.cancelAnimationFrame = function(id) {
+			  clearTimeout(id);
+		  };
+  }())
+
+}(window, document);
