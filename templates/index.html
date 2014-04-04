@@ -6,7 +6,9 @@
         <meta name="description" content="">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">-->
+		<!--[明日に向かって昇龍拳: スマートフォン向けページに最適な meta viewport の指定で迷う](http://misapon.blogspot.jp/2011/07/meta-viewport.html "明日に向かって昇龍拳: スマートフォン向けページに最適な meta viewport の指定で迷う")-->
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
         <meta http-equiv="cleartype" content="on">
 
 		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename='img/touch/apple-touch-icon-144x144-precomposed.png') }}">
@@ -43,11 +45,11 @@
         -->
 
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/boilerplate.css') }}">
 		<script src="{{ url_for('static', filename='js/vendor/modernizr-2.7.1.min.js') }}"></script>
 
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/mato.css') }}">
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
     </head>
     <body>
 
@@ -57,23 +59,34 @@
 		<script src="{{ url_for('static', filename='js/helper.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
-		<div id="mato-container">
-			<canvas id="mato"></canvas>
-		</div>
-		<div class="title"></div>
-		<div class="login"></div>
+		<!--<div class="container">-->
+			<div id="mato-container">
+				<canvas id="mato"></canvas>
+			</div>
+			<div class="icon">
+				<!--<div class="fa fa-twitter fa-5x login-icon"></div>-->
+			</div>
+
+			<!--<div class="background">-->
+				<!--<div class="title"></div>-->
+				<!--<div class="login"></div>-->
+			<!--</div>-->
+
+			<div class="footer"></div>
+			<svg enable-background="new 0 0 56.693 56.693" height="56.693px" id="Layer_1" version="1.1" viewBox="0 0 56.693 56.693" width="56.693px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M52.837,15.065c-1.811,0.805-3.76,1.348-5.805,1.591c2.088-1.25,3.689-3.23,4.444-5.592c-1.953,1.159-4.115,2-6.418,2.454  c-1.843-1.964-4.47-3.192-7.377-3.192c-5.581,0-10.106,4.525-10.106,10.107c0,0.791,0.089,1.562,0.262,2.303  c-8.4-0.422-15.848-4.445-20.833-10.56c-0.87,1.492-1.368,3.228-1.368,5.082c0,3.506,1.784,6.6,4.496,8.412  c-1.656-0.053-3.215-0.508-4.578-1.265c-0.001,0.042-0.001,0.085-0.001,0.128c0,4.896,3.484,8.98,8.108,9.91  c-0.848,0.23-1.741,0.354-2.663,0.354c-0.652,0-1.285-0.063-1.902-0.182c1.287,4.015,5.019,6.938,9.441,7.019  c-3.459,2.711-7.816,4.327-12.552,4.327c-0.815,0-1.62-0.048-2.411-0.142c4.474,2.869,9.786,4.541,15.493,4.541  c18.591,0,28.756-15.4,28.756-28.756c0-0.438-0.009-0.875-0.028-1.309C49.769,18.873,51.483,17.092,52.837,15.065z"/></svg>
+		<!--</div>-->
 
 		<script src="{{ url_for('static', filename='js/mato.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/season.js') }}"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
+        <!--<script>-->
+            <!--(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=-->
+            <!--function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;-->
+            <!--e=o.createElement(i);r=o.getElementsByTagName(i)[0];-->
+            <!--e.src='//www.google-analytics.com/analytics.js';-->
+            <!--r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));-->
+            <!--ga('create','UA-XXXXX-X');ga('send','pageview');-->
+        <!--</script>-->
     </body>
 </html>
