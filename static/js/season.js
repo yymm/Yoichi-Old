@@ -5,22 +5,22 @@ season_changer = function(){
 	var day = season_info.getDay();
 	if (month <= 3)
 	{
-		$(".title").css("background-color", "#a0d8ef");
-		$(".login").css("background-color", "#eaf4fc");
+		$("#top").css("background-color", "#a0d8ef");
+		$("#bottom").css("background-color", "#eaf4fc");
 	}
 	else if (month <= 6)
 	{
-		$(".title").css("background-color", "#f6ad49");
-		$(".login").css("background-color", "#fddea5");
+		$("#top").css("background-color", "#f6ad49");
+		$("#bottom").css("background-color", "#fddea5");
 	}
 	else if (month <= 9)
 	{
-		$(".title").css("background-color", "#7ebeab");
-		$(".login").css("background-color", "#d6e9ca");
+		$("#top").css("background-color", "#7ebeab");
+		$("#bottom").css("background-color", "#d6e9ca");
 	}
 	else if (month <= 12)
 	{
-		$(".title").css("background-color", "#f6bfbc");
-		$(".login").css("background-color", "#fef4f4");
+		$("#top").css("background-color", "#f6bfbc");
+		$("#bottom").css("background-color", "#fef4f4");
 	}
 }();
