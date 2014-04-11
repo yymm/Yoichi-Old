@@ -25,13 +25,18 @@ html, body {
 	width: 100%;
 }
 #sc-top p {
-	font-size: 4.5em;
-	margin: 0 auto;
-	vertical-align: middle;
+	color: #545454;
+	font-size: 1.2em;
 }
 #sc-middle {
 	height: 40%;
 	width: 100%;
+}
+#title {
+	color: #212121;
+	font-size: 4em;
+	margin: 0 auto;
+	vertical-align: middle;
 }
 .twitter-icon {
 	position: absolute;
