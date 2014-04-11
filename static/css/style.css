@@ -1,11 +1,90 @@
 * {
 	margin: 0;
 	padding: 0;
+	font-family: 'Concert One', cursive;
+}
+*, *:before, *:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }
 html, body {
 	height: 100%;
 	width: 100%;
 }
+/* article */
+#login {
+	height: 100%;
+	width: 100%;
+}
+.contents {
+	text-align: center;
+}
+#sc-top {
+	height: 30%;
+	width: 100%;
+}
+#sc-top p {
+	font-size: 4.5em;
+	margin: 0 auto;
+	vertical-align: middle;
+}
+#sc-middle {
+	height: 40%;
+	width: 100%;
+}
+.twitter-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -40px;
+	left: 50%;
+	margin-left: -37px;
+	color:  #2BA9E1;
+	opacity: 0.9;
+	transition: 0.1s linear 0s;
+	text-decoration: none;
+}
+.twitter-icon:hover {
+	-webkit-transform: scale(2.5);
+	-moz-transform: scale(2.5);
+	color:  #2BA9E1;
+}
+.mato-icon {
+	width: auto;
+	height: 100%;
+	vertical-align: middle;
+}
+#sc-bottom {
+	height: 30%;
+	width: 100%;
+}
+#sc-bottom p {
+	color: #545454;
+	font-size: 1.5em;
+}
+#blank {
+	height: 5em;
+}
+.arrow-icon{
+	top: 71%;
+	left: 50%;
+	margin-left: -32px;
+	position: absolute;
+	color: #545454;
+	margin-top: 5px;
+	animation: sway 2s ease 0s infinite forwards;
+}
+@keyframes sway {
+	0% { top: 71%; }
+	50% { top: 72%; }
+	100% { top: 71%; }
+}
+#mato-container {
+	width: 100%;
+	height: 50%;
+	position: absolute;
+}
+/* footer */
 footer {
 	border-top: 1px solid #EEEEEE;
 	min-height: 50px;
@@ -23,33 +102,30 @@ footer .wrap {
 }
 footer nav {
 	text-align: center;
+	margin: 0;
+	padding: 0;
 }
 footer nav a {
-	margin: 0 50px;
-	transition: background-color 0.2s linear 0s;
-}
-a {
-	color: #777777;
+	margin: 0 10px;
+	transition: 0.1s linear 0s;
 	text-decoration: none;
 }
-#login {
-	height: 100%;
-	width: 100%;
+.icon {
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+	background-size: cover;
+	color: #777777;
 }
-.background {
-	height: 100%;
-	width: 100%;
+.login-icon {
+	vertical-align: middle;
 }
-#top {
-	height: 50%;
-	width: 100%;
+.icon-twitter:hover {
+	color: #2BA9E1;
 }
-#bottom {
-	height: 50%;
-	width: 100%;
+.icon-me:hover {
+	color: #ffbf00;
 }
-#mato-container {
-	width: 100%;
-	height: 100%;
-	position: absolute;
+.icon-github:hover {
+	color: #09B39C;
 }
