@@ -63,7 +63,7 @@ html, body {
 	font-size: 1.5em;
 }
 #blank {
-	height: 5em;
+	height: 5.5em;
 }
 .arrow-icon{
 	top: 71%;
@@ -72,9 +72,15 @@ html, body {
 	position: absolute;
 	color: #545454;
 	margin-top: 5px;
-	animation: sway 2s ease 0s infinite forwards;
+	-moz-animation: sway 1.5s ease 0s infinite forwards;
+	-webkit-animation: sway 1.5s ease 0s infinite forwards;
 }
-@keyframes sway {
+@-moz-keyframes sway {
+	0% { top: 71%; }
+	50% { top: 72%; }
+	100% { top: 71%; }
+}
+@-webkit-keyframes sway {
 	0% { top: 71%; }
 	50% { top: 72%; }
 	100% { top: 71%; }
