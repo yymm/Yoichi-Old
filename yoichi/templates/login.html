@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<header>
+</header>
+<article id="login">
+	<section class="contents" id="sc-top">
+		<div id="title">Yoichi</div>
+		<p>Give a cloud for your Kyudo</p>
+	</section>
+	<section class="contents" id="sc-middle">
+		<img class="mato-icon" src="{{ url_for('static', filename='img/kasumi.jpg') }}"></img>
+		<a class="fa fa-twitter fa-5x twitter-icon" href="#"></a>
+	</section>
+	<section class="contents" id="sc-bottom">
+		<div class="arrow-icon fa fa-arrow-circle-o-up fa-4x"></div>
+		<div id="blank"></div>
+		<p>Login by Twitter</p>
+	</section>
+</article>
+<footer>
+	<div class="wrap">
+		<nav>
+			<a class="icon icon-twitter fa fa-twitter fa-2x login-icon" href="https://twitter.com/yymm6666/"></a>
+			<a class="icon icon-me" href="https://twitter.com/yymm6666/">author yuya yano</a>
+			<a class="icon icon-github fa fa-github fa-2x login-icon"href="https://github.com/yymm/Yoichi"></a>
+		</nav>
+	</div>
+</footer>
+
+		<!--<div id="mato-container">-->
+			<!--<canvas id="mato"></canvas>-->
+		<!--</div>-->
+
+<!--<script src="{{ url_for('static', filename='js/mato.js') }}"></script>-->
+<script src="{{ url_for('static', filename='js/season.js') }}"></script>
+{% endblock %}

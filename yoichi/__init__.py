@@ -2,7 +2,7 @@ from flask import Flask, render_template, g, session
 
 app = Flask(__name__)
 
-app.config.from_object(config)
+#app.config.from_object(config)
 
 @app.errorhandler(404)
 def not_found(error):
@@ -18,4 +18,4 @@ def not_found(error):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
