@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, url_for, \
-        redirect, request, session
+        redirect, request, session, flash
 from flask.ext.rauth import RauthOAuth1
 
 mod = Blueprint('view', __name__)
@@ -15,6 +15,7 @@ twitter = RauthOAuth1(
 
 @mod.route('/')
 def index():
+    flash('Testing flash message', 'information')
     return render_template('login.html')
 
 
@@ -29,7 +30,7 @@ def get_twitter_token():
 def login():
     return twitter.authorize(callback=url_for('authorized',
         _external=True,
-        request.args.get('next') or request.referrer or None))
+        next=request.args.get('next') or request.referrer or None))
 
 
 @mod.route('/authorized')
