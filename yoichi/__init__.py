@@ -10,15 +10,18 @@ def not_found(error):
     return render_template('404.html'), 404
 
 
-#@app.before_request
-#def load_current_user():
-    #g.user = User.query.filter_by()
+@app.before_request
+def load_current_user():
+    g.user = User.query.filter_by(user_id=session['user_id']).first() \
+            if 'user_id' in session else None
 
 
-#@app.teardown_request
-#def remove_db_session(exception):
-    #db_session.remove()
+@app.teardown_request
+def remove_db_session(exception):
+    db_session.remove()
 
 
 from yoichi import view
 app.register_blueprint(view.mod)
+
+from yoichi.database import db_session, User

@@ -3,7 +3,7 @@ import os
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 SECRET_KEY = 'dev key'
-DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'yoichi.db')
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(_basedir, 'yoichi.db')
 ADMINS = frozenset(['yuyayano'])
 
 del os
