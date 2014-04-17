@@ -24,7 +24,7 @@ twitter = RauthOauth1(
 @mod.route('/')
 def index():
     if g.user is not None:
-        return render_template('index.html')
+        return render_template('index.html', user_name=g.user.name)
 
     flash('Testing flash message', 'information')
     return render_template('index.html')
@@ -33,6 +33,15 @@ def index():
 @mod.route('/login', methods=["GET", "POST"])
 def login():
     return twitter.authorize()
+
+
+@mod.route('/logout')
+def logout():
+    if 'user_id' in session:
+        flash('Logged out.', 'information')
+        del session['user_id']
+    return redirect(url_for('view.index'))
+
 
 @mod.route('/authorized', methods=["GET", "POST"])
 @twitter.authorized_handler()
