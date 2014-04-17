@@ -12,7 +12,7 @@ def not_found(error):
 
 @app.before_request
 def load_current_user():
-    g.user = User.query.filter_by(user_id=session['user_id']).first() \
+    g.user = User.query.get(session['user_id']) \
             if 'user_id' in session else None
 
 
