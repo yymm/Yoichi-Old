@@ -29,7 +29,7 @@ def index():
     return render_template('index.html')
 
 
-@mod.route('/login', methods=["GET", "POST"])
+@mod.route('/login')
 def login():
     return twitter.authorize()
 
@@ -42,7 +42,7 @@ def logout():
     return redirect(url_for('view.index'))
 
 
-@mod.route('/authorized', methods=["GET", "POST"])
+@mod.route('/authorized')
 @twitter.authorized_handler()
 def authorized(rsession):
     if rsession is None:

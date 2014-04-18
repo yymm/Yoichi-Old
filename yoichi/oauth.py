@@ -14,14 +14,14 @@ class RauthOauth1(OAuth1Service):
         return redirect(authorize_url)
 
 
-    def authorized_handler(self, method='POST'):
+    def authorized_handler(self):
         def create_authorized_handler(f):
             @wraps(f)
             def decorated(*args, **kwargs):
                 rsession = None
                 if 'oauth_verifier' in request.args:
                     data = {'oauth_verifier' : request.args['oauth_verifier']}
-                    rsession = self.get_auth_session(self.request_token, self.request_token_secret, method=method, data=data)
+                    rsession = self.get_auth_session(self.request_token, self.request_token_secret, method='POST', data=data)
                 return f(rsession, **kwargs)
             return decorated
         return create_authorized_handler
