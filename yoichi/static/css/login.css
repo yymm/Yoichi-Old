@@ -76,11 +76,6 @@
 	50% { top: 72%; }
 	100% { top: 71%; }
 }
-#mato-container {
-	width: 100%;
-	height: 50%;
-	position: absolute;
-}
 /* footer */
 footer {
 	border-top: 1px solid #EEEEEE;

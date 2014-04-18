@@ -25,7 +25,6 @@ def index():
     if g.user is not None:
         return render_template('index.html', user_name=g.user.name)
 
-    flash('Testing flash message', 'information')
     return render_template('index.html')
 
 

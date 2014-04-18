@@ -1,18 +1,19 @@
 /* header */
 header {
-	border-top: 1px solid #EEEEEE;
-	min-height: 50px;
+	border-bottom: 1px solid #EEEEEE;
+	min-height: 70px;
 	clear: both;
+	background-color: #777777;
 }
 header .wrap {
 	color: #777777;
-	padding: 20px 0;
+	padding: 0;
 }
 .wrap {
 	margin: 0 auto;
 	max-width: 1200px;
 	position: relative;
-	width: 80%;
+	width: 100%;
 }
 header nav {
 	text-align: center;
@@ -20,26 +21,82 @@ header nav {
 	padding: 0;
 }
 header nav a {
-	margin: 0 10px;
-	transition: 0.1s linear 0s;
 	text-decoration: none;
 }
+#toggle {
+	width: 70px;
+	height: 70px;
+	padding: 10px 0;
+}
+#toggle div {
+	width: 50%;
+	height: 5px;
+	background: #eee;
+	margin: 8px auto;
+	transition: all 0.3s;
+	backface-visibility: hidden;
+}
+#toggle.on .one {
+	-moz-transform: rotate(45deg) translate(8px, 8px);
+	-webkit-transform: rotate(45deg) translate(8px, 8px);
+}
+#toggle.on .two {
+	opacity: 0;
+}
+#toggle.on .three {
+	-moz-transform: rotate(-45deg) translate(10px, -11px);
+	-webkit-transform: rotate(-45deg) translate(10px, -11px);
+}
+.icon-container-vertical {
+	margin: 0 auto;
+	padding: 0;
+	width: 70px;
+	height: 69px;
+	border: 1px solid #aaa;
+	float: left;
+}
+.icon-vertical {
+	margin: 0 auto;
+	padding: 0;
+	width: 70px;
+	height: 70px;
+	display: none;
+	padding: 18px 0;
+	background-color: #777777;
+	color: #eee;
+}
 .icon {
+	margin: 0 auto;
+	padding: 20px 0;
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
 	background-size: cover;
-	color: #777777;
-}
-.login-icon {
 	vertical-align: middle;
+	color: #eee;
+	float: right;
+	width: 25%;
 }
-.icon-twitter:hover {
-	color: #2BA9E1;
+.icon-setting {
+	color: #f6ad49;
 }
-.icon-me:hover {
-	color: #ffbf00;
+.icon-logout {
+	color: #ff1919;
 }
-.icon-github:hover {
-	color: #09B39C;
+.icon-pic {
+	color: #7ebeab;
+}
+.icon-pen {
+	color: #ccc;
+}
+.icon-result {
+	color: #a0d8ef;
+}
+/* article */
+#mato-container {
+	width: 100%;
+	height: 80%;
+	position: absolute;
+	top: 70px;
+	left: 0;
 }

@@ -13,17 +13,27 @@
 {% if user_name is defined %}
 <div class="wrap">
 	<nav>
-		<a class="icon icon-twitter fa fa-twitter fa-2x login-icon" href="https://twitter.com/yymm6666/"></a>
-		<a class="icon icon-me" href="{{ url_for('view.logout') }}">{{ user_name }}</a>
-		<a class="icon icon-github fa fa-github fa-2x login-icon"href="https://github.com/yymm/Yoichi"></a>
+		<div class="icon-container-vertical">
+			<div id="toggle">
+				<div class="one"></div>
+				<div class="two"></div>
+				<div class="three"></div>
+			</div>
+			<div class="icon-setting icon-vertical fa fa-cogs fa-2x"></div>
+			<a class="icon-logout icon-vertical fa fa-power-off fa-2x" href="{{ url_for('view.logout') }}"></a>
+		</div>
+		<div class="icon-pic icon fa fa-picture-o fa-2x"></div>
+		<div class="icon-pen icon fa fa-pencil-square-o fa-2x"></div>
+		<div class="icon-result icon fa fa-tags fa-2x"></div>
 	</nav>
 </div>
 {% endif %}
 </header>
 {% if user_name is defined %}
 <article>
-	<section>
-	</section>
+	<div id="mato-container">
+		<canvas id="mato"></canvas>
+	</div>
 </article>
 {% else  %}
 <article id="login">
@@ -55,10 +65,12 @@
 {% endif %}
 </footer>
 
-		<!--<div id="mato-container">-->
-			<!--<canvas id="mato"></canvas>-->
-		<!--</div>-->
 
-<!--<script src="{{ url_for('static', filename='js/mato.js') }}"></script>-->
+{% if user_name is defined %}
+<script src="{{ url_for('static', filename='js/mato.js') }}"></script>
+<script src="{{ url_for('static', filename='js/general.js') }}"></script>
+{% else  %}
 <script src="{{ url_for('static', filename='js/season.js') }}"></script>
+{% endif %}
+
 {% endblock %}
