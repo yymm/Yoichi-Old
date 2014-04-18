@@ -8,8 +8,7 @@ from yoichi.database import db_session, User
 mod = Blueprint('view', __name__)
 
 config = configparser.ConfigParser()
-path = os.path.join(os.getcwd(), 'keys.cfg')
-config.read(path)
+config.read(os.path.join(os.getcwd(), 'keys.cfg'))
 
 twitter = RauthOauth1(
     name='twitter',
@@ -17,7 +16,7 @@ twitter = RauthOauth1(
     consumer_secret=config.get('twitter', 'TWITTER_API_SECRET'),
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
-    authorize_url='https://api.twitter.com/oauth/authorize',
+    authorize_url='https://api.twitter.com/oauth/authenticate',
     base_url='https://api.twitter.com/1.1/')
 
 
@@ -67,5 +66,5 @@ def authorized(rsession):
     session['user_id'] = user.id
     g.user = user
 
-    flash('Sign in.', 'information')
+    flash('Logged in.', 'information')
     return redirect(url_for('view.index'))
