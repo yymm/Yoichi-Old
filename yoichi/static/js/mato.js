@@ -40,7 +40,7 @@
 		mato = null;
 		mato_pos_x = canvas.width / 2;
 		mato_pos_y = canvas.height / 2;
-		mato_rad = (canvas.height < canvas.width) ? canvas.height / 4 : canvas.width / 4;
+		mato_rad = (canvas.height < canvas.width) ? canvas.height / 3 : canvas.width / 3;
 		mato_rad_list = [mato_rad, mato_rad/180*147, mato_rad/180*117, mato_rad/180*102, mato_rad/180*72, mato_rad/180*36];
 		mato_color = ['rgb(50, 50, 50)', 'rgb(225, 225, 225)'];
 	}
