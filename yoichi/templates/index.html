@@ -11,22 +11,6 @@
 {% block body %}
 <header>
 {% if user_name is defined %}
-<div class="wrap">
-	<nav>
-		<div class="icon-container-vertical">
-			<div id="toggle">
-				<div class="one"></div>
-				<div class="two"></div>
-				<div class="three"></div>
-			</div>
-			<div class="icon-setting icon-vertical fa fa-cogs fa-2x"></div>
-			<a class="icon-logout icon-vertical fa fa-power-off fa-2x" href="{{ url_for('view.logout') }}"></a>
-		</div>
-		<div class="icon-pic icon fa fa-picture-o fa-2x"></div>
-		<div class="icon-pen icon fa fa-pencil-square-o fa-2x"></div>
-		<div class="icon-result icon fa fa-tags fa-2x"></div>
-	</nav>
-</div>
 {% endif %}
 </header>
 {% if user_name is defined %}
