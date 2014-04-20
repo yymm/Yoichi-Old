@@ -1,5 +1,18 @@
-/* article */
+/* section */
+.no-scroll {
+	width: 100%;
+	height: 100%;
+}
+.scroll {
+	width: 100%;
+	height: auto;
+}
+/* mato-screen */
 #mato-container {
 	width: 100%;
 	height: 100%;
 }
+/* peke-screen */
+/* score */
+/* setting */
+/* statistics */

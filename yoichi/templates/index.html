@@ -9,15 +9,27 @@
 {% endblock %}
 
 {% block body %}
+
+
 <header>
-{% if user_name is defined %}
-{% endif %}
 </header>
+
+
 {% if user_name is defined %}
 <article>
-	<div id="mato-container">
-		<canvas id="mato"></canvas>
-	</div>
+	<section class="no-scroll" id="mato-screen">
+		<div id="mato-container">
+			<canvas id="mato"></canvas>
+		</div>
+	</section>
+	<section class="scroll" id="peke-screen">
+	</section>
+	<section class="no-scroll" id="score">
+	</section>
+	<section class="scroll" id="setting">
+	</section>
+	<section class="scroll" id="statistics">
+	</section>
 </article>
 {% else  %}
 <article id="login">
@@ -36,8 +48,14 @@
 	</section>
 </article>
 {% endif %}
+
+
 <footer>
 {% if user_name is defined %}
+<div class="wrap">
+	<nav>
+	</nav>
+</div>
 {% else  %}
 <div class="wrap">
 	<nav>
