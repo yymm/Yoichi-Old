@@ -1,102 +1,18 @@
-/* header */
-header {
-	border-bottom: 1px solid #EEEEEE;
-	min-height: 70px;
-	clear: both;
-	background-color: #777777;
-}
-header .wrap {
-	color: #777777;
-	padding: 0;
-}
-.wrap {
-	margin: 0 auto;
-	max-width: 1200px;
-	position: relative;
+/* section */
+.no-scroll {
 	width: 100%;
+	height: 100%;
 }
-header nav {
-	text-align: center;
-	margin: 0;
-	padding: 0;
+.scroll {
+	width: 100%;
+	height: auto;
 }
-header nav a {
-	text-decoration: none;
-}
-#toggle {
-	width: 70px;
-	height: 70px;
-	padding: 10px 0;
-}
-#toggle div {
-	width: 50%;
-	height: 5px;
-	background: #eee;
-	margin: 8px auto;
-	transition: all 0.3s;
-	backface-visibility: hidden;
-}
-#toggle.on .one {
-	-moz-transform: rotate(45deg) translate(8px, 8px);
-	-webkit-transform: rotate(45deg) translate(8px, 8px);
-}
-#toggle.on .two {
-	opacity: 0;
-}
-#toggle.on .three {
-	-moz-transform: rotate(-45deg) translate(10px, -11px);
-	-webkit-transform: rotate(-45deg) translate(10px, -11px);
-}
-.icon-container-vertical {
-	margin: 0 auto;
-	padding: 0;
-	width: 70px;
-	height: 69px;
-	border: 1px solid #aaa;
-	float: left;
-}
-.icon-vertical {
-	margin: 0 auto;
-	padding: 0;
-	width: 70px;
-	height: 70px;
-	display: none;
-	padding: 18px 0;
-	background-color: #777777;
-	color: #eee;
-}
-.icon {
-	margin: 0 auto;
-	padding: 20px 0;
-	display: inline-block;
-	position: relative;
-	overflow: hidden;
-	background-size: cover;
-	vertical-align: middle;
-	color: #eee;
-	float: right;
-	width: 25%;
-}
-.icon-setting {
-	color: #f6ad49;
-}
-.icon-logout {
-	color: #ff1919;
-}
-.icon-pic {
-	color: #7ebeab;
-}
-.icon-pen {
-	color: #ccc;
-}
-.icon-result {
-	color: #a0d8ef;
-}
-/* article */
+/* mato-screen */
 #mato-container {
 	width: 100%;
-	height: 80%;
-	position: absolute;
-	top: 70px;
-	left: 0;
+	height: 100%;
 }
+/* peke-screen */
+/* score */
+/* setting */
+/* statistics */
