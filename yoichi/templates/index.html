@@ -2,7 +2,8 @@
 
 {% block head %}
 	{% if user_name is defined %}
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
 	{% else %}
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 	{% endif %}
@@ -10,27 +11,71 @@
 
 {% block body %}
 
-
-<header>
-</header>
-
-
 {% if user_name is defined %}
-<article>
-	<section class="no-scroll" id="mato-screen">
-		<div id="mato-container">
-			<canvas id="mato"></canvas>
+<div id="slide-pages">
+	<slider-pages>
+		<!--Pages-->
+		<article id="tap">
+			<div class="fa fa-bullseye fa-4x"></div>
+		</article>
+		<article id="score">
+			<div class="fa fa-pencil-square-o fa-4x"></div>
+		</article>
+		<article id="input">
+			<div class="fa fa-code fa-4x"></div>
+		</article>
+		<article id="setting">
+			<div class="fa fa-bar-chart-o fa-4x"></div>
+		</article>
+		<article id="statistics">
+			<div class="fa fa-cogs fa-4x"></div>
+		</article>
+		<!--Footer - Page changer-->
+		<label for="page1" class="fa fa-bullseye fa-3x"></label>
+		<label for="page2" class="fa fa-pencil-square-o fa-3x"></label>
+		<label for="page3" class="fa fa-code fa-3x"></label>
+		<label for="page4" class="fa fa-bar-chart-o fa-3x"></label>
+		<label for="page5" class="fa fa-cogs fa-3x"></label>
+	</slider-pages>
+</div>
+<!--
+
+		Vue.js template
+
+-->
+<script type="text/x-template" id="slider-pages-template">
+<div id="spages">
+	<input id="page1" type="radio" checked="" name="slider" selected="false">
+	<input id="page2" type="radio" name="slider" selected="false">
+	<input id="page3" type="radio" name="slider" selected="false">
+	<input id="page4" type="radio" name="slider" selected="false">
+	<input id="page5" type="radio" name="slider" selected="false">
+	<div id="pages">
+		<div id="overflow">
+			<div class="inner">
+				<content select="article:nth-of-type(1)"></content>
+				<content select="article:nth-of-type(2)"></content>
+				<content select="article:nth-of-type(3)"></content>
+				<content select="article:nth-of-type(4)"></content>
+				<content select="article:nth-of-type(5)"></content>
+			</div>
 		</div>
-	</section>
-	<section class="scroll" id="peke-screen">
-	</section>
-	<section class="no-scroll" id="score">
-	</section>
-	<section class="scroll" id="setting">
-	</section>
-	<section class="scroll" id="statistics">
-	</section>
-</article>
+	</div>
+	<footer>
+		<div class="wrap">
+			<nav>
+				<content select="label:nth-of-type(1)"></content>
+				<content select="label:nth-of-type(2)"></content>
+				<content select="label:nth-of-type(3)"></content>
+				<content select="label:nth-of-type(4)"></content>
+				<content select="label:nth-of-type(5)"></content>
+			</nav>
+		</div>
+	</footer>
+</div>
+</script>
+<script src="{{ url_for('static', filename='js/general.js') }}"></script>
+
 {% else  %}
 <article id="login">
 	<section class="contents" id="sc-top">
@@ -50,13 +95,9 @@
 {% endif %}
 
 
-<footer>
 {% if user_name is defined %}
-<div class="wrap">
-	<nav>
-	</nav>
-</div>
 {% else  %}
+<footer>
 <div class="wrap">
 	<nav>
 		<a class="icon icon-twitter fa fa-twitter fa-2x login-icon" href="https://twitter.com/yymm6666/"></a>
@@ -64,13 +105,11 @@
 		<a class="icon icon-github fa fa-github fa-2x login-icon"href="https://github.com/yymm/Yoichi"></a>
 	</nav>
 </div>
-{% endif %}
 </footer>
+{% endif %}
 
 
 {% if user_name is defined %}
-<script src="{{ url_for('static', filename='js/mato.js') }}"></script>
-<script src="{{ url_for('static', filename='js/general.js') }}"></script>
 {% else  %}
 <script src="{{ url_for('static', filename='js/season.js') }}"></script>
 {% endif %}
