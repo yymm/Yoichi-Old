@@ -1,19 +1,17 @@
-/* slide-pages */
-#tap {
-	background: #D7E7AF;
-}
-#score {
-	background: #A2D7D4;
-}
-#input {
-	background: #A59ACA;
-}
-#setting {
-	background: #F5B2B2;
-}
-#statistics {
-	background: #FCD7A1;
-}
+/******************/
+/* 	              */
+/* css of article */
+/* 	              */
+/******************/
+
+
+
+/****************/
+/* 	            */
+/* slider-pages */
+/* 	            */
+/****************/
+
 #slide-pages {
 	width: 100%;
 	height: inherit;
@@ -77,16 +75,32 @@ input[type="radio"] {
 #page3:checked ~ footer label[for="page3"],
 #page4:checked ~ footer label[for="page4"],
 #page5:checked ~ footer label[for="page5"] {
-  background: #333;
+  opacity: 1;
+}
+#page1:checked ~ footer label[for="page1"] {
+	color: #D7E7AF;
+}
+#page2:checked ~ footer label[for="page2"] {
+	color: #A2D7D4;
+}
+#page3:checked ~ footer label[for="page3"] {
+	color: #FCD7A1;
+}
+#page4:checked ~ footer label[for="page4"] {
+	color: #F5B2B2;
+}
+#page5:checked ~ footer label[for="page5"] {
+	color: #A59ACA;
 }
 /* footer */
 footer {
-	border-top: 1px solid #EEEEEE;
-	min-height: 50px;
+	border-top: 1px solid #aaa;
+	min-height: 70px;
 	clear: both;
+	background-color: #777;
 }
 footer .wrap {
-	color: #777777;
+	color: #FFF;
 }
 .wrap {
 	margin: 0 auto;
@@ -99,8 +113,8 @@ footer nav {
 	padding: 0;
 }
 footer nav label {
-	border-right: 1px solid #EEEEEE;
 	width: 20%;
 	float: left;
 	padding: 10px 0;
+	opacity: 0.1;
 }

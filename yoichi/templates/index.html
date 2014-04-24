@@ -4,6 +4,7 @@
 	{% if user_name is defined %}
 	<script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
 	{% else %}
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 	{% endif %}
@@ -16,19 +17,14 @@
 	<slider-pages>
 		<!--Pages-->
 		<article id="tap">
-			<div class="fa fa-bullseye fa-4x"></div>
 		</article>
 		<article id="score">
-			<div class="fa fa-pencil-square-o fa-4x"></div>
 		</article>
 		<article id="input">
-			<div class="fa fa-code fa-4x"></div>
 		</article>
 		<article id="setting">
-			<div class="fa fa-bar-chart-o fa-4x"></div>
 		</article>
 		<article id="statistics">
-			<div class="fa fa-cogs fa-4x"></div>
 		</article>
 		<!--Footer - Page changer-->
 		<label for="page1" class="fa fa-bullseye fa-3x"></label>
@@ -74,7 +70,7 @@
 	</footer>
 </div>
 </script>
-<script src="{{ url_for('static', filename='js/general.js') }}"></script>
+<script src="{{ url_for('static', filename='js/slider-pages.js') }}"></script>
 
 {% else  %}
 <article id="login">
