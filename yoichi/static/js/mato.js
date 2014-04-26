@@ -14,6 +14,13 @@
 	window.addEventListener("resize", function() {
 		clearTimeout( queue );
 		queue = setTimeout(function() {
+			// 画面縦横回転時のみリサイズ
+			if (canvas.height > canvas.width){
+				if (container.offsetWidth < container.offsetHeight) return;
+			}
+			else{
+				if (container.offsetWidth > container.offsetHeight) return;
+			}
 			setCanvasSize();
 			drawMato();
 		}, wait );
@@ -46,9 +53,9 @@
 	}
 	
 	function setCanvasSize() {
-	  canvas.height = container.offsetHeight;
-	  canvas.width = container.offsetWidth;
-	  init_mato();
+		canvas.height = container.offsetHeight;
+		canvas.width = container.offsetWidth;
+		init_mato();
 	}
 	function drawMato()
 	{
