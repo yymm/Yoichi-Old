@@ -68,14 +68,14 @@
 	margin-left: -400%;
 }
 input[type="radio"] {
-  display: none;
+ 	display: none;
 }
 #page1:checked ~ footer label[for="page1"],
 #page2:checked ~ footer label[for="page2"],
 #page3:checked ~ footer label[for="page3"],
 #page4:checked ~ footer label[for="page4"],
 #page5:checked ~ footer label[for="page5"] {
-  opacity: 1;
+	background-color: #333;
 }
 #page1:checked ~ footer label[for="page1"] {
 	color: #D7E7AF;
@@ -94,13 +94,13 @@ input[type="radio"] {
 }
 /* footer */
 footer {
-	border-top: 1px solid #aaa;
+	border-top: 1px solid #eee;
 	min-height: 70px;
 	clear: both;
-	background-color: #777;
+	background-color: #eee;
 }
 footer .wrap {
-	color: #FFF;
+	color: #666;
 }
 .wrap {
 	margin: 0 auto;
@@ -116,5 +116,4 @@ footer nav label {
 	width: 20%;
 	float: left;
 	padding: 10px 0;
-	opacity: 0.1;
 }
