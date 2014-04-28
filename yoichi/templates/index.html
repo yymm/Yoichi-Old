@@ -13,11 +13,16 @@
 {% block body %}
 
 {% if user_name is defined %}
+<!--
+
+		After login
+
+-->
 <div id="slide-pages">
 	<slider-pages>
 		<!--Pages-->
 		<article id="tap">
-			<div id="mato-container" style="width: 100%; height: 100%;">
+			<div id="container" style="width: 100%; height: 100%;">
 				<canvas id="mato"></canvas>
 			</div>
 		</article>
@@ -74,7 +79,13 @@
 </div>
 </script>
 <script src="{{ url_for('static', filename='js/slider-pages.js') }}"></script>
+<script src="{{ url_for('static', filename='js/mato.js') }}"></script>
 {% else  %}
+<!--
+
+		Before login
+
+-->
 <article id="login">
 	<section class="contents" id="sc-top">
 		<div id="title">Yoichi</div>
@@ -99,13 +110,8 @@
 	</nav>
 </div>
 </footer>
-{% endif %}
-
-
-{% if user_name is defined %}
-<script src="{{ url_for('static', filename='js/mato.js') }}"></script>
-{% else  %}
 <script src="{{ url_for('static', filename='js/season.js') }}"></script>
+
 {% endif %}
 
 {% endblock %}
