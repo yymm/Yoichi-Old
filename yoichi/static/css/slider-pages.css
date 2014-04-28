@@ -4,7 +4,9 @@
 /* 	              */
 /******************/
 
-
+#tap {
+	background-color: #eee;
+}
 
 /****************/
 /* 	            */
@@ -94,7 +96,7 @@ input[type="radio"] {
 }
 /* footer */
 footer {
-	border-top: 1px solid #eee;
+	border-top: 1px solid #fff;
 	min-height: 70px;
 	clear: both;
 	background-color: #eee;
