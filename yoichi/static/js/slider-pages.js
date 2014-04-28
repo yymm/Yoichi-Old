@@ -11,14 +11,46 @@ Vue.component('slider-pages', {
 	replace: true
 })
 new Vue({
-	el: '#slide-pages'
+	el: '#slide-pages',
+	data: {
+		date: getDate()}
 })
+
+function getDate(){
+	var date = new Date();
+	return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDay();
+}
+
+/*
+ *
+ * Event handler
+ *
+ */
+
+document.getElementById('change-page').onclick = function(){
+	var page1 = document.getElementById('page1');
+	var page2 = document.getElementById('page2');
+	var page3 = document.getElementById('page3');
+	if (page1.checked){
+		page1.checked = false;
+		page2.checked = true;
+	}
+	else if (page2.checked){
+		page2.checked = false;
+		page3.checked = true;
+	}
+	else{
+		page3.checked = false;
+		page1.checked = true;
+	}
+};
 
 /*
  *
  * Canvas element
  *
  */
+
 !function(window, document){
 	var container = document.getElementById("container")
 	var canvas = document.getElementById('mato');
@@ -31,7 +63,7 @@ new Vue({
 	
 	/*
 	 *
-	 * Event handler
+	 * Canvas event handler
 	 *
 	 */
 
@@ -103,6 +135,7 @@ new Vue({
 		this.pos_x = box_width / 2;
 		this.pos_y = box_height / 2;
 		this.rad = (box_height < box_width) ? box_height / 3 : box_width / 3;
+		this.setMatoType();
 	};
 	
 
