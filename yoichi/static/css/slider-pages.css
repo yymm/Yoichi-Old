@@ -25,6 +25,7 @@
 	font-size: 100%;
 	background-color: #555;
 	color: #eee;
+	border-bottom: 1px solid #fff;
 }
 .main-label {
 	padding-top: 1em;
@@ -36,7 +37,7 @@
 	height: 30%;
 	font-size: 80%;
 	float: left;
-	background-color: #bbb;
+	background-color: #ccc;
 	border: 1px solid #fff;
 }
 .sub-label {

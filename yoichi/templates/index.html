@@ -23,7 +23,7 @@
 		<!--Pages-->
 		<article id="tap">
 			<div id="container" style="width: 100%; height: 100%;">
-				<canvas id="mato"></canvas>
+				<canvas id="mato" v-on="click:onCanvasClick"></canvas>
 			</div>
 		</article>
 		<article id="input">
@@ -35,10 +35,10 @@
 			</div>
 			<div id="input-area">
 				<div id="hit-container" v-repeat="hits">
-					<span class="hit"><p>[[$value[0] | tomark]]</p></span>
-					<span class="hit"><p>[[$value[1] | tomark]]</p></span>
-					<span class="hit"><p>[[$value[2] | tomark]]</p></span>
-					<span class="hit"><p>[[$value[3] | tomark]]</p></span>
+					<span class="hit"><p class="hit-toggler">[[$value[0] | tomark]]</p></span>
+					<span class="hit"><p class="hit-toggler">[[$value[1] | tomark]]</p></span>
+					<span class="hit"><p class="hit-toggler">[[$value[2] | tomark]]</p></span>
+					<span class="hit"><p class="hit-toggler">[[$value[3] | tomark]]</p></span>
 				</div>
 			</div>
 		</article>

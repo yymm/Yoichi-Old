@@ -78,6 +78,13 @@ var vm = new Vue({
 			}
 			return calcPercent(hit_num, all);
 		}
+	},
+	methods: {
+		onCanvasClick: function(e){
+			var x = e.clientX;
+			var y = e.clientY;
+			alert(x.toString() + ',' + y.toString())
+		}
 	}
 })
 
