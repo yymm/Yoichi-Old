@@ -27,67 +27,43 @@
 			</div>
 		</article>
 		<article id="input">
-			<div class="main">
+			<div class="main" v-with="data">
 				<div class="main-label">Result</div>
-				<span>20</span>
+				<span>[[hits | number_of_hit]]</span>
 				<span>/</span>
-				<span>20</span>
+				<span>[[hits | number_of_all]]</span>
 			</div>
 			<div id="input-area">
-				<div id="hit-container">
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>x</p></span>
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>o</p></span>
-				</div>
-				<div id="hit-container">
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>x</p></span>
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>o</p></span>
-				</div>
-				<div id="hit-container">
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>x</p></span>
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>o</p></span>
-				</div>
-				<div id="hit-container">
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>x</p></span>
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>o</p></span>
-				</div>
-				<div id="hit-container">
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>x</p></span>
-					<span class="hit"><p>o</p></span>
-					<span class="hit"><p>o</p></span>
+				<div id="hit-container" v-repeat="hits">
+					<span class="hit"><p>[[$value[0] | tomark]]</p></span>
+					<span class="hit"><p>[[$value[1] | tomark]]</p></span>
+					<span class="hit"><p>[[$value[2] | tomark]]</p></span>
+					<span class="hit"><p>[[$value[3] | tomark]]</p></span>
 				</div>
 			</div>
 		</article>
 		<article id="score">
-			<div class="main">
+			<div class="main" v-with="data">
 				<div class="main-label">Result</div>
-				<span>200</span>
+				<span>[[hits | number_of_hit]]</span>
 				<span>/</span>
-				<span>200</span>
+				<span>[[hits | number_of_all]]</span>
 			</div>
 			<div class="sub">
 				<div class="sub-label">All</div>
-				<span>20%</span>
+				<span>[[hits | percent]]%</span>
 			</div>
 			<div class="sub">
 				<div class="sub-label">First</div>
-				<span>20%</span>
+				<span>[[hits | percent_first]]%</span>
 			</div>
 			<div class="sub">
 				<div class="sub-label">First/2</div>
-				<span>100%</span>
+				<span>[[hits | percent_first_2]]%</span>
 			</div>
 			<div class="sub">
 				<div class="sub-label">First/4</div>
-				<span>100%</span>
+				<span>[[hits | percent_first_4]]%</span>
 			</div>
 		</article>
 		<article id="setting">
@@ -148,7 +124,6 @@
 </div>
 </script>
 <script src="{{ url_for('static', filename='js/slider-pages.js') }}"></script>
-<script src="{{ url_for('static', filename='js/mato.js') }}"></script>
 {% else  %}
 <!--
 

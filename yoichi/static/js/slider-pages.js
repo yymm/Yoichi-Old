@@ -3,6 +3,18 @@
  * Vue.js
  *
  */
+
+// Model
+data = {
+	hits: [
+			[-1,-1,-1,-1]
+		],
+	date: getDate(),
+	user: 'hoge',
+	team: 'hoge_team',
+	matp_type: 'kasumi'
+}
+	
 Vue.config({
 	delimiters: ['[', ']']
 })
@@ -10,15 +22,85 @@ Vue.component('slider-pages', {
 	template: '#slider-pages-template',
 	replace: true
 })
-new Vue({
+
+// ViewModel
+var vm = new Vue({
 	el: '#slide-pages',
-	data: {
-		date: getDate()}
+	data: data,
+	filters: {
+		tomark: function(int_val){
+			if (int_val == -1) return '-';
+			return (int_val == 0) ? 'x' : 'o';
+		},
+		number_of_hit: function(hits){
+			return getSomethingToHits(hits, function(hit){
+				return (hit==1) ? true : false;
+			});
+
+		},
+		number_of_all: function(hits){
+			return getSomethingToHits(hits, function(hit){
+				return (hit>=0) ? true : false;
+			});
+		},
+		percent: function(hits){
+			var all = getSomethingToHits(hits, function(hit){
+				return (hit>=0) ? true : false;
+			});
+			var hit_num = getSomethingToHits(hits, function(hit){
+				return (hit==1) ? true : false;
+			});
+			return calcPercent(hit_num, all);
+		},
+		percent_first: function(hits){
+			if (hits[0][0] < 0) return 0;
+			return hits[0][0] == 0 ? 0 : 100;
+		},
+		percent_first_2: function(hits){
+			var all = 0;
+			var hit_num = 0;
+			var len = hits.length;
+			for (var i = 0; i < len; i = i + 1){
+				if(hits[i][0] >= 0) all = all + 1;
+				if(hits[i][0] > 0) hit_num = hit_num + 1;
+				if(hits[i][2] >= 0) all = all + 1;
+				if(hits[i][2] > 0) hit_num = hit_num + 1;
+			}
+			return calcPercent(hit_num, all);
+		},
+		percent_first_4: function(hits){
+			var all = 0;
+			var hit_num = 0;
+			var len = hits.length;
+			for (var i = 0; i < len; i = i + 1){
+				if(hits[i][0] >= 0) all = all + 1;
+				if(hits[i][0] > 0) hit_num = hit_num + 1;
+			}
+			return calcPercent(hit_num, all);
+		}
+	}
 })
 
 function getDate(){
 	var date = new Date();
 	return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDay();
+}
+
+function getSomethingToHits(hits, func){
+	var count = 0;
+	var len = hits.length;
+	for (var i = 0; i < len; i = i + 1){
+		for (var j = 0; j < 4; j = j + 1){
+			if(func(hits[i][j])) count = count + 1;
+		}
+	}
+	return count;
+}
+function calcPercent(num, all){
+	if (all == 0) return 0;
+	var p = num / all * 100;
+	if (num % all == 0) return p;
+	return p.toFixed(1);
 }
 
 /*

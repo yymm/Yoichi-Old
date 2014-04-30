@@ -74,9 +74,9 @@
 	margin: auto;
 	width: 70px;
 	height: 70px;
-	line-height: 40px;
+	line-height: 38px;
 	font-size: 1.5em;
-	border: 1.5px solid #555;
+	border: 2px solid #555;
 	border-radius: 5px;
 }
 /*
@@ -127,7 +127,7 @@
 	color: #2c7cdd;
 }
 #upload-background {
-	background-color: #555;
+	background-color: #777;
 	top: 20px;
 	left: 20px;
 	width: 30px;
@@ -259,6 +259,21 @@ input[type="radio"] {
 #page5:checked ~ div #redo {
 	display: none;
 }
+#page1:checked ~ div #date {
+	display: block;
+}
+#page2:checked ~ div #date {
+	display: block;
+}
+#page3:checked ~ div #date {
+	display: block;
+}
+#page4:checked ~ div #date {
+	display: none;
+}
+#page5:checked ~ div #date {
+	display: none;
+}
 #page1:checked ~ div #upload {
 	display: block;
 }
@@ -272,6 +287,21 @@ input[type="radio"] {
 	display: none;
 }
 #page5:checked ~ div #upload {
+	display: none;
+}
+#page1:checked ~ div #upload-background {
+	display: block;
+}
+#page2:checked ~ div #upload-background {
+	display: block;
+}
+#page3:checked ~ div #upload-background {
+	display: block;
+}
+#page4:checked ~ div #upload-background {
+	display: none;
+}
+#page5:checked ~ div #upload-background {
 	display: none;
 }
 #page1:checked ~ div #change-page {
