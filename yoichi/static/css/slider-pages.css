@@ -4,12 +4,61 @@
 /* 	              */
 /******************/
 
+/*
+
+	tap
+
+*/
 #tap {
 	background-color: #eee;
 }
 #mato {
 	z-index: 0;
 }
+/*
+
+	score
+
+*/
+.main {
+	height: 40%;
+	font-size: 100%;
+	background-color: #555;
+	color: #eee;
+	border-bottom: 1px solid #fff;
+}
+.main-label {
+	padding-top: 1em;
+	font-size: 60%;
+	color: #FCD7A1;
+}
+.sub {
+	width: 50%;
+	height: 30%;
+	font-size: 80%;
+	float: left;
+	background-color: #bbb;
+	border: 1px solid #fff;
+}
+.sub-label {
+	padding-top: 0.5em;
+	font-size: 50%;
+}
+/*
+
+	input
+
+*/
+/*
+
+	setting
+
+*/
+/*
+
+	statistics
+
+*/
 
 /****************/
 /* 	            */
@@ -21,7 +70,11 @@
 	width: 100%;
 	height: inherit;
 }
-/* controller */
+/*
+
+	controller
+
+*/
 #controller-content {
 	width: 100%;
 	height: inherit;
@@ -43,6 +96,13 @@
 	left: 0;
 	color: #2c7cdd;
 }
+#upload-background {
+	background-color: #555;
+	top: 20px;
+	left: 20px;
+	width: 30px;
+	height: 35px;
+}
 #change-page {
 	top: 0;
 	right: 0;
@@ -58,7 +118,11 @@
 	right: 0;
 	opacity: 0.2;
 }
-/* spages */
+/*
+
+	spages
+
+*/
 #slide-pages article {
 	height: inherit;
 	text-align: center;
