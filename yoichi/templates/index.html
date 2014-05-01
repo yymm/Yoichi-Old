@@ -34,11 +34,8 @@
 				<span>[[hits | number_of_all]]</span>
 			</div>
 			<div id="input-area">
-				<div id="hit-container" v-repeat="hits">
-					<span class="hit"><p class="hit-toggler">[[$value[0] | tomark]]</p></span>
-					<span class="hit"><p class="hit-toggler">[[$value[1] | tomark]]</p></span>
-					<span class="hit"><p class="hit-toggler">[[$value[2] | tomark]]</p></span>
-					<span class="hit"><p class="hit-toggler">[[$value[3] | tomark]]</p></span>
+				<div class="hit" v-repeat="hits">
+					<button><p class="[[$value[0] | tohit]]"></p></button>
 				</div>
 			</div>
 		</article>

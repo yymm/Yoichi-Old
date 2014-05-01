@@ -7,7 +7,7 @@
 // Model
 data = {
 	hits: [
-			[-1,-1,-1,-1]
+			[-1,-9999.9,-9999.9]
 		],
 	date: getDate(),
 	user: 'hoge',
@@ -27,63 +27,50 @@ Vue.component('slider-pages', {
 var vm = new Vue({
 	el: '#slide-pages',
 	data: data,
-	filters: {
-		tomark: function(int_val){
-			if (int_val == -1) return '-';
-			return (int_val == 0) ? 'x' : 'o';
-		},
-		number_of_hit: function(hits){
-			return getSomethingToHits(hits, function(hit){
-				return (hit==1) ? true : false;
-			});
-
-		},
-		number_of_all: function(hits){
-			return getSomethingToHits(hits, function(hit){
-				return (hit>=0) ? true : false;
-			});
-		},
-		percent: function(hits){
-			var all = getSomethingToHits(hits, function(hit){
-				return (hit>=0) ? true : false;
-			});
-			var hit_num = getSomethingToHits(hits, function(hit){
-				return (hit==1) ? true : false;
-			});
-			return calcPercent(hit_num, all);
-		},
-		percent_first: function(hits){
-			if (hits[0][0] < 0) return 0;
-			return hits[0][0] == 0 ? 0 : 100;
-		},
-		percent_first_2: function(hits){
-			var all = 0;
-			var hit_num = 0;
-			var len = hits.length;
-			for (var i = 0; i < len; i = i + 1){
-				if(hits[i][0] >= 0) all = all + 1;
-				if(hits[i][0] > 0) hit_num = hit_num + 1;
-				if(hits[i][2] >= 0) all = all + 1;
-				if(hits[i][2] > 0) hit_num = hit_num + 1;
-			}
-			return calcPercent(hit_num, all);
-		},
-		percent_first_4: function(hits){
-			var all = 0;
-			var hit_num = 0;
-			var len = hits.length;
-			for (var i = 0; i < len; i = i + 1){
-				if(hits[i][0] >= 0) all = all + 1;
-				if(hits[i][0] > 0) hit_num = hit_num + 1;
-			}
-			return calcPercent(hit_num, all);
-		}
-	},
 	methods: {
 		onCanvasClick: function(e){
 			var x = e.clientX;
 			var y = e.clientY;
 			alert(x.toString() + ',' + y.toString())
+		}	
+	},
+	filters: {
+		tohit: function(int_val){
+			if (int_val == -1) return 'bar';
+			return (int_val == 0) ? 'cross' : 'mark';
+		},
+		number_of_hit: function(hits){
+			return computeHits(hits, function(i, hit){
+				return (hit == 1) ? true : false; 
+			});
+		},
+		number_of_all: function(hits){
+			return getLenHits(hits);
+		},
+		percent: function(hits){
+			var hits_num = computeHits(hits, function(i, hit){
+				return (hit == 1) ? true : false;
+			});
+			return calcPercent(hits_num, getLenHits(hits));
+		},
+		percent_first: function(hits){
+			return (hits[0][0] == 1) ? 100 : 0;
+		},
+		percent_first_2: function(hits){
+			var hits_num = computeHits(hits, function(i, hit){
+				if (i % 2 != 0) return false; 
+				return (hit == 1) ? true : false;
+			});
+			var deno = Math.floor(getLenHits(hits)/2);
+			return calcPercent(hits_num, deno);
+		},
+		percent_first_4: function(hits){
+			var hits_num = computeHits(hits, function(i, hit){
+				if (i % 4 != 0) return false; 
+				return (hit == 1) ? true : false;
+			});
+			var deno = Math.ceil(getLenHits(hits)/4);
+			return calcPercent(hits_num, deno);
 		}
 	}
 })
@@ -92,22 +79,23 @@ function getDate(){
 	var date = new Date();
 	return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDay();
 }
-
-function getSomethingToHits(hits, func){
-	var count = 0;
-	var len = hits.length;
-	for (var i = 0; i < len; i = i + 1){
-		for (var j = 0; j < 4; j = j + 1){
-			if(func(hits[i][j])) count = count + 1;
-		}
-	}
-	return count;
-}
 function calcPercent(num, all){
 	if (all == 0) return 0;
 	var p = num / all * 100;
 	if (num % all == 0) return p;
 	return p.toFixed(1);
+}
+function computeHits(hits, func){
+	var count = 0;
+	var len = getLenHits(hits);
+	for (var i = 0; i < len; i = i + 1){
+		if (func(i, hits[i][0])) count = count + 1;
+	}
+	return count;
+}
+function getLenHits(hits){
+	var len = hits.length;
+	return (hits[len-1][0] == -1) ? len-1 : len;
 }
 
 /*
