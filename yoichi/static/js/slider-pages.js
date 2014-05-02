@@ -7,7 +7,7 @@
 // Model
 data = {
 	hits: [
-			[-1,-9999.9,-9999.9]
+			[-1,-9999,-9999]
 		],
 	date: getDate(),
 	user: 'hoge',
@@ -27,13 +27,14 @@ Vue.component('slider-pages', {
 var vm = new Vue({
 	el: '#slide-pages',
 	data: data,
-	methods: {
-		onCanvasClick: function(e){
-			var x = e.clientX;
-			var y = e.clientY;
-			alert(x.toString() + ',' + y.toString())
-		}	
-	},
+	//methods: {
+		//onCanvasClick: function(e){
+			//var x = e.clientX;
+			//var y = e.clientY;
+			//alert(x.toString() + ',' + y.toString() + '\n' + window.innerWidth.toString() + ',' + window.innerHeight + '\n' + window.scrollY);
+			//this.hits.push([1,9999,9999]);
+		//}
+	//},
 	filters: {
 		tohit: function(int_val){
 			if (int_val == -1) return 'bar';
@@ -75,6 +76,12 @@ var vm = new Vue({
 	}
 })
 
+/*
+
+	helper function
+
+*/
+
 function getDate(){
 	var date = new Date();
 	return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDay();
@@ -96,6 +103,11 @@ function computeHits(hits, func){
 function getLenHits(hits){
 	var len = hits.length;
 	return (hits[len-1][0] == -1) ? len-1 : len;
+}
+function computePointFromCenter(screen_x, screen_y){
+	var point = {x: 9999, y: 9999};
+	//var ;
+	return point;
 }
 
 /*
@@ -147,17 +159,16 @@ document.getElementById('change-page').onclick = function(){
 	window.addEventListener("resize", function() {
 		clearTimeout(null);
 		queue = setTimeout(function() {
-			// 画面縦横回転時のみリサイズ
-			if (canvas.height > canvas.width){
-				if (container.offsetWidth < container.offsetHeight) return;
-			}
-			else{
-				if (container.offsetWidth > container.offsetHeight) return;
-			}
 			setCanvasSize();
 			draw();
 		}, 300 );
 	}, false );
+	canvas.addEventListener('click', function(e){
+		// 内外判定
+		// 的中心からの座標に変換
+		// Vueのdata更新
+		// hitのDOM追加
+	});
 
 	/*
 	 *
@@ -227,6 +238,6 @@ document.getElementById('change-page').onclick = function(){
 	function draw(){
 		mato.draw(canvas.width, canvas.height);
 	};
-	draw()
+	draw();
 
 }(window, document);

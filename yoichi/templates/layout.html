@@ -62,6 +62,7 @@
     <body>
 
         <!-- Add your site or application content here -->
+		{% block body %}{% endblock %}
 
 		<!-- Alert with flash on flask -->
 		{% with messages = get_flashed_messages(with_categories=true) %}
@@ -78,8 +79,6 @@
 		{% endfor %}
 		{% endif %}
 		{% endwith  %}
-
-		{% block body %}{% endblock %}
 
 		<script>
 			$(".close-btn").click(function(){

@@ -12,8 +12,31 @@
 #tap {
 	background-color: #eee;
 }
+#container {
+	overflow: hidden;
+}
 #mato {
 	z-index: 0;
+}
+.circle-num {
+	width: 13px;
+	height: 13px;
+	border: 1px solid #555;
+	border-radius: 7px;
+	font-size: 8px;
+	font-weight: bold;
+	color: #eee;
+	text-shadow: 0 -2px #888;
+}
+.hit-mark {
+  border: 1px solid #c8d85b;
+  background-color: #70b062;
+  /*box-shadow: 0 0px 1px 1px #c8d85b;*/
+}
+.unhit-mark {
+  border: 1px solid #dd9dbf;
+  background-color: #cd5638;
+  /*box-shadow: 0 0px 1px 1px #dd9dbf;*/
 }
 /*
 
