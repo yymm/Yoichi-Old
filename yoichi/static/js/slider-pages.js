@@ -27,14 +27,23 @@ Vue.component('slider-pages', {
 var vm = new Vue({
 	el: '#slide-pages',
 	data: data,
-	//methods: {
-		//onCanvasClick: function(e){
-			//var x = e.clientX;
-			//var y = e.clientY;
-			//alert(x.toString() + ',' + y.toString() + '\n' + window.innerWidth.toString() + ',' + window.innerHeight + '\n' + window.scrollY);
-			//this.hits.push([1,9999,9999]);
-		//}
-	//},
+	methods: {
+		tomark: function(){
+			var len = this.hits.length-1;
+			this.hits[len][0] = 1;
+			var dom = document.getElementById('hit-' + len);
+			dom.className = 'mark';
+			return 1;
+		},
+		tocross: function(){
+			this.hits[this.hits.length-1][0] = 0;
+			return 0;
+		},
+		tohbar: function(){
+			this.hits[this.hits.length-1][0] = -1;
+			return -1;
+		}
+	},
 	filters: {
 		tohit: function(int_val){
 			if (int_val == -1) return 'bar';
@@ -168,6 +177,7 @@ document.getElementById('change-page').onclick = function(){
 		// 的中心からの座標に変換
 		// Vueのdata更新
 		// hitのDOM追加
+		vm.tomark();
 	});
 
 	/*
