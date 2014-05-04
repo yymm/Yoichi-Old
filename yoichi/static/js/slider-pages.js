@@ -33,6 +33,7 @@ var vm = new Vue({
 			this.hits[len][0] = 1;
 			var dom = document.getElementById('hit-' + len);
 			dom.className = 'mark';
+			vm.hits.push([-1,9999,9999]);
 			return 1;
 		},
 		tocross: function(){
