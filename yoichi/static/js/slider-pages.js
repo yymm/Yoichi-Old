@@ -40,7 +40,7 @@ var vm = new Vue({
 			this.hits[this.hits.length-1][0] = 0;
 			return 0;
 		},
-		tohbar: function(){
+		tobar: function(){
 			this.hits[this.hits.length-1][0] = -1;
 			return -1;
 		}
@@ -72,7 +72,7 @@ var vm = new Vue({
 				if (i % 2 != 0) return false; 
 				return (hit == 1) ? true : false;
 			});
-			var deno = Math.floor(getLenHits(hits)/2);
+			var deno = Math.ceil(getLenHits(hits)/2);
 			return calcPercent(hits_num, deno);
 		},
 		percent_first_4: function(hits){
@@ -119,6 +119,8 @@ function computePointFromCenter(screen_x, screen_y){
 	//var ;
 	return point;
 }
+function getHitByInt(){
+}
 
 /*
  *
@@ -142,7 +144,11 @@ document.getElementById('change-page').onclick = function(){
 		page3.checked = false;
 		page1.checked = true;
 	}
-};
+}
+document.getElementById('hit-btn').onclick = function(){
+	this.firstChild.id;
+	alert();
+}
 
 /*
  *
