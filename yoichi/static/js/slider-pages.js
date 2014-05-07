@@ -7,7 +7,7 @@
 // Model
 data = {
 	hits: [
-			[-1,-9999,-9999]
+			[-1,9999,9999]
 		],
 	date: getDate(),
 	user: 'hoge',
@@ -128,6 +128,7 @@ function getHitByInt(){
  *
  */
 
+// Page change icon event
 document.getElementById('change-page').onclick = function(){
 	var page1 = document.getElementById('page1');
 	var page2 = document.getElementById('page2');
@@ -145,9 +146,43 @@ document.getElementById('change-page').onclick = function(){
 		page1.checked = true;
 	}
 }
-document.getElementById('hit-btn').onclick = function(){
-	this.firstChild.id;
-	alert();
+function onHitBtnClk(dom){
+	alert(dom.firstChild.id);
+}
+// swipe page change event
+var mouse_x;
+window.ontouchstart = function(e){
+	mouse_x = e.changedTouches[0].clientX;
+}
+window.ontouchend = function(e){
+	var move = mouse_x - e.changedTouches[0].clientX;
+	if (Math.abs(move) > 50){
+		var page1 = document.getElementById('page1');
+		var page2 = document.getElementById('page2');
+		var page3 = document.getElementById('page3');
+		if (page1.checked){
+			if (move > 0) {
+				page1.checked = false;
+				page2.checked = true;
+			}
+		}
+		else if (page2.checked){
+			if (move > 0) {
+				page2.checked = false;
+				page3.checked = true;
+			}
+			else{
+				page2.checked = false;
+				page1.checked = true;
+			}
+		}
+		else{
+			if (move < 0) {
+				page3.checked = false;
+				page2.checked = true;
+			}
+		}
+	}
 }
 
 /*
