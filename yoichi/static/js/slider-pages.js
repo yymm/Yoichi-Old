@@ -28,27 +28,37 @@ var vm = new Vue({
 	el: '#slide-pages',
 	data: data,
 	methods: {
-		tomark: function(){
-			var len = this.hits.length-1;
-			this.hits[len][0] = 1;
-			var dom = document.getElementById('hit-' + len);
+		tomark: function(id){
+			this.hits[id][0] = 1;
+			var dom = document.getElementById('hit-' + id);
 			dom.className = 'mark';
-			vm.hits.push([-1,9999,9999]);
+			this.hits.pop();
+			this.hits.push([1,9999,9999]);
 			return 1;
 		},
-		tocross: function(){
-			this.hits[this.hits.length-1][0] = 0;
+		tocross: function(id){
+			this.hits[id][0] = 0;
+			var dom = document.getElementById('hit-' + id);
+			dom.className = 'cross';
+			this.hits.pop();
+			this.hits.push([0,9999,9999]);
 			return 0;
 		},
-		tobar: function(){
-			this.hits[this.hits.length-1][0] = -1;
+		tobar: function(id){
+			this.hits[id][0] = -1;
+			var dom = document.getElementById('hit-' + id);
+			dom.className = 'bar';
+			this.hits.pop();
+			this.hits.push([-1,9999,9999]);
 			return -1;
+		},
+		pushHits: function(id){
+			
 		}
 	},
 	filters: {
 		tohit: function(int_val){
-			if (int_val == -1) return 'bar';
-			return (int_val == 0) ? 'cross' : 'mark';
+			return getHitByInt(int_val);
 		},
 		number_of_hit: function(hits){
 			return computeHits(hits, function(i, hit){
@@ -119,7 +129,13 @@ function computePointFromCenter(screen_x, screen_y){
 	//var ;
 	return point;
 }
-function getHitByInt(){
+function getHitByInt(int_val){
+	if (int_val == -1) return 'bar';
+	return (int_val == 0) ? 'cross' : 'mark';
+}
+function getIntByHit(hit_val){
+	if (hit_val == 'bar') return -1;
+	return (hit_val == 'cross') ? 0 : 1;
 }
 
 /*
@@ -146,15 +162,29 @@ document.getElementById('change-page').onclick = function(){
 		page1.checked = true;
 	}
 }
-function onHitBtnClk(dom){
-	alert(dom.firstChild.id);
-}
 // swipe page change event
 var mouse_x;
-window.ontouchstart = function(e){
+var mouse_y;
+window.addEventListener('touchstart', function(e){
 	mouse_x = e.changedTouches[0].clientX;
-}
-window.ontouchend = function(e){
+	mouse_y = e.changedTouches[0].clientY;
+}, false)
+window.addEventListener('touchmove', function(e){
+	var move = mouse_x - e.changedTouches[0].clientX;
+	var vertical_move = mouse_y - e.changedTouches[0].clientY;
+	if(Math.abs(move) > 5){
+		e.preventDefault();
+	}
+	if(Math.abs(move) > 50 && Math.abs(vertical_move) < 100){
+		var scrollTop =
+				document.documentElement.scrollTop ||
+				document.body.scrollTop;
+		if (scrollTop != 0){
+			$('html, body').animate({scrollTop:0}, 'fast');
+		}
+	}
+}, false)
+window.addEventListener('touchend', function(e){
 	var move = mouse_x - e.changedTouches[0].clientX;
 	if (Math.abs(move) > 50){
 		var page1 = document.getElementById('page1');
@@ -182,6 +212,21 @@ window.ontouchend = function(e){
 				page2.checked = true;
 			}
 		}
+	}
+}, false)
+function onHitBtnClk(dom){
+	var child = dom.firstChild; 
+	var id = child.id.slice(-1);
+	var hit = child.className;
+	if (id < vm.hits.length - 2) return;
+	if (hit == 'bar'){
+		vm.tomark(id);
+	}
+	else if(hit == 'cross'){
+		vm.tobar(id);
+	}
+	else{
+		vm.tocross(id);
 	}
 }
 
