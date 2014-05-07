@@ -28,7 +28,7 @@ def index():
     if g.user is not None:
         return render_template('index.html', user_name=g.user.name)
 
-    return render_template('index.html')
+    return render_template('index.html', user_name='hoge')
 
 
 @mod.route('/login')
