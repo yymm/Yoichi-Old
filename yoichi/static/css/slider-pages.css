@@ -185,11 +185,13 @@
 	color: #2c7cdd;
 }
 #upload-background {
-	background-color: #777;
+	background-color: #aaa;
 	top: 20px;
 	left: 20px;
 	width: 30px;
 	height: 35px;
+	-moz-transition: all 1000ms ease;
+	-webkit-transition: all 1000ms ease;
 }
 #change-page {
 	top: 0;
