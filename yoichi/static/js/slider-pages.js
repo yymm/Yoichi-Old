@@ -310,6 +310,10 @@ function onCloudBtnClk(dom){
 		}, 300 );
 	}, false );
 	canvas.addEventListener('click', function(e){
+		// スクロール時と横端へのDOM追加禁止
+		if (window.scrollY > 0 || e.pageX > canvas.width - 10 || e.pageX < 10){
+			return;
+		}
 		// 内外判定
 		var hit = 'unhit-mark';
 		var r = mato.rad;
