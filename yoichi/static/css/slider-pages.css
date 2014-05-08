@@ -19,24 +19,31 @@
 	z-index: 0;
 }
 .circle-num {
+	text-align: center;
+}
+.circle-num span {
+	position: absolute;
+	top: -6.5px;
+	left: -6.5px;
 	width: 13px;
 	height: 13px;
-	border: 1px solid #555;
 	border-radius: 7px;
 	font-size: 8px;
 	font-weight: bold;
 	color: #eee;
-	text-shadow: 0 -2px #888;
+	text-shadow: 0 -1px #888;
 }
 .hit-mark {
-	border: 1px solid #c8d85b;
+	opacity: 0.95;
+	border: 1px solid #70b062;
 	background-color: #70b062;
-	/*box-shadow: 0 0px 1px 1px #c8d85b;*/
+	box-shadow: 0 0px 1px 1px #70b062;
 }
 .unhit-mark {
-	border: 1px solid #dd9dbf;
+	opacity: 0.95;
+	border: 1px solid #cd5638;
 	background-color: #cd5638;
-	/*box-shadow: 0 0px 1px 1px #dd9dbf;*/
+	box-shadow: 0 0px 1px 1px #cd5638;
 }
 
 /*
@@ -76,7 +83,9 @@
 #input-area {
 	width: 100%;
 	height: 60%;
-	overflow: scroll;
+	overflow: auto;
+	-moz-overflow-scrolling: touch;
+	-webkit-overflow-scrolling: touch;
 }
 #input-area div {
 	position: relative;

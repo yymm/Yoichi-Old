@@ -32,28 +32,47 @@ var vm = new Vue({
 			this.hits[id][0] = 1;
 			var dom = document.getElementById('hit-' + id);
 			dom.className = 'mark';
-			this.hits.pop();
-			this.hits.push([1,9999,9999]);
+			this.pushHits(id, 1);
 			return 1;
 		},
 		tocross: function(id){
 			this.hits[id][0] = 0;
 			var dom = document.getElementById('hit-' + id);
 			dom.className = 'cross';
-			this.hits.pop();
-			this.hits.push([0,9999,9999]);
+			this.pushHits(id, 0);
 			return 0;
 		},
 		tobar: function(id){
 			this.hits[id][0] = -1;
 			var dom = document.getElementById('hit-' + id);
 			dom.className = 'bar';
-			this.hits.pop();
-			this.hits.push([-1,9999,9999]);
+			this.pushHits(id, -1);
 			return -1;
 		},
-		pushHits: function(id){
-			
+		pushHits: function(id, hit){
+			if (this.hits[this.hits.length - 1][0] == -1){
+				if (this.hits.length != 1){
+					this.hits.pop();
+				}
+				this.hits.pop();
+				this.hits.push([hit,9999,9999]);
+				if (hit != -1){
+					this.hits.push([-1,9999,9999]);
+				}
+				return;
+			}
+			this.hits.pop();
+			this.hits.push([hit,9999,9999]);
+			if (hit == 1 || hit == 0){
+				if (this.hits.length - 1 == id){
+					this.hits.push([-1,9999,9999]);
+				}
+			}
+			else{
+				if (this.hits.length - 2 == id){
+					this.hits.pop();
+				}
+			}
 		}
 	},
 	filters: {
@@ -216,7 +235,7 @@ window.addEventListener('touchend', function(e){
 }, false)
 function onHitBtnClk(dom){
 	var child = dom.firstChild; 
-	var id = child.id.slice(-1);
+	var id = child.id.split('-')[1];
 	var hit = child.className;
 	if (id < vm.hits.length - 2) return;
 	if (hit == 'bar'){
@@ -237,6 +256,7 @@ function onHitBtnClk(dom){
  */
 
 !function(window, document){
+	var mato;
 	var container = document.getElementById("container")
 	var canvas = document.getElementById('mato');
 	var ctx = canvas.getContext('2d');
@@ -245,6 +265,7 @@ function onHitBtnClk(dom){
 		canvas.height = container.offsetHeight;
 		canvas.width = container.offsetWidth;
 	}
+
 	
 	/*
 	 *
@@ -261,10 +282,34 @@ function onHitBtnClk(dom){
 	}, false );
 	canvas.addEventListener('click', function(e){
 		// 内外判定
+		var hit = 'unhit-mark';
+		var r = mato.rad;
+		var x = e.pageX;
+		var y = e.pageY;
+		var cx = mato.pos_x;
+		var cy = mato.pos_y;
+		if ((x-cx)*(x-cx)+(y-cy)*(y-cy) <= r*r){
+			hit = 'hit-mark';
+		}
 		// 的中心からの座標に変換
-		// Vueのdata更新
 		// hitのDOM追加
-		vm.tomark();
+		var dom = document.createElement('div');
+		var child = document.createElement('span');
+		//alert('top:' + x.toString() + 'px; left:' + y.toString() + 'px;')
+		dom.setAttribute('style', 'position:absolute; top:' + y.toString() + 'px; left:' + x.toString() + 'px; z-index: 1;');
+		dom.setAttribute('class', 'circle-num');
+		child.setAttribute('class', hit);
+		child.textContent = vm.hits.length.toString();
+		dom.appendChild(child);
+		var prnt = document.getElementById('container');
+		prnt.appendChild(dom);
+		// Vueのdata更新
+		if (hit == 'hit-mark'){
+			vm.tomark(vm.hits.length-1);
+		}
+		else{
+			vm.tocross(vm.hits.length-1);
+		}
 	});
 
 	/*
@@ -330,8 +375,7 @@ function onHitBtnClk(dom){
 	 *
 	 */
 
-	var mato = new Mato(canvas.width, canvas.height);
-
+	mato = new Mato(canvas.width, canvas.height);
 	function draw(){
 		mato.draw(canvas.width, canvas.height);
 	};
