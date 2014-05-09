@@ -14,7 +14,10 @@ data = {
 	team: 'hoge_team',
 	matp_type: 'kasumi'
 }
-	
+// Undo/Redo stack
+var current = -1;
+var stack = [];
+
 Vue.config({
 	delimiters: ['[', ']']
 })
@@ -61,20 +64,40 @@ var vm = new Vue({
 				if (hit != -1){
 					this.hits.push([-1,9999,9999]);
 				}
-				return;
-			}
-			this.hits.pop();
-			this.hits.push([hit,x,y]);
-			if (hit == 1 || hit == 0){
-				if (this.hits.length - 1 == id){
-					this.hits.push([-1,9999,9999]);
-				}
 			}
 			else{
-				if (this.hits.length - 2 == id){
-					this.hits.pop();
+				this.hits.pop();
+				this.hits.push([hit,x,y]);
+				if (hit == 1 || hit == 0){
+					if (this.hits.length - 1 == id){
+						this.hits.push([-1,9999,9999]);
+					}
+				}
+				else{
+					if (this.hits.length - 2 == id){
+						this.hits.pop();
+					}
 				}
 			}
+			drawMark();
+			// Undo/Redo
+			stack = this.hits.slice(0);
+			current = stack.length - 1;
+			if (this.hits.length != 1){
+				var dom = document.getElementById('undo');
+				dom.style.opacity = '0.8';
+				dom.style.color = '#d16d16';
+			}
+			else{
+				var dom = document.getElementById('undo');
+				dom.style.opacity = '0.2';
+				dom.style.color = '#222';
+			}
+		},
+		pop: function(){
+			this.hits.pop();
+			this.hits.pop();
+			this.hits.push([-1,9999,9999]);
 		}
 	},
 	filters: {
@@ -307,6 +330,59 @@ function rotateWindow(width, height){
 		sub[1].style.height = '30%';
 	}
 }
+// Draw mark(strictly add dom). Run every input timing(=> vm.pushHits).
+var mato;
+function drawMark(){
+	var len = vm.hits.length;
+	var r = mato.rad;
+	var cx = mato.pos_x;
+	var cy = mato.pos_y;
+
+	// clear DOM: id = container
+	var prnt = document.getElementById('container');
+	var nodes_num = prnt.childNodes.length;
+	for (var i = 0; i < nodes_num; ++i){
+		child = prnt.lastChild;
+		if (child.className == 'circle-num'){
+			prnt.removeChild(child);
+		}
+	}
+
+	for (var i = 0; i < len - 1; ++i){
+		var x = vm.hits[i][1] * r / 100 + cx;
+		var y = vm.hits[i][2] * r / 100 + cy;
+		addHitDOM(i, x, y, vm.hits[i][0]);
+	}
+}
+// Add hit DOM
+function addHitDOM(i, x, y, hit){
+	var dom = document.createElement('div');
+	var child = document.createElement('span');
+	dom.setAttribute('style', 'position:absolute; top:' + y.toString() + 'px; left:' + x.toString() + 'px; z-index: 1;');
+	dom.setAttribute('class', 'circle-num');
+	dom.setAttribute('id', 'mark-' + (i+1).toString());
+	if (hit == 0){
+		child.setAttribute('class', 'unhit-mark');
+	}
+	else{
+		child.setAttribute('class', 'hit-mark');
+	}
+	child.textContent = (i+1);
+	dom.appendChild(child);
+	var prnt = document.getElementById('container');
+	prnt.appendChild(dom);
+}
+
+/*
+ *
+ * Undo/Redo
+ *
+ */
+
+function onUndoBtnClk(dom){
+}
+function onRedoBtnClk(dom){
+}
 
 /*
  *
@@ -315,7 +391,6 @@ function rotateWindow(width, height){
  */
 
 !function(window, document){
-	var mato;
 	var container = document.getElementById("container")
 	var canvas = document.getElementById('mato');
 	var ctx = canvas.getContext('2d');
@@ -336,8 +411,8 @@ function rotateWindow(width, height){
 		clearTimeout(null);
 		queue = setTimeout(function() {
 			setCanvasSize();
-			draw();
-			reDrawMark();
+			draw(); // この関数があるからこの場所にあることをお忘れなく
+			drawMark();
 			rotateWindow(canvas.width, canvas.height);
 		}, 300 );
 	}, false );
@@ -347,51 +422,26 @@ function rotateWindow(width, height){
 			return;
 		}
 		// 内外判定
-		var hit = 'unhit-mark';
+		var hit = 0;
 		var r = mato.rad;
 		var x = e.pageX;
 		var y = e.pageY;
 		var cx = mato.pos_x;
 		var cy = mato.pos_y;
 		if ((x-cx)*(x-cx)+(y-cy)*(y-cy) <= r*r){
-			hit = 'hit-mark';
+			hit = 1;
 		}
 		// 的中心からの座標に変換
 		var rx = (x - cx) / r * 100;
 		var ry = (y - cy) / r * 100;
-		// hitのDOM追加
-		var dom = document.createElement('div');
-		var child = document.createElement('span');
-		dom.setAttribute('style', 'position:absolute; top:' + y.toString() + 'px; left:' + x.toString() + 'px; z-index: 1;');
-		dom.setAttribute('class', 'circle-num');
-		dom.setAttribute('id', 'mark-' + (vm.hits.length-1).toString());
-		child.setAttribute('class', hit);
-		child.textContent = vm.hits.length.toString();
-		dom.appendChild(child);
-		var prnt = document.getElementById('container');
-		prnt.appendChild(dom);
 		// Vueのdata更新
-		if (hit == 'hit-mark'){
+		if (hit == 1){
 			vm.tomark(vm.hits.length-1, rx, ry);
 		}
 		else{
 			vm.tocross(vm.hits.length-1, rx, ry);
 		}
 	});
-	function reDrawMark(){
-		var len = vm.hits.length;
-		var r = mato.rad;
-		var cx = mato.pos_x;
-		var cy = mato.pos_y;
-		for (var i = 0; i < len - 1; ++i){
-			if (vm.hits[i][1] >= 9999 || vm.hits[i][2] >= 9999) continue;
-			var dom = document.getElementById('mark-' + i);
-			var x = vm.hits[i][1] * r / 100 + cx;
-			var y = vm.hits[i][2] * r / 100 + cy;
-			dom.style.top = y.toString() + 'px';
-			dom.style.left = x.toString() + 'px';
-		}
-	}
 
 	/*
 	 *
