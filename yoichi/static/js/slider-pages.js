@@ -125,7 +125,7 @@ var vm = new Vue({
 
 function getDate(){
 	var date = new Date();
-	return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDay();
+	return date.getFullYear() + '/' + (date.getMonth()+1).toString() + '/' + date.getDate();
 }
 function calcPercent(num, all){
 	if (all == 0) return 0;
@@ -244,6 +244,7 @@ window.addEventListener('touchend', function(e){
 		}
 	}
 }, false)
+// button click  event
 function onHitBtnClk(dom){
 	var child = dom.firstChild; 
 	var id = child.id.split('-')[1];
@@ -270,11 +271,41 @@ function onCloudBtnClk(dom){
 		.animate({height: '30px'}, {duration: 1000});
 	var str = '';
 	for (var i = 0; i < vm.hits.length - 1; ++i){
+		str += '[' + (i+1).toString() + '] ';
 		str += vm.hits[i][0].toString() + ' : (';
 		str += vm.hits[i][1].toFixed(1).toString() + ', ';
 		str += vm.hits[i][2].toFixed(1).toString() + ')' + '\n';
 	}
 	alert(str);
+}
+// Changed display element at rotate window
+function rotateWindow(width, height){
+	var main = document.getElementsByClassName('main');
+	var mainlabel = document.getElementsByClassName('main-label');
+	var sub = document.getElementsByClassName('sub');
+	//alert(main);
+	if (width > height){
+		for (var i = 0; i < main.length; ++i){
+			main[i].style.height = '30%';
+			main[i].style.fontSize = '80%';
+			mainlabel[i].style.display = 'none';
+		}
+		sub[2].style.display = 'none';
+		sub[3].style.display = 'none';
+		sub[0].style.height = '70%';
+		sub[1].style.height = '70%';
+	}
+	else{
+		for (var i = 0; i < main.length; ++i){
+			main[i].style.height = '40%';
+			main[i].style.fontSize = '100%';
+			mainlabel[i].style.display = 'block';
+		}
+		sub[2].style.display = 'block';
+		sub[3].style.display = 'block';
+		sub[0].style.height = '30%';
+		sub[1].style.height = '30%';
+	}
 }
 
 /*
@@ -305,8 +336,9 @@ function onCloudBtnClk(dom){
 		clearTimeout(null);
 		queue = setTimeout(function() {
 			setCanvasSize();
-			reDrawMark();
 			draw();
+			reDrawMark();
+			rotateWindow(canvas.width, canvas.height);
 		}, 300 );
 	}, false );
 	canvas.addEventListener('click', function(e){
@@ -352,6 +384,7 @@ function onCloudBtnClk(dom){
 		var cx = mato.pos_x;
 		var cy = mato.pos_y;
 		for (var i = 0; i < len - 1; ++i){
+			if (vm.hits[i][1] >= 9999 || vm.hits[i][2] >= 9999) continue;
 			var dom = document.getElementById('mark-' + i);
 			var x = vm.hits[i][1] * r / 100 + cx;
 			var y = vm.hits[i][2] * r / 100 + cy;

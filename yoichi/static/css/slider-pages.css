@@ -323,10 +323,10 @@ input[type="radio"] {
 	display: block;
 }
 #page2:checked ~ div #date {
-	display: block;
+	display: none;
 }
 #page3:checked ~ div #date {
-	display: block;
+	display: none;
 }
 #page4:checked ~ div #date {
 	display: none;
