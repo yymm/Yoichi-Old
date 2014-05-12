@@ -52,7 +52,7 @@ var vm = new Vue({
 			this.pushHits(id, -1);
 			return -1;
 		},
-		pushHits: function(id, hit, rx, ry){
+		pushHits: function(id, hit, rx, ry, redo){
 			var x = rx === undefined ? 9999 : rx;
 			var y = ry === undefined ? 9999 : ry;
 			if (this.hits[this.hits.length - 1][0] == -1){
@@ -81,8 +81,19 @@ var vm = new Vue({
 			}
 			drawMark();
 			// Undo/Redo
-			stack = this.hits.slice(0);
-			current = stack.length - 1;
+			if (redo === undefined){
+				stack = this.hits.slice(0);
+				var dom = document.getElementById('redo');
+				dom.style.opacity = '0.2';
+				dom.style.color = '#222';
+			}
+			else{
+				if (this.hits.length == stack.length){
+					var dom = document.getElementById('redo');
+					dom.style.opacity = '0.2';
+					dom.style.color = '#222';
+				}
+			}
 			if (this.hits.length != 1){
 				var dom = document.getElementById('undo');
 				dom.style.opacity = '0.8';
@@ -94,10 +105,21 @@ var vm = new Vue({
 				dom.style.color = '#222';
 			}
 		},
+		// Undo/Redo
 		pop: function(){
 			this.hits.pop();
 			this.hits.pop();
 			this.hits.push([-1,9999,9999]);
+			drawMark();
+			current = this.hits.length - 2;
+			if (this.hits.length <= 1){
+				var dom = document.getElementById('undo');
+				dom.style.opacity = '0.2';
+				dom.style.color = '#222';
+			}
+			var dom = document.getElementById('redo');
+			dom.style.opacity = '0.8';
+			dom.style.color = '#d16d16';
 		}
 	},
 	filters: {
@@ -380,8 +402,15 @@ function addHitDOM(i, x, y, hit){
  */
 
 function onUndoBtnClk(dom){
+	if (vm.hits.length <= 1) return;
+	vm.pop();
 }
 function onRedoBtnClk(dom){
+	if (vm.hits.length == stack.length) return;
+	current++;
+	var id = current;
+	vm.hits[id] = stack[id][0];
+	vm.pushHits(vm.hits.length-1, stack[id][0], stack[id][1], stack[id][2], 'redo');
 }
 
 /*
