@@ -10,9 +10,10 @@ data = {
 			[-1,9999,9999]
 		],
 	date: getDate(),
-	user: 'hoge',
+	user: 'twitter id',
+	name: 'hogehoge',
 	team: 'hoge_team',
-	matp_type: 'kasumi'
+	mato_type: 'kasumi'
 }
 // Undo/Redo stack
 var current = -1;
@@ -120,7 +121,7 @@ var vm = new Vue({
 			var dom = document.getElementById('redo');
 			dom.style.opacity = '0.8';
 			dom.style.color = '#d16d16';
-		}
+		},
 	},
 	filters: {
 		tohit: function(int_val){
@@ -158,6 +159,15 @@ var vm = new Vue({
 			});
 			var deno = Math.ceil(getLenHits(hits)/4);
 			return calcPercent(hits_num, deno);
+		},
+		toyear: function(date){
+			return date.split('/')[0];
+		},
+		tomonth: function(date){
+			return date.split('/')[1];
+		},
+		today: function(date){
+			return date.split('/')[2];
 		}
 	}
 })
@@ -309,12 +319,13 @@ function onCloudBtnClk(dom){
 	var dom = document.getElementById('upload-background');
 	dom.style.backgroundColor = 'yellow';
 	$('#upload-background')
-		.animate({width: '35px'}, {duration: 1000})
-		.animate({height: '35px'}, {duration: 1000})
-		.animate({width: '30px'}, {duration: 1000})
+		.animate({width: '35px'}, {duration: 500})
+		.animate({height: '35px'}, {duration: 500})
+		.animate({width: '30px'}, {duration: 500})
 		.animate({backgroundColor: '#aaa'}, {duration: 1000})
 		.animate({height: '30px'}, {duration: 1000});
 	var str = '';
+	str += 'Name: ' + vm.name + '\n';
 	for (var i = 0; i < vm.hits.length - 1; ++i){
 		str += '[' + (i+1).toString() + '] ';
 		str += vm.hits[i][0].toString() + ' : (';
