@@ -11,12 +11,13 @@
 html, body {
 	height: 100%;
 	width: 100%;
+	font-size: 1em;
 }
 /* flash alert */
 .flash-alert {
 	font-size: 1.2em;
 	margin: 0 auto;
-	padding: 10px;
+	padding: 40px;
 	text-align: center;
 	opacity: 0.8;
 	border: 2px solid;
@@ -45,12 +46,35 @@ html, body {
     color: #A94442;
 }
 .close-btn {
-	float: right;
+	font-size: 2em;
+	position: absolute;
+	top: 0px;
+	left: 10px;
+	float: left;
 	font-weight: bold;
 	line-height: 1;
-	opacity: 0.4;
+	opacity: 0.6;
 	text-shahow: 0 1px 0 #FFFFFF;
 	border: 0 none;
 	color: inherit;
 	cursor: pointer;
+}
+/* button css */
+.change-btn {
+	background-color: #5cbb5c;
+	border: 2px solid #4cae4c;
+}
+.send-btn {
+	background-color: #428bca;
+	border: 2px solid #357ebd;
+	width: 90%;
+}
+.delete-btn {
+	background-color: #f0ad4e;
+	border: 2px solid #eea236;
+}
+.btn {
+	border-radius: 3px;
+	padding: 6px 12px;
+	color: #fff;
 }

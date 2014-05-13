@@ -10,10 +10,13 @@ mod = Blueprint('view', __name__)
 config = configparser.ConfigParser()
 config.read(os.path.join(os.getcwd(), 'keys.cfg'))
 
+twitter_key = config.get('twitter', 'TWITTER_API_KEY') if 'twitter' in config else None
+twitter_secret = config.get('twitter', 'TWITTER_API_SECRET') if 'twitter' in config else None
+
 twitter = RauthOauth1(
     name='twitter',
-    consumer_key=config.get('twitter', 'TWITTER_API_KEY'),
-    consumer_secret=config.get('twitter', 'TWITTER_API_SECRET'),
+    consumer_key=twitter_key,
+    consumer_secret=twitter_secret,
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authenticate',
@@ -25,7 +28,7 @@ def index():
     if g.user is not None:
         return render_template('index.html', user_name=g.user.name)
 
-    return render_template('index.html')
+    return render_template('index.html', user_name='hoge')
 
 
 @mod.route('/login')

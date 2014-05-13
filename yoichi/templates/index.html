@@ -2,7 +2,9 @@
 
 {% block head %}
 	{% if user_name is defined %}
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+	<script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
 	{% else %}
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 	{% endif %}
@@ -10,28 +12,179 @@
 
 {% block body %}
 
-
-<header>
-</header>
-
-
 {% if user_name is defined %}
-<article>
-	<section class="no-scroll" id="mato-screen">
-		<div id="mato-container">
-			<canvas id="mato"></canvas>
+<!--
+
+		After login
+
+-->
+<div id="slide-pages">
+	<slider-pages>
+		<!--Pages-->
+		<article id="tap">
+			<div id="container" style="width: 100%; height: 100%;">
+				<canvas id="mato"></canvas>
+			</div>
+		</article>
+		<article id="input">
+			<div class="main" v-with="data">
+				<div class="main-label">Result</div>
+				<span>[[hits | number_of_hit]]</span>
+				<span>/</span>
+				<span>[[hits | number_of_all]]</span>
+			</div>
+			<div id="input-area">
+				<div class="hit" v-repeat="hits">
+					<button onclick='onHitBtnClk(this);'><p class="[[$value[0] | tohit]]" id="hit-[[$index]]"></p></button>
+				</div>
+			</div>
+		</article>
+		<article id="score">
+			<div class="main" v-with="data">
+				<div class="main-label">Result</div>
+				<span>[[hits | number_of_hit]]</span>
+				<span>/</span>
+				<span>[[hits | number_of_all]]</span>
+			</div>
+			<div class="sub">
+				<div class="sub-label">All</div>
+				<span>[[hits | percent]]%</span>
+			</div>
+			<div class="sub">
+				<div class="sub-label">First</div>
+				<span>[[hits | percent_first]]%</span>
+			</div>
+			<div class="sub">
+				<div class="sub-label">First/2</div>
+				<span>[[hits | percent_first_2]]%</span>
+			</div>
+			<div class="sub">
+				<div class="sub-label">First/4</div>
+				<span>[[hits | percent_first_4]]%</span>
+			</div>
+		</article>
+		<article id="statistics">
+			<p>stats page is now working...</p>
+		</article>
+		<article id="setting">
+			<div class='setting-content'>
+				<h2>User Info</h2>
+				<div class='setting-label'>User ID</div>
+				<a href="https://twitter.com/[[user]]">@[[user]]</a>
+				<div class='setting-label'>Name</div>
+				<div class='space'></div>
+				<input 'setting-item' v-model='name' value='[[name]]' style='text-align: center;'>
+				<div class='space'></div>
+				<button class='btn change-btn'>Change Name</button>
+			</div>
+			<div class='setting-content'>
+				<h2>Date</h2>
+				<div class='space'></div>
+				<select>
+					<option selected>[[date | toyear]]<option>
+				</select>
+				<select>
+					<option selected>[[date | tomonth]]<option>
+				</select>
+				<select>
+					<option selected>[[date | today]]<option>
+				</select>
+				<div class='space'></div>
+				<button class='btn change-btn'>Change Date</button>
+			</div>
+			<div class='setting-content'>
+				<h2>Team</h2>
+				<div class='space'></div>
+				<select>
+					<option selected>[[team]]<option>
+				</select>
+				<div class='space'></div>
+				<button class='btn change-btn'>Create Team</button>
+			</div>
+			<div class='setting-content'>
+				<h2>Mato Type</h2>
+				<div class='space'></div>
+				<div class='toggle'>
+					<input type='checkbox' class='check' onclick="changeMatoType(this);">
+					<p style='position: absolute; width: 50%; left: 0;'>Kasumi</p>
+					<p style='position: absolute; width: 50%; right: 0;'>Hoshi</p>
+					<b class='switch'></b>
+				</div>
+			</div>
+			<div class='setting-content'>
+				<h2 style='background-color: #00984b;'>Suggestion</h2>
+				<div class='space'></div>
+				<textarea id="send-text"></textarea>
+				<button class="btn send-btn" id='suggest-btn'>Send</button>
+			</div>
+			<div class='setting-content'>
+				<h2 style='background-color: #D9534F;'>Danger Zone</h2>
+				<div class='setting-label'>Delete User</div>
+				<input type='text' placeholder='user id' style='text-align: center;'>
+				<div class='space'></div>
+				<button class="delete-btn btn">Delete</button>
+			</div>
+		</article>
+		<!--Footer - Page changer-->
+		<label for="page1" class="fa fa-bullseye fa-3x"></label>
+		<label for="page2" class="fa fa-pencil-square-o fa-3x"></label>
+		<label for="page3" class="fa fa-code fa-3x"></label>
+		<label for="page4" class="fa fa-bar-chart-o fa-3x"></label>
+		<label for="page5" class="fa fa-cogs fa-3x"></label>
+	</slider-pages>
+</div>
+<!--
+
+		Vue.js template
+
+-->
+<script type="text/x-template" id="slider-pages-template">
+<div id="spages">
+	<input id="page1" type="radio" checked="" name="slider" selected="false">
+	<input id="page2" type="radio" name="slider" selected="false">
+	<input id="page3" type="radio" name="slider" selected="false">
+	<input id="page4" type="radio" name="slider" selected="false">
+	<input id="page5" type="radio" name="slider" selected="false">
+	<!--Controller-->
+	<div id="controller-content">
+		<div class='controller' id='date'>[[date]]</div>
+		<div class='controller' id='upload-background'></div>
+		<div class='controller fa fa-cloud-upload fa-4x' id='upload' onclick='onCloudBtnClk(this);'></div>
+		<div class='controller fa fa-exchange fa-4x' id='change-page'></div>
+		<div class='controller fa fa-arrow-left fa-4x' id='undo' onclick='onUndoBtnClk(this);'></div>
+		<div class='controller fa fa-arrow-right fa-4x' id='redo' onclick='onRedoBtnClk(this);'></div>
+	</div>
+	<div id="pages">
+		<div id="overflow">
+			<div class="inner">
+				<content select="article:nth-of-type(1)"></content>
+				<content select="article:nth-of-type(2)"></content>
+				<content select="article:nth-of-type(3)"></content>
+				<content select="article:nth-of-type(4)"></content>
+				<content select="article:nth-of-type(5)"></content>
+			</div>
 		</div>
-	</section>
-	<section class="scroll" id="peke-screen">
-	</section>
-	<section class="no-scroll" id="score">
-	</section>
-	<section class="scroll" id="setting">
-	</section>
-	<section class="scroll" id="statistics">
-	</section>
-</article>
+	</div>
+	<footer>
+		<div class="wrap">
+			<nav>
+				<content select="label:nth-of-type(1)"></content>
+				<content select="label:nth-of-type(2)"></content>
+				<content select="label:nth-of-type(3)"></content>
+				<content select="label:nth-of-type(4)"></content>
+				<content select="label:nth-of-type(5)"></content>
+			</nav>
+		</div>
+	</footer>
+</div>
+</script>
+<script src="{{ url_for('static', filename='js/slider-pages.js') }}"></script>
 {% else  %}
+<!--
+
+		Before login
+
+-->
 <article id="login">
 	<section class="contents" id="sc-top">
 		<div id="title">Yoichi</div>
@@ -47,16 +200,7 @@
 		<p>Login by Twitter</p>
 	</section>
 </article>
-{% endif %}
-
-
 <footer>
-{% if user_name is defined %}
-<div class="wrap">
-	<nav>
-	</nav>
-</div>
-{% else  %}
 <div class="wrap">
 	<nav>
 		<a class="icon icon-twitter fa fa-twitter fa-2x login-icon" href="https://twitter.com/yymm6666/"></a>
@@ -64,15 +208,9 @@
 		<a class="icon icon-github fa fa-github fa-2x login-icon"href="https://github.com/yymm/Yoichi"></a>
 	</nav>
 </div>
-{% endif %}
 </footer>
-
-
-{% if user_name is defined %}
-<script src="{{ url_for('static', filename='js/mato.js') }}"></script>
-<script src="{{ url_for('static', filename='js/general.js') }}"></script>
-{% else  %}
 <script src="{{ url_for('static', filename='js/season.js') }}"></script>
+
 {% endif %}
 
 {% endblock %}
