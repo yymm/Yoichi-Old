@@ -436,6 +436,27 @@ function onRedoBtnClk(dom){
 
 /*
  *
+ * Flash alert
+ *
+ */
+function alertFlash(category, message){
+	var prnt = document.createElement('div');
+	var child = document.createElement('button');
+	prnt.className = 'flash-alert';
+	prnt.id = category;
+	prnt.textContent = message;
+	child.className = 'close-btn';
+	child.textContent = 'x';
+	child.onclick = function(){
+		var closest_div = $(this).closest("div");
+		closest_div.fadeOut('normal', function(){closest_div.remove();});
+	};
+	prnt.appendChild(child);
+	document.body.appendChild(prnt);
+}
+
+/*
+ *
  * Canvas element
  *
  */
@@ -563,3 +584,37 @@ function onRedoBtnClk(dom){
 	draw();
 
 }(window, document);
+
+
+/*
+ *
+ * Connected server side
+ *
+ */
+$('#suggest-btn').click(function(){
+	$(this).disabled = true;
+	var post_data = {
+		'title': '[Yo-Bo-] Anonymous say.',
+		'body': document.getElementById('send-text').value,
+		'assignee': 'yymm',
+		'milestone': 1,
+		'lebels': [
+			'bug',
+			'enhancement'
+		]
+	};
+	$.ajax({
+		type: 'POST',
+		url: 'https://api.github.com/repos/yymm/Yoichi/issues',
+		data: post_data,
+		success: function(json_data){
+			alertFlash('important', 'Success! Thank you.')
+		},
+		error: function(){
+			alertFlash('error', 'github issue post error.')
+		},
+		complete: function(){
+			$(this).disabled = false;
+		}
+	});
+});

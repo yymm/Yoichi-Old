@@ -230,6 +230,7 @@
 	margin: 0 auto;
 	padding: 10px 0;
 	color: #fff;
+	border-radius: 10px;
 }
 .check {
 	position: absolute;
@@ -255,6 +256,7 @@
 	background-color: #ddd;
 	transition: all .4s ease;
 	z-index: 1;
+	border-radius: 10px;
 }
 /*
 
