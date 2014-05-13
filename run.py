@@ -6,11 +6,10 @@ port = None
 
 if app.config["DEBUG"]:
     try:
-        #host = socket.gethostbyname('%s.local' % socket.gethostname())
-        host = '127.0.0.1'
+        host = socket.gethostbyname('%s.local' % socket.gethostname())
         port = 5000
     except:
-        host = '192.168.5.7'
+        host = '127.0.0.1'
         port = 5000
 
 app.run(host=host, port=port)
