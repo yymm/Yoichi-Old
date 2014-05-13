@@ -585,12 +585,12 @@ function alertFlash(category, message){
 
 }(window, document);
 
-
 /*
  *
  * Connected server side
  *
  */
+
 $('#suggest-btn').click(function(){
 	$(this).disabled = true;
 	var post_data = {
