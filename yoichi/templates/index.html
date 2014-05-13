@@ -64,13 +64,9 @@
 			</div>
 		</article>
 		<article id="statistics">
-			<p>stat page : Now Working...</p>
+			<p>stats page is now working...</p>
 		</article>
 		<article id="setting">
-			<div class='setting-title'>
-				<div>Setting</div>
-			</div>
-			<div class='fa fa-cogs' id='setting-icon'></div>
 			<div class='setting-content'>
 				<h2>User Info</h2>
 				<div class='setting-label'>User ID</div>
@@ -78,6 +74,8 @@
 				<div class='setting-label'>Name</div>
 				<div class='space'></div>
 				<input 'setting-item' v-model='name' value='[[name]]' style='text-align: center;'>
+				<div class='space'></div>
+				<button class='btn change-btn'>Change Name</button>
 			</div>
 			<div class='setting-content'>
 				<h2>Date</h2>
@@ -91,6 +89,8 @@
 				<select>
 					<option selected>[[date | today]]<option>
 				</select>
+				<div class='space'></div>
+				<button class='btn change-btn'>Change Date</button>
 			</div>
 			<div class='setting-content'>
 				<h2>Team</h2>
@@ -99,13 +99,13 @@
 					<option selected>[[team]]<option>
 				</select>
 				<div class='space'></div>
-				<button>Create Team</button>
+				<button class='btn change-btn'>Create Team</button>
 			</div>
 			<div class='setting-content'>
 				<h2>Mato Type</h2>
 				<div class='space'></div>
 				<div class='toggle'>
-					<input type='checkbox' class='check'>
+					<input type='checkbox' class='check' onclick="changeMatoType(this);">
 					<p style='position: absolute; width: 50%; left: 0;'>Kasumi</p>
 					<p style='position: absolute; width: 50%; right: 0;'>Hoshi</p>
 					<b class='switch'></b>
@@ -115,15 +115,15 @@
 				<h2 style='background-color: #00984b;'>Suggestion</h2>
 				<div class='space'></div>
 				<textarea id="send-text"></textarea>
-				<button id="send-btn">Send</button>
+				<button class="btn send-btn">Send</button>
 			</div>
-			<!--<div class='setting-content'>-->
-				<!--<h2 style='background-color: #D9534F;'>Danger</h2>-->
-				<!--<div class='setting-label'>Delete User</div>-->
-				<!--<input type='text' placeholder='user id' style='text-align: center;'>-->
-				<!--<div class='space'></div>-->
-				<!--<button id="delete-btn">Delete</button>-->
-			<!--</div>-->
+			<div class='setting-content'>
+				<h2 style='background-color: #D9534F;'>Danger Zone</h2>
+				<div class='setting-label'>Delete User</div>
+				<input type='text' placeholder='user id' style='text-align: center;'>
+				<div class='space'></div>
+				<button class="delete-btn btn">Delete</button>
+			</div>
 		</article>
 		<!--Footer - Page changer-->
 		<label for="page1" class="fa fa-bullseye fa-3x"></label>

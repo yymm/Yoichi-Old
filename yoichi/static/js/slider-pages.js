@@ -326,6 +326,7 @@ function onCloudBtnClk(dom){
 		.animate({height: '30px'}, {duration: 1000});
 	var str = '';
 	str += 'Name: ' + vm.name + '\n';
+	str += 'Mato: ' + vm.mato_type + '\n';
 	for (var i = 0; i < vm.hits.length - 1; ++i){
 		str += '[' + (i+1).toString() + '] ';
 		str += vm.hits[i][0].toString() + ' : (';
@@ -386,6 +387,15 @@ function drawMark(){
 		var y = vm.hits[i][2] * r / 100 + cy;
 		addHitDOM(i, x, y, vm.hits[i][0]);
 	}
+}
+function changeMatoType(dom){
+	if (dom.checked){
+		vm.mato_type = 'hoshi';
+	}
+	else{
+		vm.mato_type = 'kasumi';
+	}
+	mato.draw();
 }
 // Add hit DOM
 function addHitDOM(i, x, y, hit){
@@ -451,7 +461,7 @@ function onRedoBtnClk(dom){
 		clearTimeout(null);
 		queue = setTimeout(function() {
 			setCanvasSize();
-			draw(); // この関数があるからこの場所にあることをお忘れなく
+			draw(); // この関数があるからresizeイベントがこの場所にあることをお忘れなく
 			drawMark();
 			rotateWindow(canvas.width, canvas.height);
 		}, 300 );
@@ -514,6 +524,7 @@ function onRedoBtnClk(dom){
 		this.color = ['rgb(50, 50, 50)', 'rgb(225, 225, 225)'];
 	};
 	Mato.prototype.draw = function(box_width, box_height){
+		this.setMatoType(vm.mato_type);
 		if (box_width && box_height){
 			this.setSize(box_width, box_height);
 		}
@@ -526,7 +537,7 @@ function onRedoBtnClk(dom){
 	};
 	Mato.prototype.setMatoType = function(mato_type){
 		if (mato_type == 'hoshi') {
-			this.rad_list = [this.rad, this.rad-0.5, this.rad/3];
+			this.rad_list = [this.rad, this.rad-1.0, this.rad/3];
 		}
 		else {
 			this.rad_list = [this.rad, this.rad/180*147, this.rad/180*117, this.rad/180*102, this.rad/180*72, this.rad/180*36];
@@ -536,7 +547,6 @@ function onRedoBtnClk(dom){
 		this.pos_x = box_width / 2;
 		this.pos_y = box_height / 2;
 		this.rad = (box_height < box_width) ? box_height / 3 : box_width / 3;
-		this.setMatoType();
 	};
 	
 

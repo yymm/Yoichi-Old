@@ -59,3 +59,22 @@ html, body {
 	color: inherit;
 	cursor: pointer;
 }
+/* button css */
+.change-btn {
+	background-color: #5cbb5c;
+	border: 2px solid #4cae4c;
+}
+.send-btn {
+	background-color: #428bca;
+	border: 2px solid #357ebd;
+	width: 90%;
+}
+.delete-btn {
+	background-color: #f0ad4e;
+	border: 2px solid #eea236;
+}
+.btn {
+	border-radius: 3px;
+	padding: 6px 12px;
+	color: #fff;
+}
