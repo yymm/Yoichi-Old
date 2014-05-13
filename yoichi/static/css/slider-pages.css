@@ -383,6 +383,33 @@
 input[type="radio"] {
  	display: none;
 }
+#page-guide {
+	position: absolute;
+	bottom: 10px;
+	right: 0;
+	left: 0;
+	margin: auto;
+	width: 100px;
+	height: 20px;
+	z-index: 3;
+	text-align: center;
+}
+.guide {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+	margin: 0 2px;
+	background-color: #aaa;
+	opacity: 0.5;
+}
+#page1:checked ~ div label[for="page1"],
+#page2:checked ~ div label[for="page2"],
+#page3:checked ~ div label[for="page3"],
+#page4:checked ~ div label[for="page4"],
+#page5:checked ~ div label[for="page5"] {
+	background-color: #000;
+}
 #page1:checked ~ footer label[for="page1"],
 #page2:checked ~ footer label[for="page2"],
 #page3:checked ~ footer label[for="page3"],
