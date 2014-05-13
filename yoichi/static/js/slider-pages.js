@@ -545,10 +545,10 @@ function alertFlash(category, message){
 		this.color = ['rgb(50, 50, 50)', 'rgb(225, 225, 225)'];
 	};
 	Mato.prototype.draw = function(box_width, box_height){
-		this.setMatoType(vm.mato_type);
 		if (box_width && box_height){
 			this.setSize(box_width, box_height);
 		}
+		this.setMatoType(vm.mato_type);
 		var circle = new Circle(ctx, this.color[0], this.rad, this.pos_x, this.pos_y);
 		var len = this.rad_list.length;
 		for (i = 0; i < len; i = i + 1) {
