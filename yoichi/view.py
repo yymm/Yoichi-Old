@@ -3,7 +3,7 @@ import configparser
 from flask import Blueprint, render_template, url_for, \
     redirect, request, session, flash, g
 from yoichi.oauth import RauthOauth1
-from yoichi.database import db_session, User
+from yoichi.database import add_user
 
 mod = Blueprint('view', __name__)
 
@@ -56,16 +56,7 @@ def authorized(rsession):
     r = rsession.get('account/verify_credentials.json', verify=True)
     twitter_id = r.json()['screen_name']
 
-    user = User.query.filter_by(name=twitter_id).first()
-
-    if user is None:
-        user = User(twitter_id)
-        db_session.add(user)
-
-    user.oauth_token = rsession.access_token
-    user.oauth_secret = rsession.access_token_secret
-
-    db_session.commit()
+    user = add_user(twitter_id)
 
     session['user_id'] = user.id
     g.user = user

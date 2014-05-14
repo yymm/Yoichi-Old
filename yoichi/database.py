@@ -14,8 +14,19 @@ class User(db.Model):
 
     def __init__(self, twitter_id):
         self.twitter_id = twitter_id
-        self.twitter_id = twitter_id
+        self.name = twitter_id
 
 
 def init_db():
     db.create_all()
+
+
+def add_user(twitter_id):
+    user = User.query.filter_by(name=twitter_id).first()
+
+    if user is None:
+        user = User(twitter_id)
+        db_session.add(user)
+        db_session.commit()
+
+    return user
