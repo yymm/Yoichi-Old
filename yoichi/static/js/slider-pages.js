@@ -225,11 +225,15 @@ document.getElementById('change-page').onclick = function(){
 	var page1 = document.getElementById('page1');
 	var page2 = document.getElementById('page2');
 	var page3 = document.getElementById('page3');
+	var page4 = document.getElementById('page4');
 	if (page1.checked){
 		page2.checked = true;
 	}
 	else if (page2.checked){
 		page3.checked = true;
+	}
+	else if (page3.checked){
+		page4.checked = true;
 	}
 	else{
 		page1.checked = true;
@@ -263,6 +267,7 @@ window.addEventListener('touchend', function(e){
 		var page1 = document.getElementById('page1');
 		var page2 = document.getElementById('page2');
 		var page3 = document.getElementById('page3');
+		var page4 = document.getElementById('page4');
 		if (page1.checked){
 			if (move > 0) {
 				page2.checked = true;
@@ -284,17 +289,9 @@ window.addEventListener('touchend', function(e){
 				page2.checked = true;
 			}
 		}
-		else if (page4.checked){
-			if (move > 0) {
-				page5.checked = true;
-			}
-			else{
-				page3.checked = true;
-			}
-		}
 		else{
 			if (move < 0) {
-				page4.checked = true;
+				page3.checked = true;
 			}
 		}
 	}
@@ -337,31 +334,18 @@ function onCloudBtnClk(dom){
 }
 // Changed display element at rotate window
 function rotateWindow(width, height){
-	var main = document.getElementsByClassName('main');
-	var mainlabel = document.getElementsByClassName('main-label');
-	var sub = document.getElementsByClassName('sub');
-	//alert(main);
+	var main = document.getElementById('main');
+	var sub = document.getElementById('sub');
+	var input = document.getElementById('input-area');
 	if (width > height){
-		for (var i = 0; i < main.length; ++i){
-			main[i].style.height = '30%';
-			main[i].style.fontSize = '80%';
-			mainlabel[i].style.display = 'none';
-		}
-		sub[2].style.display = 'none';
-		sub[3].style.display = 'none';
-		sub[0].style.height = '70%';
-		sub[1].style.height = '70%';
+		main.style.height = '30%';
+		sub.style.display = 'none';
+		input.style.height = '70%';
 	}
 	else{
-		for (var i = 0; i < main.length; ++i){
-			main[i].style.height = '40%';
-			main[i].style.fontSize = '100%';
-			mainlabel[i].style.display = 'block';
-		}
-		sub[2].style.display = 'block';
-		sub[3].style.display = 'block';
-		sub[0].style.height = '30%';
-		sub[1].style.height = '30%';
+		main.style.height = '15%';
+		sub.style.display = 'block';
+		input.style.height = '65%';
 	}
 }
 // Draw mark(strictly add dom). Run every input timing(=> vm.pushHits).
