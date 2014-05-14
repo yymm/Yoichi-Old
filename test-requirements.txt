@@ -1,7 +1,6 @@
 Flask
 Flask-SQLAlchemy
 rauth
-nose
-coverage
 pytest==2.5.2
 pytest-pep8==1.0.6
+pytest-cov==1.6
