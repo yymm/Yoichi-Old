@@ -4,4 +4,4 @@ rauth
 nose
 coverage
 pytest==2.5.2
-pytest-pep==1.0.6
+pytest-pep8==1.0.6
