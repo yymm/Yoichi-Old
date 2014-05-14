@@ -392,6 +392,7 @@ input[type="radio"] {
 	margin: 0 2px;
 	background-color: #aaa;
 	opacity: 0.5;
+	cursor: pointer;
 }
 #page1:checked ~ div label[for="page1"],
 #page2:checked ~ div label[for="page2"],

@@ -224,16 +224,8 @@ function getIntByHit(hit_val){
 document.getElementById('change-page').onclick = function(){
 	var page1 = document.getElementById('page1');
 	var page2 = document.getElementById('page2');
-	var page3 = document.getElementById('page3');
-	var page4 = document.getElementById('page4');
 	if (page1.checked){
 		page2.checked = true;
-	}
-	else if (page2.checked){
-		page3.checked = true;
-	}
-	else if (page3.checked){
-		page4.checked = true;
 	}
 	else{
 		page1.checked = true;

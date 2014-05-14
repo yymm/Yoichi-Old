@@ -1,0 +1,6 @@
+Flask
+Flask-SQLAlchemy
+rauth
+pytest
+pytest-cov
+pytest-pep8

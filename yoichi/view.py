@@ -1,7 +1,7 @@
 import os
 import configparser
 from flask import Blueprint, render_template, url_for, \
-        redirect, request, session, flash, g
+    redirect, request, session, flash, g
 from yoichi.oauth import RauthOauth1
 from yoichi.database import db_session, User
 
@@ -10,8 +10,10 @@ mod = Blueprint('view', __name__)
 config = configparser.ConfigParser()
 config.read(os.path.join(os.getcwd(), 'keys.cfg'))
 
-twitter_key = config.get('twitter', 'TWITTER_API_KEY') if 'twitter' in config else None
-twitter_secret = config.get('twitter', 'TWITTER_API_SECRET') if 'twitter' in config else None
+twitter_key = config.get('twitter', 'TWITTER_API_KEY') \
+    if 'twitter' in config else None
+twitter_secret = config.get('twitter', 'TWITTER_API_SECRET') \
+    if 'twitter' in config else None
 
 twitter = RauthOauth1(
     name='twitter',
