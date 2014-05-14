@@ -14,6 +14,3 @@ class TestYoichi():
     def teardown(self):
         os.close(self.db_fd)
         os.unlink(yoichi.app.config[DATABASE])
-
-    def test_sample(self):
-        assert 1 == 2
