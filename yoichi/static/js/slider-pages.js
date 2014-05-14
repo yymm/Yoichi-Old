@@ -591,30 +591,3 @@ function alertFlash(category, message){
  *
  */
 
-$('#suggest-btn').click(function(){
-	$(this).disabled = true;
-	var post_data = {
-		'title': '[Yo-Bo-] Anonymous say.',
-		'body': document.getElementById('send-text').value,
-		'assignee': 'yymm',
-		'milestone': 1,
-		'lebels': [
-			'bug',
-			'enhancement'
-		]
-	};
-	$.ajax({
-		type: 'POST',
-		url: 'https://api.github.com/repos/yymm/Yoichi/issues',
-		data: post_data,
-		success: function(json_data){
-			alertFlash('important', 'Success! Thank you.')
-		},
-		error: function(){
-			alertFlash('error', 'github issue post error.')
-		},
-		complete: function(){
-			$(this).disabled = false;
-		}
-	});
-});
