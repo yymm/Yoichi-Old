@@ -1,0 +1,160 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+.container {
+	position: relative;
+	float: left;
+	height: 100%;
+	overflow: auto;
+	-moz-overflow-scrolling: touch;
+	-webkit-overflow-scrolling: touch;
+}
+#user {
+	width: 30%;
+	background-color: #e8e6f3;
+}
+#result {
+	width: 35%;
+	background-color: #ebeddf;
+}
+#hits {
+	width: 35%;
+	background-color: #e4f0fc;
+}
+.info {
+	width: 100%;
+	height: 50px;
+	background-color: #555;
+	color: #eee;
+}
+.info h4 {
+	background-color: #ddd;
+	color: #555;
+	text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class='container' id='user'>
+	<div class='info'>
+		<h4>User table info</h4>
+		<p>Number of user: {{ number_of_user }}
+	</div>
+	<ul>
+		{% for user in users %}
+			{% if loop.index == user_number %}
+				<li><input type='radio' name='user' class='user-check' id='{{ user.id }}' checked>{{ user.id }} {{ user.name }}
+			{% else %}
+				<li><input type='radio' name='user' class='user-check' id='{{ user.id }}'>{{ user.id }} {{ user.name }}
+			{% endif %}
+		{% endfor %}
+	</ul>
+</div>
+<div class='container' id='result'>
+	<div class='info'>
+		<h4>Result table info</h4>
+	</div>
+	<ul id='result-list'>
+	</ul>
+</div>
+<div class='container' id='hits'>
+	<div class='info'>
+		<h4>Hit table info</h4>
+	</div>
+	<ul id='hit-list'>
+	</ul>
+</div>
+<script>
+window.onload = function(){
+	var users = document.getElementsByClassName('user-check');
+	var len = users.length;
+	var data = {
+		id: 1
+	};
+	for (var i = 0; i < len; ++i){
+		if (users[i].checked == true){
+			var user_id = users[i].id;
+			data['id'] = user_id;
+			break;
+		}
+	}
+	ajaxPost(data);
+};
+$('.user-check').click(function(){
+	var data = {
+		id: this.id
+	}
+	ajaxPost(data);
+});
+function ajaxPost(data){
+	$.ajax({
+		type: 'POST',
+		url: '/admin/maid',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		dataType: 'json',
+		success: function(json_data){
+			addResults(json_data['results']);
+			addHits(json_data['hits'])
+		},
+		error: function(json_data){
+			alertFlash('Failure...', 'waring');
+			console.log(json_data);
+		},
+	});
+}
+function addResults(results){
+	var prnt = document.getElementById('result-list');
+	var child_len = prnt.childNodes.length;
+	for (var i = 0; i < child_len; ++i){
+		prnt.removeChild(prnt.childNodes[0]);
+	}
+	var len = results.length;
+	for (var i = 0; i < len; ++i){
+		var li = document.createElement('li');
+		var input = document.createElement('input');
+		input.type = 'radio';
+		input.name = 'result';
+		input.className = 'result-check';
+		input.id = results[i];
+		li.textContent = results[i];
+		li.appendChild(input);
+		prnt.appendChild(li);
+	}
+};
+function addHits(hits){
+	var prnt = document.getElementById('hit-list');
+	var child_len = prnt.childNodes.length;
+	for (var i = 0; i < child_len; ++i){
+		prnt.removeChild(prnt.childNodes[0]);
+	}
+	var len = hits.length;
+	for (var i = 0; i < len; ++i){
+		var li = document.createElement('li');
+		num = hits[i][0].toString();
+		hit = hits[i][1] == 1 ? 'o' : 'x';
+		x = hits[i][2].toFixed(1).toString();
+		y = hits[i][3].toFixed(1).toString();
+		li.textContent = num + ': ' + hit + ' (' + x + ', ' + y + ')';
+		prnt.appendChild(li);
+	}
+};
+function alertFlash(message, category){
+	var prnt = document.createElement('div');
+	var child = document.createElement('button');
+	prnt.className = 'flash-alert';
+	prnt.id = category === undefined ? 'important' : category;
+	prnt.textContent = message;
+	child.className = 'close-btn';
+	child.textContent = 'x';
+	child.onclick = function(){
+		var closest_div = $(this).closest("div");
+		closest_div.fadeOut('normal', function(){closest_div.remove();});
+	};
+	prnt.appendChild(child);
+	document.body.appendChild(prnt);
+}
+</script>
+{% endblock %}

@@ -31,8 +31,25 @@ class User(db.Model):
 
     def upload_by_json(self, json_data):
         date = datetime.datetime.strptime(json_data['date'],
-                                          '%Y/%m/%d').date()
+                                          '%Y-%m-%d').date()
         return self.update_result(date).update_hits(json_data['hits'])
+
+    def is_admin(self):
+        return self.twitter_id in app.config['ADMIN']
+
+    def fetch_results_list(self):
+        ret = []
+        for r in self.results:
+            ret.append(r.date.strftime('%Y-%m-%d'))
+        return ret
+
+    def fetch_result_by_date(json_date):
+        date = datetime.datetime.strptime(json_data['date'],
+                                          '%Y-%m-%d').date()
+        for r in self.results:
+            if r.date is date:
+                return r
+        return None
 
 
 class Result(db.Model):
@@ -62,8 +79,8 @@ class Result(db.Model):
     def fetch_hits_list(self):
         ret = []
         for hit in self.hits:
-            ret.append((hit.val, hit.x, hit.y))
-        return ret
+            ret.append((hit.num, hit.val, hit.x, hit.y))
+        return ret[:-1]
 
 
 class Hit(db.Model):

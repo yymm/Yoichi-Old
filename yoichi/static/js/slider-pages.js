@@ -180,7 +180,7 @@ var vm = new Vue({
 
 function getDate(){
 	var date = new Date();
-	return date.getFullYear() + '/' + (date.getMonth()+1).toString() + '/' + date.getDate();
+	return date.getFullYear() + '-' + (date.getMonth()+1).toString() + '-' + date.getDate();
 }
 function calcPercent(num, all){
 	if (all == 0) return 0;
@@ -568,7 +568,7 @@ $('#upload').click(function(){
 			console.log(json_data);
 		},
 		error: function(json_data){
-			alertFlash('Fail to uplaod!', 'important');
+			alertFlash('Fail to uplaod!', 'waring');
 			console.log(json_data);
 		},
 		complete: function(){
