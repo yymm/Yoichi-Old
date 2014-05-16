@@ -1,9 +1,11 @@
 import os
+import json
 import configparser
 from flask import Blueprint, render_template, url_for, \
-    redirect, request, session, flash, g
+    redirect, request, session, flash, abort, g
 from yoichi.oauth import RauthOauth1
 from yoichi.database import add_user
+from yoichi.utils import requires_login
 
 mod = Blueprint('view', __name__)
 
@@ -63,3 +65,23 @@ def authorized(rsession):
 
     flash('Logged in.', 'information')
     return redirect(url_for('view.index'))
+
+
+@mod.route('/upload', methods=['POST'])
+@requires_login
+def upload():
+    ret_val = None
+
+    if request.method == 'POST':
+        json_data = request.json
+        if 'date' in json_data and 'hits' in json_data:
+            result = g.user.upload_by_json(json_data)
+            flash('Success to uplaod! (%s)' % result.date, 'important')
+            ret_val = '{"status": "success"}'
+        else:
+            flash('Fail to uplaod!', 'waring')
+            ret_val = '{"status": "failure"}'
+    else:
+        abort(404)
+
+    return json.dumps(ret_val)

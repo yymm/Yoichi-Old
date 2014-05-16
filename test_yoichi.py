@@ -3,16 +3,17 @@ import json
 import tempfile
 import datetime
 from pytest import set_trace
+from flask import g
 import yoichi
 from yoichi.database import User
 
 db_fd, temp_path = tempfile.mkstemp()
+app = yoichi.app.test_client()
 
 
 def setup_module():
     yoichi.app.config['SQLALCHEMY_DATABASE_URI'] \
         = 'sqlite:///' + temp_path
-    app = yoichi.app.test_client()
     yoichi.database.init_db()
 
 
@@ -86,13 +87,41 @@ def test_update_result():
 
 def test_add_json_result():
     json_data = '{"hits": [[0, 200, 90], [-1, 9999, 9999], [1, 0, 0]], \
-                  "date": "2014-05-22", "twitter_id": "hoge"}'
+                  "date": "2014/05/22", "twitter_id": "hoge"}'
     py_obj = json.loads(json_data)
 
     user = User.query.filter_by(name=py_obj['twitter_id']).first()
 
-    date = datetime.datetime.strptime(py_obj['date'], '%Y-%m-%d').date()
+    date = datetime.datetime.strptime(py_obj['date'], '%Y/%m/%d').date()
 
     result = user.update_result(date).update_hits(py_obj['hits'])
 
     assert user.results[-1].date == date
+
+
+def test_upload_by_json():
+    json_str = '{"hits": [[0, 200, 90], [-1, 9999, 9999], [1, 0, 0]], \
+                  "date": "2014/05/23", "twitter_id": "hoge"}'
+    json_data = json.loads(json_str)
+    date = datetime.datetime.strptime(json_data['date'], '%Y/%m/%d').date()
+
+    user = User.query.filter_by(name=json_data['twitter_id']).first()
+    result = user.upload_by_json(json_data)
+
+    assert result.date == date
+    assert result.user.name == 'hoge'
+
+
+def test_view_upload():
+    json_str = '{"hits": [[0, 200, 90], [-1, 9999, 9999], [1, 0, 0]], \
+                  "date": "2014/05/24", "twitter_id": "hoge"}'
+    rv = app.post('/upload', data=json_str)
+
+    assert 'text/html' in rv.headers['Content-Type']
+
+    with app.session_transaction() as session:
+        assert 'user_id' not in session
+        session['user_id'] = 1
+        user = User.query.filter_by(id=1).first()
+        g.user = user
+        rv = app.post('/upload', data=json_str)

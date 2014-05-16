@@ -29,6 +29,11 @@ class User(db.Model):
         db_session.commit()
         return result
 
+    def upload_by_json(self, json_data):
+        date = datetime.datetime.strptime(json_data['date'],
+                                          '%Y/%m/%d').date()
+        return self.update_result(date).update_hits(json_data['hits'])
+
 
 class Result(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -39,6 +44,7 @@ class Result(db.Model):
     def __init__(self, user_id, date):
         self.user_id = user_id
         self.date = date
+        self.hits = []
 
     def update_hits(self, hits):
         if len(self.hits) != 0:

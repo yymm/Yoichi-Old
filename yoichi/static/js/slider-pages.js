@@ -304,26 +304,6 @@ function onHitBtnClk(dom){
 		vm.tocross(id);
 	}
 }
-function onCloudBtnClk(dom){
-	var dom = document.getElementById('upload-background');
-	dom.style.backgroundColor = 'yellow';
-	$('#upload-background')
-		.animate({width: '35px'}, {duration: 500})
-		.animate({height: '35px'}, {duration: 500})
-		.animate({width: '30px'}, {duration: 500})
-		.animate({backgroundColor: '#aaa'}, {duration: 1000})
-		.animate({height: '30px'}, {duration: 1000});
-	var str = '';
-	str += 'Name: ' + vm.name + '\n';
-	str += 'Mato: ' + vm.mato_type + '\n';
-	for (var i = 0; i < vm.hits.length - 1; ++i){
-		str += '[' + (i+1).toString() + '] ';
-		str += vm.hits[i][0].toString() + ' : (';
-		str += vm.hits[i][1].toFixed(1).toString() + ', ';
-		str += vm.hits[i][2].toFixed(1).toString() + ')' + '\n';
-	}
-	alert(str);
-}
 // Changed display element at rotate window
 function rotateWindow(width, height){
 	var main = document.getElementById('main');
@@ -415,11 +395,11 @@ function onRedoBtnClk(dom){
  * Flash alert
  *
  */
-function alertFlash(category, message){
+function alertFlash(message, category){
 	var prnt = document.createElement('div');
 	var child = document.createElement('button');
 	prnt.className = 'flash-alert';
-	prnt.id = category;
+	prnt.id = category === undefined ? 'important' : category;
 	prnt.textContent = message;
 	child.className = 'close-btn';
 	child.textContent = 'x';
@@ -567,3 +547,52 @@ function alertFlash(category, message){
  *
  */
 
+$('#upload').click(function(){
+	$(this).disabled = true;
+	var dom = document.getElementById('upload-background');
+	dom.style.backgroundColor = 'yellow';
+	$('#upload-background')
+		.animate({width: '35px'}, {duration: 500})
+		.animate({height: '35px'}, {duration: 500})
+		.animate({width: '30px'}, {duration: 500})
+		.animate({backgroundColor: '#aaa'}, {duration: 1000})
+		.animate({height: '30px'}, {duration: 1000});
+	$.ajax({
+		type: 'POST',
+		url: '/upload',
+		data: JSON.stringify(vm.$data),
+		contentType: 'application/json',
+		dataType: 'json',
+		success: function(json_data){
+			alertFlash('Success to uplaod!', 'important');
+			console.log(json_data);
+		},
+		error: function(json_data){
+			alertFlash('Fail to uplaod!', 'important');
+			console.log(json_data);
+		},
+		complete: function(){
+			$(this).disabled = false;
+		}
+	});
+});
+function onCloudBtnClk(){
+	var dom = document.getElementById('upload-background');
+	dom.style.backgroundColor = 'yellow';
+	$('#upload-background')
+		.animate({width: '35px'}, {duration: 500})
+		.animate({height: '35px'}, {duration: 500})
+		.animate({width: '30px'}, {duration: 500})
+		.animate({backgroundColor: '#aaa'}, {duration: 1000})
+		.animate({height: '30px'}, {duration: 1000});
+	var str = '';
+	str += 'Name: ' + vm.name + '\n';
+	str += 'Mato: ' + vm.mato_type + '\n';
+	for (var i = 0; i < vm.hits.length - 1; ++i){
+		str += '[' + (i+1).toString() + '] ';
+		str += vm.hits[i][0].toString() + ' : (';
+		str += vm.hits[i][1].toFixed(1).toString() + ', ';
+		str += vm.hits[i][2].toFixed(1).toString() + ')' + '\n';
+	}
+	alert(str);
+}
