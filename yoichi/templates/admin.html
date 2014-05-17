@@ -172,6 +172,9 @@ function alertFlash(message, category){
 	};
 	prnt.appendChild(child);
 	document.body.appendChild(prnt);
+	setTimeout(function(){
+		$('.flash-alert').fadeOut('normal', function(){$(this).remove();})}
+	, 3000);
 }
 </script>
 {% endblock %}
