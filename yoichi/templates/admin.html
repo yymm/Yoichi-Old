@@ -96,16 +96,16 @@ function ajaxPost(data){
 		contentType: 'application/json',
 		dataType: 'json',
 		success: function(json_data){
-			addResults(json_data['results']);
+			addResults(json_data['date'], json_data['results']);
 			addHits(json_data['hits'])
 		},
 		error: function(json_data){
-			alertFlash('Failure...', 'waring');
+			alertFlash('Failure...', 'warning');
 			console.log(json_data);
 		},
 	});
 }
-function addResults(results){
+function addResults(date, results){
 	var prnt = document.getElementById('result-list');
 	var child_len = prnt.childNodes.length;
 	for (var i = 0; i < child_len; ++i){
@@ -119,6 +119,23 @@ function addResults(results){
 		input.name = 'result';
 		input.className = 'result-check';
 		input.id = results[i];
+		if (results[i] == date){
+			input.checked = true;
+		}
+		input.onclick = function clickCheckResult(){
+			var user_id = 0;
+			var users = document.getElementsByClassName('user-check');
+			for (var i = 0; i < users.length; ++i){
+				if (users[i].checked){
+					user_id = users[i].id;
+				}
+			}
+			var data = {
+				id: user_id,
+				date: this.parentNode.textContent
+			}
+			ajaxPost(data);
+		};
 		li.textContent = results[i];
 		li.appendChild(input);
 		prnt.appendChild(li);

@@ -568,7 +568,7 @@ $('#upload').click(function(){
 			console.log(json_data);
 		},
 		error: function(json_data){
-			alertFlash('Fail to uplaod!', 'waring');
+			alertFlash('Fail to uplaod!', 'warning');
 			console.log(json_data);
 		},
 		complete: function(){

@@ -76,10 +76,8 @@ def upload():
         json_data = request.json
         if 'date' in json_data and 'hits' in json_data:
             result = g.user.upload_by_json(json_data)
-            flash('Success to uplaod! (%s)' % result.date, 'important')
             ret_val = '{"status": "success"}'
         else:
-            flash('Fail to uplaod!', 'waring')
             ret_val = '{"status": "failure"}'
     else:
         abort(404)

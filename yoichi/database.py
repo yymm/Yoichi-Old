@@ -43,11 +43,11 @@ class User(db.Model):
             ret.append(r.date.strftime('%Y-%m-%d'))
         return ret
 
-    def fetch_result_by_date(json_date):
-        date = datetime.datetime.strptime(json_data['date'],
+    def fetch_result_by_date(self, date):
+        date = datetime.datetime.strptime(date,
                                           '%Y-%m-%d').date()
         for r in self.results:
-            if r.date is date:
+            if r.date == date:
                 return r
         return None
 
@@ -70,7 +70,7 @@ class Result(db.Model):
             db_session.commit()
 
         for i, h in enumerate(hits):
-            hit = Hit(self.id, i, h[0], h[1], h[2])
+            hit = Hit(self.id, i+1, h[0], h[1], h[2])
             db_session.add(hit)
         db_session.commit()
 
