@@ -37,7 +37,6 @@ def index():
                 'team': g.user.team}
         if date:
             data['date'] = date
-            data['year'], data['month'], data['day'] = date.split('-')
             result = g.user.fetch_result_by_date(date)
             if result:
                 data['hits'] = result.fetch_hits_list()
@@ -45,7 +44,6 @@ def index():
                 data['hits'] = [[-1, 9999, 9999]]
         else:
             data['date'] = str(datetime.date.today())
-            data['year'], data['month'], data['day'] = data['date'].split('-')
             result = g.user.fetch_result_by_date(data['date'])
             if result:
                 data['hits'] = result.fetch_hits_list()

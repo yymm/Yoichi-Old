@@ -32,7 +32,7 @@ def test_add_user():
 def test_add_results():
     user = User.query.filter_by(name='hoge').first()
     date = datetime.date.today()
-    hits = [(1, 5, 6), (0, 100, 110), (-1, 9999, 9999)]
+    hits = [[1, 5, 6], [0, 100, 110], [-1, 9999, 9999]]
     result = user.update_result(date).update_hits(hits)
 
     assert user.results[0].user_id == user.id
@@ -55,8 +55,8 @@ def test_add_some_result():
     hige = User.query.filter_by(name='hige').first()
 
     odate = datetime.date.today() + datetime.timedelta(2)
-    ohits = [(1, 50, 65), (0, 20, 180), (-1, 9999, 9999),
-             (1, 5, 6), (0, 100, 110), (-1, 9999, 9999)]
+    ohits = [[1, 50, 65], [0, 20, 180], [-1, 9999, 9999],
+             [1, 5, 6], [0, 100, 110], [-1, 9999, 9999]]
     oresult = hoge.update_result(odate).update_hits(ohits)
 
     assert len(hoge.results) == 2
@@ -64,7 +64,7 @@ def test_add_some_result():
     assert hoge.results[1].date != datetime.date.today()
 
     idate = datetime.date.today() - datetime.timedelta(2)
-    ihits = [(0, 20, 180), (-1, 9999, 9999), (1, 50, 65)]
+    ihits = [[0, 20, 180], [-1, 9999, 9999], [1, 50, 65]]
     iresult = hige.update_result(idate).update_hits(ihits)
 
     assert len(hige.results) == 1
@@ -87,12 +87,12 @@ def test_update_result():
 
 def test_add_json_result():
     json_data = '{"hits": [[0, 200, 90], [-1, 9999, 9999], [1, 0, 0]], \
-                  "date": "2014/05/22", "twitter_id": "hoge"}'
+                  "date": "2014-05-22", "twitter_id": "hoge"}'
     py_obj = json.loads(json_data)
 
     user = User.query.filter_by(name=py_obj['twitter_id']).first()
 
-    date = datetime.datetime.strptime(py_obj['date'], '%Y/%m/%d').date()
+    date = datetime.datetime.strptime(py_obj['date'], '%Y-%m-%d').date()
 
     result = user.update_result(date).update_hits(py_obj['hits'])
 
@@ -101,9 +101,9 @@ def test_add_json_result():
 
 def test_upload_by_json():
     json_str = '{"hits": [[0, 200, 90], [-1, 9999, 9999], [1, 0, 0]], \
-                  "date": "2014/05/23", "twitter_id": "hoge"}'
+                  "date": "2014-05-23", "twitter_id": "hoge"}'
     json_data = json.loads(json_str)
-    date = datetime.datetime.strptime(json_data['date'], '%Y/%m/%d').date()
+    date = datetime.datetime.strptime(json_data['date'], '%Y-%m-%d').date()
 
     user = User.query.filter_by(name=json_data['twitter_id']).first()
     result = user.upload_by_json(json_data)
@@ -114,7 +114,7 @@ def test_upload_by_json():
 
 def test_view_upload():
     json_str = '{"hits": [[0, 200, 90], [-1, 9999, 9999], [1, 0, 0]], \
-                  "date": "2014/05/24", "twitter_id": "hoge"}'
+                  "date": "2014-05-24", "twitter_id": "hoge"}'
     rv = app.post('/upload', data=json_str)
 
     assert 'text/html' in rv.headers['Content-Type']

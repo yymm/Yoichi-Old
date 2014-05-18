@@ -64,27 +64,24 @@
 					<div class='space'></div>
 					<button class='btn change-btn'>Change Name</button>
 				</div>
-				<div class='setting-label'>Team</div>
-				<div>
-					<select>
-						<option id='sv-team' selected>{{ team }}<option>
-					</select>
-					<div class='space'></div>
-					<button class='btn change-btn'>Create Team</button>
-				</div>
+				<!--<div class='setting-label'>Team</div>-->
+				<!--<div>-->
+					<!--<select>-->
+						<!--<option id='sv-team' selected>{{ team }}<option>-->
+					<!--</select>-->
+					<!--<div class='space'></div>-->
+					<!--<button class='btn change-btn'>Create Team</button>-->
+				<!--</div>-->
 			</div>
 			<div class='setting-content'>
 				<h2>Date</h2>
 				<div class='space'></div>
 				<p id='sv-date' style='display:none;'>{{ date }}</p>
 				<select>
-					<option selected>{{ year }}<option>
-				</select>
-				<select>
-					<option selected>{{ month }}<option>
-				</select>
-				<select>
-					<option selected>{{ day }}<option>
+					<option selected>{{ date }}<option>
+					{% for s in dates %}
+					<option>{{ d }}<option>
+					{% endfor %}
 				</select>
 				<div class='space'></div>
 				<button class='btn change-btn'>Change Date</button>
