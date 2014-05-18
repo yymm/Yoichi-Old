@@ -129,7 +129,7 @@ def admin():
                 ret['date'] = result.date.strftime('%Y-%m-%d')
                 ret['hits'] = result.fetch_hits_list()
         return json.dumps(ret)
-    
+
     users = User.query.all()
     number_of_user = len(users)
     user_number = 1
