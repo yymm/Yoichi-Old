@@ -1,5 +1,6 @@
 import os
 import json
+import datetime
 import configparser
 from flask import Blueprint, render_template, url_for, \
     redirect, request, session, flash, abort, g
@@ -29,8 +30,29 @@ twitter = RauthOauth1(
 
 @mod.route('/')
 def index():
+    date = request.args.get('date') or ''
     if g.user is not None:
-        return render_template('index.html', user_name=g.user.name)
+        data = {'user': g.user.twitter_id,
+                'name': g.user.name,
+                'team': g.user.team}
+        if date:
+            data['date'] = date
+            data['year'], data['month'], data['day'] = date.split('-')
+            result = g.user.fetch_result_by_date(date)
+            if result:
+                data['hits'] = result.fetch_hits_list()
+            else:
+                data['hits'] = [[-1, 9999, 9999]]
+        else:
+            data['date'] = str(datetime.date.today())
+            data['year'], data['month'], data['day'] = data['date'].split('-')
+            result = g.user.fetch_result_by_date(data['date'])
+            if result:
+                data['hits'] = result.fetch_hits_list()
+            else:
+                data['hits'] = [[-1, 9999, 9999]]
+
+        return render_template('index.html', **data)
 
     return render_template('index.html')
 
@@ -131,9 +153,9 @@ def admin_maid():
         if 'date' in json_data:
             result = user.fetch_result_by_date(json_data['date'])
             ret['date'] = result.date.strftime('%Y-%m-%d')
-            ret['hits'] = result.fetch_hits_list()
+            ret['hits'] = result.fetch_hits_list(with_num=True)
         else:
             result = user.results[0]
             ret['date'] = result.date.strftime('%Y-%m-%d')
-            ret['hits'] = result.fetch_hits_list()
+            ret['hits'] = result.fetch_hits_list(with_num=True)
     return json.dumps(ret)

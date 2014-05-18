@@ -76,11 +76,16 @@ class Result(db.Model):
 
         return self
 
-    def fetch_hits_list(self):
+    def fetch_hits_list(self, with_num=False):
         ret = []
         for hit in self.hits:
-            ret.append((hit.num, hit.val, hit.x, hit.y))
-        return ret[:-1]
+            if with_num:
+                ret.append([hit.num, hit.val, hit.x, hit.y])
+            else:
+                ret.append([hit.val, hit.x, hit.y])
+        if with_num:
+            return ret[:-1]
+        return ret
 
 
 class Hit(db.Model):

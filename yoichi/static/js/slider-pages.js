@@ -6,18 +6,17 @@
 
 // Model
 data = {
-	hits: [
-			[-1,9999,9999]
-		],
-	date: getDate(),
-	user: 'twitter id',
-	name: 'hogehoge',
-	team: 'hoge_team',
+	hits: hits_list,
+	date: $('#sv-date').text(),
+	user: $('#sv-user').text(),
+	name: $('#sv-name').val(),
+	team: $('#sv-team').text(),
 	mato_type: 'kasumi'
 }
 // Undo/Redo stack
+var enable_undo = false;
 var current = -1;
-var stack = [];
+var stack = hits_list;
 
 Vue.config({
 	delimiters: ['[', ']']
@@ -54,6 +53,7 @@ var vm = new Vue({
 			return -1;
 		},
 		pushHits: function(id, hit, rx, ry, redo){
+			enable_undo = true;
 			var x = rx === undefined ? 9999 : rx;
 			var y = ry === undefined ? 9999 : ry;
 			if (this.hits[this.hits.length - 1][0] == -1){
@@ -160,14 +160,8 @@ var vm = new Vue({
 			var deno = Math.ceil(getLenHits(hits)/4);
 			return calcPercent(hits_num, deno);
 		},
-		toyear: function(date){
-			return date.split('/')[0];
-		},
-		tomonth: function(date){
-			return date.split('/')[1];
-		},
-		today: function(date){
-			return date.split('/')[2];
+		toslashdate: function(date){
+			return date.replace('-', '/', 'g');
 		}
 	}
 })
@@ -380,10 +374,12 @@ function addHitDOM(i, x, y, hit){
 
 function onUndoBtnClk(dom){
 	if (vm.hits.length <= 1) return;
+	if (enable_undo == false) return;
 	vm.pop();
 }
 function onRedoBtnClk(dom){
 	if (vm.hits.length == stack.length) return;
+	if (enable_undo == false) return;
 	current++;
 	var id = current;
 	vm.hits[id] = stack[id][0];
@@ -442,7 +438,6 @@ function alertFlash(message, category){
 		queue = setTimeout(function() {
 			setCanvasSize();
 			draw(); // この関数があるからresizeイベントがこの場所にあることをお忘れなく
-			drawMark();
 			rotateWindow(canvas.width, canvas.height);
 		}, 300 );
 	}, false );
@@ -539,6 +534,7 @@ function alertFlash(message, category){
 	mato = new Mato(canvas.width, canvas.height);
 	function draw(){
 		mato.draw(canvas.width, canvas.height);
+		drawMark();
 	};
 	draw();
 
@@ -567,6 +563,7 @@ $('#upload').click(function(){
 		contentType: 'application/json',
 		dataType: 'json',
 		success: function(json_data){
+			var jobj = $('#sv-user');
 			alertFlash('Success to uplaod!', 'important');
 			console.log(json_data);
 		},
@@ -579,23 +576,3 @@ $('#upload').click(function(){
 		}
 	});
 });
-function onCloudBtnClk(){
-	var dom = document.getElementById('upload-background');
-	dom.style.backgroundColor = 'yellow';
-	$('#upload-background')
-		.animate({width: '35px'}, {duration: 500})
-		.animate({height: '35px'}, {duration: 500})
-		.animate({width: '30px'}, {duration: 500})
-		.animate({backgroundColor: '#aaa'}, {duration: 1000})
-		.animate({height: '30px'}, {duration: 1000});
-	var str = '';
-	str += 'Name: ' + vm.name + '\n';
-	str += 'Mato: ' + vm.mato_type + '\n';
-	for (var i = 0; i < vm.hits.length - 1; ++i){
-		str += '[' + (i+1).toString() + '] ';
-		str += vm.hits[i][0].toString() + ' : (';
-		str += vm.hits[i][1].toFixed(1).toString() + ', ';
-		str += vm.hits[i][2].toFixed(1).toString() + ')' + '\n';
-	}
-	alert(str);
-}
