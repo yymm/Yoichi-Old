@@ -1,4 +1,7 @@
-import socket
+import os
 from yoichi import app
 
-app.run()
+port = os.environ['YOICHI_PORT'] \
+    if 'YOICHI_PORT' in os.environ else 5000
+
+app.run(port=port)
