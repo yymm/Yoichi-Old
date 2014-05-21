@@ -1,6 +1,7 @@
 import os
 import json
 import datetime
+import configparser
 from flask import Blueprint, render_template, url_for, \
     redirect, request, session, flash, abort, g
 from yoichi.oauth import RauthOauth1
@@ -9,10 +10,33 @@ from yoichi.utils import requires_login, requires_admin
 
 mod = Blueprint('view', __name__)
 
+config = configparser.ConfigParser()
+config.read(os.path.join(os.getcwd(), 'keys.cfg'))
+
 twitter_key = os.environ['TWITTER_API_KEY'] \
-    if 'TWITTER_API_KEY' in os.environ else None
+    if 'TWITTER_API_KEY' in os.environ else \
+    config.get('twitter', 'TWITTER_API_KEY') \
+    if 'twitter' in config else None
+
 twitter_secret = os.environ['TWITTER_API_SECRET'] \
-    if 'TWITTER_API_SECRET' in os.environ else None
+    if 'TWITTER_API_SECRET' in os.environ else \
+    config.get('twitter', 'TWITTER_API_SECRET') \
+    if 'twitter' in config else None
+
+testing = os.environ['YOICHI_TESTING'] \
+    if 'YOICHI_TESTING' in os.environ else \
+    config.get('test', 'TESTING') \
+    if 'testing' in config else False
+
+admin = os.environ['YOICHI_ADMIN'] \
+    if 'YOICHI_ADMIN' in os.environ else \
+    config.get('admin', 'ADMIN') \
+    if 'admin' in config else None
+
+admin_password = os.environ['YOICHI_ADMIN_PASSWORD'] \
+    if 'YOICHI_ADMIN_PASSWORD' in os.environ else \
+    config.get('admin', 'ADMIN') \
+    if 'admin' in config else None
 
 twitter = RauthOauth1(
     name='twitter',
