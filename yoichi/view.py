@@ -126,25 +126,7 @@ from yoichi.database import User
 @mod.route("/admin")
 @requires_admin
 def admin():
-    if request.method == 'POST':
-        ret = {}
-        json_data = request.json
-        if 'id' in json_data:
-            user = User.query.get(int(json_data['id']))
-            user_number = user.id
-            ret['results'] = user.fetch_results_list()
-            if len(ret['results']) == 0:
-                return json.dumps(ret)
-            if 'date' in json_data:
-                result = user.fetch_result_by_date(json_data['date'])
-                ret['date'] = result.date.strftime('%Y-%m-%d')
-                ret['hits'] = result.fetch_hits_list()
-            else:
-                result = user.results[0]
-                ret['date'] = result.date.strftime('%Y-%m-%d')
-                ret['hits'] = result.fetch_hits_list()
-        return json.dumps(ret)
-
+    user = g.user.name
     users = User.query.all()
     number_of_user = len(users)
     user_number = 1
