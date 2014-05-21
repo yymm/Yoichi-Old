@@ -28,11 +28,6 @@ testing = os.environ['YOICHI_TESTING'] \
     config.get('test', 'TESTING') \
     if 'testing' in config else False
 
-admin = os.environ['YOICHI_ADMIN'] \
-    if 'YOICHI_ADMIN' in os.environ else \
-    config.get('admin', 'ADMIN') \
-    if 'admin' in config else None
-
 admin_password = os.environ['YOICHI_ADMIN_PASSWORD'] \
     if 'YOICHI_ADMIN_PASSWORD' in os.environ else \
     config.get('admin', 'ADMIN') \

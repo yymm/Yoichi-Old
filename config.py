@@ -7,6 +7,7 @@ SECRET_KEY = os.environ['YOICHI_SECRET_KEY'] \
 SQLALCHEMY_DATABASE_URI = os.environ['YOICHI_DATABASE_URI'] \
     if 'YOICHI_DATABASE_URI' in os.environ else 'sqlite:///' + \
     os.path.join(_basedir, 'yoichi.db')
+ADMIN = frozenset(['yymm6666'])
 DEBUG = True
 
 del os
