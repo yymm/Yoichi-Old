@@ -15,7 +15,7 @@ def requires_login(f):
 def requires_admin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if not g.user.is_admin:
+        if not g.user.is_admin():
             abort(401)
         return f(*args, **kwargs)
     return requires_login(decorated_function)

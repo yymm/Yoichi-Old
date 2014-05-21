@@ -2,6 +2,19 @@
 
 {% block head %}
 <style>
+#header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	background-color: #555;
+	opacity: 0.9;
+	z-index: 1;
+}
+.blank {
+	height: 50px;
+}
 .container {
 	position: relative;
 	float: left;
@@ -9,6 +22,8 @@
 	overflow: auto;
 	-moz-overflow-scrolling: touch;
 	-webkit-overflow-scrolling: touch;
+	z-index: 0;
+	font-size: 120%;
 }
 #user {
 	width: 30%;
@@ -24,24 +39,31 @@
 }
 .info {
 	width: 100%;
-	height: 100px;
-	background-color: #555;
+	height: 150px;
 	color: #eee;
 }
-.info h4 {
-	background-color: #ddd;
+.info h2 {
 	color: #555;
 	text-align: center;
+}
+.info p {
+	font-size: 1.2em;
 }
 </style>
 {% endblock %}
 
 {% block body %}
+<div id='header'>
+	<span style='float: left; font-size: 2em; color: #de9610;'>Yoichi Admin Panel</span>
+	<span style='float: right; font-size: 1.5em; color: #65ace4;'>[session info] id: {{ session_id }}, user: {{ user }}</span>
+</div>
 <div class='container' id='user'>
-	<div class='info'>
-		<h4>User table info</h4>
-		<p>Number of user: {{ number_of_user }}</p>
-		<p>Now : {{ user }}</p>
+	<div class='blank'></div>
+	<div class='info' style='background-color: #444;'>
+		<h2 style='background-color: #aaa'>User table info</h2>
+		<p style='color: #a0c238; background-color: black;'>Number of user: {{ number_of_user }}</p>
+		Name: <span id='user-name'></span><br />
+		Team: <span id='user-team'></span>
 	</div>
 	<ul>
 		{% for user in users %}
@@ -54,15 +76,21 @@
 	</ul>
 </div>
 <div class='container' id='result'>
-	<div class='info'>
-		<h4>Result table info</h4>
+	<div class='blank'></div>
+	<div class='info' style='background-color: #555;'>
+		<h2 style='background-color: #ccc'>Result table info</h2>
+		Number of result: <span id='result-num'></span>
 	</div>
 	<ul id='result-list'>
 	</ul>
 </div>
 <div class='container' id='hits'>
-	<div class='info'>
-		<h4>Hit table info</h4>
+	<div class='blank'></div>
+	<div class='info' style='background-color: #666;'>
+		<h2 style='background-color: #eee'>Hit table info</h2>
+		Number of hit: <span id='hit-num'></span><br />
+		<p>1 : o</p>
+		<p>0 : x</p>
 	</div>
 	<ul id='hit-list'>
 	</ul>
@@ -97,8 +125,13 @@ function ajaxPost(data){
 		contentType: 'application/json',
 		dataType: 'json',
 		success: function(json_data){
-			addResults(json_data['date'], json_data['results']);
-			addHits(json_data['hits'])
+			var un = document.getElementById('user-name');
+			un.textContent = json_data['user_name'];
+			var ut = document.getElementById('user-team');
+			ut.textContent = json_data['user_team'];
+			addResults(json_data['date'], json_data['results'], json_data['result_num']);
+			addHits(json_data['hits'], json_data['hit_num'])
+			alertFlash('Fetch data!', 'important');
 		},
 		error: function(json_data){
 			alertFlash('Failure...', 'warning');
@@ -106,7 +139,9 @@ function ajaxPost(data){
 		},
 	});
 }
-function addResults(date, results){
+function addResults(date, results, num){
+	var num_dom = document.getElementById('result-num');
+	num_dom.textContent = num;
 	var prnt = document.getElementById('result-list');
 	var child_len = prnt.childNodes.length;
 	for (var i = 0; i < child_len; ++i){
@@ -142,7 +177,9 @@ function addResults(date, results){
 		prnt.appendChild(li);
 	}
 };
-function addHits(hits){
+function addHits(hits, num){
+	var num_dom = document.getElementById('hit-num');
+	num_dom.textContent = num;
 	var prnt = document.getElementById('hit-list');
 	var child_len = prnt.childNodes.length;
 	for (var i = 0; i < child_len; ++i){
@@ -152,7 +189,7 @@ function addHits(hits){
 	for (var i = 0; i < len; ++i){
 		var li = document.createElement('li');
 		num = hits[i][0].toString();
-		hit = hits[i][1] == 1 ? 'o' : 'x';
+		hit = hits[i][1];
 		x = hits[i][2].toFixed(1).toString();
 		y = hits[i][3].toFixed(1).toString();
 		li.textContent = num + ': ' + hit + ' (' + x + ', ' + y + ')';

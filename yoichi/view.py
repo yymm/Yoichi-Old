@@ -25,7 +25,7 @@ twitter_secret = os.environ['TWITTER_API_SECRET'] \
 
 testing = os.environ['YOICHI_TESTING'] \
     if 'YOICHI_TESTING' in os.environ else \
-    config.get('test', 'TESTING') \
+    config.get('testing', 'TESTING') \
     if 'testing' in config else False
 
 admin_password = os.environ['YOICHI_ADMIN_PASSWORD'] \
@@ -127,6 +127,7 @@ from yoichi.database import User
 @requires_admin
 def admin():
     user = g.user.name
+    session_id = session['user_id']
     users = User.query.all()
     number_of_user = len(users)
     user_number = 1
@@ -134,23 +135,31 @@ def admin():
     return render_template('admin.html', **locals())
 
 
-@mod.route("/admin/maid", methods=['GET', 'POST'])
+@mod.route("/admin/maid", methods=['POST'])
 @requires_admin
 def admin_maid():
     ret = {}
     json_data = request.json
     if 'id' in json_data:
         user = User.query.get(int(json_data['id']))
-        user_number = user.id
+        ret['user_name'] = user.name
+        ret['user_team'] = user.team
+
         ret['results'] = user.fetch_results_list()
+        ret['result_num'] = len(ret['results'])
+
         if len(ret['results']) == 0:
             return json.dumps(ret)
+
         if 'date' in json_data:
             result = user.fetch_result_by_date(json_data['date'])
             ret['date'] = result.date.strftime('%Y-%m-%d')
             ret['hits'] = result.fetch_hits_list(with_num=True)
+            ret['hit_num'] = len(ret['hits'])
         else:
             result = user.results[0]
             ret['date'] = result.date.strftime('%Y-%m-%d')
             ret['hits'] = result.fetch_hits_list(with_num=True)
+            ret['hit_num'] = len(ret['hits'])
+
     return json.dumps(ret)
