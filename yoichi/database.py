@@ -18,6 +18,11 @@ class User(db.Model):
         self.twitter_id = twitter_id
         self.name = twitter_id
 
+    def upload_by_json(self, json_data):
+        date = datetime.datetime.strptime(json_data['date'],
+                                          '%Y-%m-%d').date()
+        return self.update_result(date).update_hits(json_data['hits'])
+
     def update_result(self, date):
         existing = Result.query.filter(and_(Result.user_id == self.id,
                                             Result.date == date)).first()
@@ -28,11 +33,6 @@ class User(db.Model):
         db_session.add(result)
         db_session.commit()
         return result
-
-    def upload_by_json(self, json_data):
-        date = datetime.datetime.strptime(json_data['date'],
-                                          '%Y-%m-%d').date()
-        return self.update_result(date).update_hits(json_data['hits'])
 
     def is_admin(self):
         return self.twitter_id in app.config['ADMIN']
@@ -50,6 +50,11 @@ class User(db.Model):
             if r.date == date:
                 return r
         return None
+
+    def change_name(self, new_name):
+        self.name = new_name
+        db_session.commit()
+        return self.name
 
 
 class Result(db.Model):

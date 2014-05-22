@@ -33,27 +33,31 @@ twitter = RauthOauth1(
     base_url='https://api.twitter.com/1.1/')
 
 
-@mod.route('/')
+@mod.route('/', methods=['GET', 'POST'])
 def index():
-    date = request.args.get('date') or ''
     if g.user is not None:
-        data = {'user': g.user.twitter_id,
-                'name': g.user.name,
-                'team': g.user.team}
-        if date:
-            data['date'] = date
-            result = g.user.fetch_result_by_date(date)
+        user = g.user
+        data = {'user': user.twitter_id,
+                'name': user.name,
+                'team': user.team}
+
+        if 'date' in request.form:
+            data['date'] = request.form['date']
+            result = user.fetch_result_by_date(data['date'])
             if result:
                 data['hits'] = result.fetch_hits_list()
             else:
                 data['hits'] = [[-1, 9999, 9999]]
         else:
             data['date'] = str(datetime.date.today())
-            result = g.user.fetch_result_by_date(data['date'])
+            result = user.fetch_result_by_date(data['date'])
             if result:
                 data['hits'] = result.fetch_hits_list()
             else:
                 data['hits'] = [[-1, 9999, 9999]]
+
+        date_list = user.fetch_results_list()
+        data['dates'] = filter(lambda x: x != data['date'], date_list)
 
         return render_template('index.html', **data)
 
@@ -106,6 +110,14 @@ def upload():
         abort(404)
 
     return json.dumps(ret_val)
+
+@mod.route('/change-name', methods=['POST'])
+def change_name():
+    if request.method == 'POST':
+        user = g.user
+        user.change_name(request.form['name'])
+        flash('Changed user name.', 'information')
+    return redirect(url_for('view.index'))
 
 
 from yoichi.database import User
