@@ -85,11 +85,17 @@
 				<h2>Date</h2>
 				<div class='space'></div>
 				<p id='sv-date' style='display:none;'>{{ date }}</p>
+				<p>Today: [[today | toslashdate]]</p>
+				<div class='space'></div>
 				<form method='post' action='/change-date'>
 					<select name='date'>
-						<option value='{{ date }}'selected>{{ date }}
+						<!--<option value='{{ date }}'selected>{{ date }}-->
 						{% for d in dates %}
-						<option value='{{ d }}'>{{ d }}
+							{% if d[0] == date%}
+							<option value='{{ d[0] }}' selected>{{ d[1] }}
+							{% else %}
+							<option value='{{ d[0] }}'>{{ d[1] }}
+							{% endif %}
 						{% endfor %}
 					</select>
 					<div class='space'></div>

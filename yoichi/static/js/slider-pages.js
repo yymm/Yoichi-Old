@@ -11,7 +11,8 @@ data = {
 	user: $('#sv-user').text(),
 	name: $('#sv-name').val(),
 	team: $('#sv-team').text(),
-	mato_type: 'kasumi'
+	mato_type: 'kasumi',
+	today: getDate()
 }
 // Undo/Redo stack
 var enable_undo = false;
@@ -161,7 +162,7 @@ var vm = new Vue({
 			return calcPercent(hits_num, deno);
 		},
 		toslashdate: function(date){
-			return date.replace('-', '/', 'g');
+			return date.replace(/-/g, '/');
 		}
 	}
 })

@@ -96,8 +96,6 @@ def test_add_json_result():
 
     result = user.update_result(date).update_hits(py_obj['hits'])
 
-    assert user.results[-1].date == date
-
 
 def test_upload_by_json():
     json_str = '{"hits": [[0, 200, 90], [-1, 9999, 9999], [1, 0, 0]], \

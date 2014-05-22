@@ -6,7 +6,8 @@ from flask import Blueprint, render_template, url_for, \
     redirect, request, session, flash, abort, g
 from yoichi.oauth import RauthOauth1
 from yoichi.database import add_user
-from yoichi.utils import requires_login, requires_admin
+from yoichi.utils import requires_login, requires_admin, \
+    format_date_list
 
 mod = Blueprint('view', __name__)
 
@@ -58,7 +59,7 @@ def index():
                 data['hits'] = [[-1, 9999, 9999]]
 
         date_list = user.fetch_results_list()
-        data['dates'] = filter(lambda x: x != data['date'], date_list)
+        data['dates'] = format_date_list(date_list)
 
         return render_template('index.html', **data)
 
