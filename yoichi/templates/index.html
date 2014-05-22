@@ -1,9 +1,10 @@
 {% extends "layout.html" %}
 
 {% block head %}
-	{% if user_name is defined %}
+	{% if user is defined %}
+	<script src="{{ url_for('static', filename='js/jquery.confirm.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.confirm.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
 	{% else %}
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
@@ -12,7 +13,7 @@
 
 {% block body %}
 
-{% if user_name is defined %}
+{% if user is defined %}
 <!--
 
 		After login
@@ -27,40 +28,27 @@
 			</div>
 		</article>
 		<article id="input">
-			<div class="main" v-with="data">
+			<div id="main">
 				<div class="main-label">Result</div>
-				<span>[[hits | number_of_hit]]</span>
-				<span>/</span>
-				<span>[[hits | number_of_all]]</span>
+			</div>
+			<div id="sub">
+				<div class='sub-content'>
+					<div class='sub-score'>
+						<span>[[hits | number_of_hit]]</span>
+						<span style='font-size: 60%;'>/</span>
+						<span style='font-size: 60%;'>[[hits | number_of_all]]</span>
+					</div>
+				</div>
+				<div class='sub-content'>
+					<div class='sub-score'>
+						<span>[[hits | percent]]%</span>
+					</div>
+				</div>
 			</div>
 			<div id="input-area">
 				<div class="hit" v-repeat="hits">
 					<button onclick='onHitBtnClk(this);'><p class="[[$value[0] | tohit]]" id="hit-[[$index]]"></p></button>
 				</div>
-			</div>
-		</article>
-		<article id="score">
-			<div class="main" v-with="data">
-				<div class="main-label">Result</div>
-				<span>[[hits | number_of_hit]]</span>
-				<span>/</span>
-				<span>[[hits | number_of_all]]</span>
-			</div>
-			<div class="sub">
-				<div class="sub-label">All</div>
-				<span>[[hits | percent]]%</span>
-			</div>
-			<div class="sub">
-				<div class="sub-label">First</div>
-				<span>[[hits | percent_first]]%</span>
-			</div>
-			<div class="sub">
-				<div class="sub-label">First/2</div>
-				<span>[[hits | percent_first_2]]%</span>
-			</div>
-			<div class="sub">
-				<div class="sub-label">First/4</div>
-				<span>[[hits | percent_first_4]]%</span>
 			</div>
 		</article>
 		<article id="statistics">
@@ -70,36 +58,50 @@
 			<div class='setting-content'>
 				<h2>User Info</h2>
 				<div class='setting-label'>User ID</div>
-				<a href="https://twitter.com/[[user]]">@[[user]]</a>
+				<a id='sv-user' href="https://twitter.com/[[user]]">@{{ user }}</a>
 				<div class='setting-label'>Name</div>
+				<div>
+					<form method='post' action='/change-name'>
+						<input id='sv-name' v-model='name' name='name' value='{{ name }}' style='text-align: center;'>
+						<div class='space'></div>
+						<button type='submit' class='btn change-btn'>Change Name</button>
+					</form>
+				</div>
+				<!--<div class='setting-label'>Team</div>-->
+				<!--<div>-->
+					<!--<select>-->
+						<!--<option id='sv-team' selected>{{ team }}<option>-->
+					<!--</select>-->
+					<!--<div class='space'></div>-->
+					<!--<button class='btn change-btn'>Create Team</button>-->
+				<!--</div>-->
+			</div>
+			<div class='setting-content'>
 				<div class='space'></div>
-				<input 'setting-item' v-model='name' value='[[name]]' style='text-align: center;'>
-				<div class='space'></div>
-				<button class='btn change-btn'>Change Name</button>
+				<form method='get' action='/logout'>
+					<button type='submit' class='btn delete-btn'><span class='fa fa-power-off'></span> Log off</button>
+				</form>
 			</div>
 			<div class='setting-content'>
 				<h2>Date</h2>
 				<div class='space'></div>
-				<select>
-					<option selected>[[date | toyear]]<option>
-				</select>
-				<select>
-					<option selected>[[date | tomonth]]<option>
-				</select>
-				<select>
-					<option selected>[[date | today]]<option>
-				</select>
+				<p id='sv-date' style='display:none;'>{{ date }}</p>
+				<p>Today: [[today | toslashdate]]</p>
 				<div class='space'></div>
-				<button class='btn change-btn'>Change Date</button>
-			</div>
-			<div class='setting-content'>
-				<h2>Team</h2>
-				<div class='space'></div>
-				<select>
-					<option selected>[[team]]<option>
-				</select>
-				<div class='space'></div>
-				<button class='btn change-btn'>Create Team</button>
+				<form method='post' action='/change-date'>
+					<select name='date'>
+						<!--<option value='{{ date }}'selected>{{ date }}-->
+						{% for d in dates %}
+							{% if d[0] == date%}
+							<option value='{{ d[0] }}' selected>{{ d[1] }}
+							{% else %}
+							<option value='{{ d[0] }}'>{{ d[1] }}
+							{% endif %}
+						{% endfor %}
+					</select>
+					<div class='space'></div>
+					<button type='submit' class='btn change-btn'>Change Date</button>
+				</form>
 			</div>
 			<div class='setting-content'>
 				<h2>Mato Type</h2>
@@ -111,26 +113,16 @@
 					<b class='switch'></b>
 				</div>
 			</div>
-			<div class='setting-content'>
-				<h2 style='background-color: #00984b;'>Suggestion</h2>
-				<div class='space'></div>
-				<textarea id="send-text"></textarea>
-				<button class="btn send-btn" id='suggest-btn'>Send</button>
-			</div>
-			<div class='setting-content'>
-				<h2 style='background-color: #D9534F;'>Danger Zone</h2>
-				<div class='setting-label'>Delete User</div>
-				<input type='text' placeholder='user id' style='text-align: center;'>
-				<div class='space'></div>
-				<button class="delete-btn btn">Delete</button>
-			</div>
 		</article>
 		<!--Footer - Page changer-->
+		<label for="page1" class="guide"></label>
+		<label for="page2" class="guide"></label>
+		<label for="page3" class="guide"></label>
+		<label for="page4" class="guide"></label>
 		<label for="page1" class="fa fa-bullseye fa-3x"></label>
 		<label for="page2" class="fa fa-pencil-square-o fa-3x"></label>
-		<label for="page3" class="fa fa-code fa-3x"></label>
-		<label for="page4" class="fa fa-bar-chart-o fa-3x"></label>
-		<label for="page5" class="fa fa-cogs fa-3x"></label>
+		<label for="page3" class="fa fa-bar-chart-o fa-3x"></label>
+		<label for="page4" class="fa fa-cogs fa-3x"></label>
 	</slider-pages>
 </div>
 <!--
@@ -147,10 +139,10 @@
 	<input id="page5" type="radio" name="slider" selected="false">
 	<!--Controller-->
 	<div id="controller-content">
-		<div class='controller' id='date'>[[date]]</div>
+		<div class='controller' id='date'>[[date | toslashdate]]</div>
 		<div class='controller' id='upload-background'></div>
-		<div class='controller fa fa-cloud-upload fa-4x' id='upload' onclick='onCloudBtnClk(this);'></div>
-		<div class='controller fa fa-exchange fa-4x' id='change-page'></div>
+		<div class='controller fa fa-cloud-upload fa-4x' id='upload'></div>
+		<div class='controller fa fa-times-circle fa-4x' id='all-clear'></div>
 		<div class='controller fa fa-arrow-left fa-4x' id='undo' onclick='onUndoBtnClk(this);'></div>
 		<div class='controller fa fa-arrow-right fa-4x' id='redo' onclick='onRedoBtnClk(this);'></div>
 	</div>
@@ -161,22 +153,29 @@
 				<content select="article:nth-of-type(2)"></content>
 				<content select="article:nth-of-type(3)"></content>
 				<content select="article:nth-of-type(4)"></content>
-				<content select="article:nth-of-type(5)"></content>
 			</div>
 		</div>
+	</div>
+	<div id="page-guide">
+		<content select="label:nth-of-type(1)"></content>
+		<content select="label:nth-of-type(2)"></content>
+		<content select="label:nth-of-type(3)"></content>
+		<content select="label:nth-of-type(4)"></content>
 	</div>
 	<footer>
 		<div class="wrap">
 			<nav>
-				<content select="label:nth-of-type(1)"></content>
-				<content select="label:nth-of-type(2)"></content>
-				<content select="label:nth-of-type(3)"></content>
-				<content select="label:nth-of-type(4)"></content>
 				<content select="label:nth-of-type(5)"></content>
+				<content select="label:nth-of-type(6)"></content>
+				<content select="label:nth-of-type(7)"></content>
+				<content select="label:nth-of-type(8)"></content>
 			</nav>
 		</div>
 	</footer>
 </div>
+</script>
+<script>
+hits_list = {{ hits }};
 </script>
 <script src="{{ url_for('static', filename='js/slider-pages.js') }}"></script>
 {% else  %}

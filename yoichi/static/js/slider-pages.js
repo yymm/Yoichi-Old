@@ -6,18 +6,18 @@
 
 // Model
 data = {
-	hits: [
-			[-1,9999,9999]
-		],
-	date: getDate(),
-	user: 'twitter id',
-	name: 'hogehoge',
-	team: 'hoge_team',
-	mato_type: 'kasumi'
+	hits: hits_list,
+	date: $('#sv-date').text(),
+	user: $('#sv-user').text(),
+	name: $('#sv-name').val(),
+	team: $('#sv-team').text(),
+	mato_type: 'kasumi',
+	today: getDate()
 }
 // Undo/Redo stack
+var enable_undo = false;
 var current = -1;
-var stack = [];
+var stack = hits_list;
 
 Vue.config({
 	delimiters: ['[', ']']
@@ -54,6 +54,7 @@ var vm = new Vue({
 			return -1;
 		},
 		pushHits: function(id, hit, rx, ry, redo){
+			enable_undo = true;
 			var x = rx === undefined ? 9999 : rx;
 			var y = ry === undefined ? 9999 : ry;
 			if (this.hits[this.hits.length - 1][0] == -1){
@@ -122,6 +123,20 @@ var vm = new Vue({
 			dom.style.opacity = '0.8';
 			dom.style.color = '#d16d16';
 		},
+		pop_all: function(){
+			var len = this.hits.length;
+			for (var i = 0; i < len; ++i){
+				this.hits.pop();
+			}
+			this.hits.push([-1,9999,9999]);
+			drawMark();
+			var dom = document.getElementById('undo');
+			dom.style.opacity = '0.2';
+			dom.style.color = '#222';
+			var dom = document.getElementById('redo');
+			dom.style.opacity = '0.2';
+			dom.style.color = '#222';
+		}
 	},
 	filters: {
 		tohit: function(int_val){
@@ -160,14 +175,8 @@ var vm = new Vue({
 			var deno = Math.ceil(getLenHits(hits)/4);
 			return calcPercent(hits_num, deno);
 		},
-		toyear: function(date){
-			return date.split('/')[0];
-		},
-		tomonth: function(date){
-			return date.split('/')[1];
-		},
-		today: function(date){
-			return date.split('/')[2];
+		toslashdate: function(date){
+			return date.replace(/-/g, '/');
 		}
 	}
 })
@@ -180,7 +189,7 @@ var vm = new Vue({
 
 function getDate(){
 	var date = new Date();
-	return date.getFullYear() + '/' + (date.getMonth()+1).toString() + '/' + date.getDate();
+	return date.getFullYear() + '-' + (date.getMonth()+1).toString() + '-' + date.getDate();
 }
 function calcPercent(num, all){
 	if (all == 0) return 0;
@@ -220,20 +229,28 @@ function getIntByHit(hit_val){
  *
  */
 
-// Page change icon event
-document.getElementById('change-page').onclick = function(){
-	var page1 = document.getElementById('page1');
-	var page2 = document.getElementById('page2');
-	var page3 = document.getElementById('page3');
-	if (page1.checked){
-		page2.checked = true;
-	}
-	else if (page2.checked){
-		page3.checked = true;
-	}
-	else{
-		page1.checked = true;
-	}
+// All clear icon event
+document.getElementById('all-clear').onclick = function(){
+	$('#all-clear').css('color', '#c93a40');
+	$.confirm({
+		'title': 'All clear',
+		'message': 'Clear display data. (' + vm.date.replace(/-/g, '/') + ')',
+		'buttons': {
+				'Yes': {
+					'class': 'modal-yes',
+					'action' : function(){
+						vm.pop_all();
+						$('#all-clear').css('color',  '#56a764');
+					}
+				},
+				'No': {
+					'class': 'modal-no',
+					'action': function(){
+						$('#all-clear').css('color',  '#56a764');
+					}
+				}
+		}
+	});
 }
 // swipe page change event
 var mouse_x;
@@ -263,6 +280,7 @@ window.addEventListener('touchend', function(e){
 		var page1 = document.getElementById('page1');
 		var page2 = document.getElementById('page2');
 		var page3 = document.getElementById('page3');
+		var page4 = document.getElementById('page4');
 		if (page1.checked){
 			if (move > 0) {
 				page2.checked = true;
@@ -284,17 +302,9 @@ window.addEventListener('touchend', function(e){
 				page2.checked = true;
 			}
 		}
-		else if (page4.checked){
-			if (move > 0) {
-				page5.checked = true;
-			}
-			else{
-				page3.checked = true;
-			}
-		}
 		else{
 			if (move < 0) {
-				page4.checked = true;
+				page3.checked = true;
 			}
 		}
 	}
@@ -315,53 +325,20 @@ function onHitBtnClk(dom){
 		vm.tocross(id);
 	}
 }
-function onCloudBtnClk(dom){
-	var dom = document.getElementById('upload-background');
-	dom.style.backgroundColor = 'yellow';
-	$('#upload-background')
-		.animate({width: '35px'}, {duration: 500})
-		.animate({height: '35px'}, {duration: 500})
-		.animate({width: '30px'}, {duration: 500})
-		.animate({backgroundColor: '#aaa'}, {duration: 1000})
-		.animate({height: '30px'}, {duration: 1000});
-	var str = '';
-	str += 'Name: ' + vm.name + '\n';
-	str += 'Mato: ' + vm.mato_type + '\n';
-	for (var i = 0; i < vm.hits.length - 1; ++i){
-		str += '[' + (i+1).toString() + '] ';
-		str += vm.hits[i][0].toString() + ' : (';
-		str += vm.hits[i][1].toFixed(1).toString() + ', ';
-		str += vm.hits[i][2].toFixed(1).toString() + ')' + '\n';
-	}
-	alert(str);
-}
 // Changed display element at rotate window
 function rotateWindow(width, height){
-	var main = document.getElementsByClassName('main');
-	var mainlabel = document.getElementsByClassName('main-label');
-	var sub = document.getElementsByClassName('sub');
-	//alert(main);
+	var main = document.getElementById('main');
+	var sub = document.getElementById('sub');
+	var input = document.getElementById('input-area');
 	if (width > height){
-		for (var i = 0; i < main.length; ++i){
-			main[i].style.height = '30%';
-			main[i].style.fontSize = '80%';
-			mainlabel[i].style.display = 'none';
-		}
-		sub[2].style.display = 'none';
-		sub[3].style.display = 'none';
-		sub[0].style.height = '70%';
-		sub[1].style.height = '70%';
+		main.style.height = '30%';
+		sub.style.display = 'none';
+		input.style.height = '70%';
 	}
 	else{
-		for (var i = 0; i < main.length; ++i){
-			main[i].style.height = '40%';
-			main[i].style.fontSize = '100%';
-			mainlabel[i].style.display = 'block';
-		}
-		sub[2].style.display = 'block';
-		sub[3].style.display = 'block';
-		sub[0].style.height = '30%';
-		sub[1].style.height = '30%';
+		main.style.height = '15%';
+		sub.style.display = 'block';
+		input.style.height = '65%';
 	}
 }
 // Draw mark(strictly add dom). Run every input timing(=> vm.pushHits).
@@ -424,10 +401,12 @@ function addHitDOM(i, x, y, hit){
 
 function onUndoBtnClk(dom){
 	if (vm.hits.length <= 1) return;
+	if (enable_undo == false) return;
 	vm.pop();
 }
 function onRedoBtnClk(dom){
 	if (vm.hits.length == stack.length) return;
+	if (enable_undo == false) return;
 	current++;
 	var id = current;
 	vm.hits[id] = stack[id][0];
@@ -439,11 +418,11 @@ function onRedoBtnClk(dom){
  * Flash alert
  *
  */
-function alertFlash(category, message){
+function alertFlash(message, category){
 	var prnt = document.createElement('div');
 	var child = document.createElement('button');
 	prnt.className = 'flash-alert';
-	prnt.id = category;
+	prnt.id = category === undefined ? 'important' : category;
 	prnt.textContent = message;
 	child.className = 'close-btn';
 	child.textContent = 'x';
@@ -453,6 +432,9 @@ function alertFlash(category, message){
 	};
 	prnt.appendChild(child);
 	document.body.appendChild(prnt);
+	setTimeout(function(){
+		$('.flash-alert').fadeOut('normal', function(){$(this).remove();})}
+	, 3000);
 }
 
 /*
@@ -483,7 +465,6 @@ function alertFlash(category, message){
 		queue = setTimeout(function() {
 			setCanvasSize();
 			draw(); // この関数があるからresizeイベントがこの場所にあることをお忘れなく
-			drawMark();
 			rotateWindow(canvas.width, canvas.height);
 		}, 300 );
 	}, false );
@@ -545,10 +526,10 @@ function alertFlash(category, message){
 		this.color = ['rgb(50, 50, 50)', 'rgb(225, 225, 225)'];
 	};
 	Mato.prototype.draw = function(box_width, box_height){
-		this.setMatoType(vm.mato_type);
 		if (box_width && box_height){
 			this.setSize(box_width, box_height);
 		}
+		this.setMatoType(vm.mato_type);
 		var circle = new Circle(ctx, this.color[0], this.rad, this.pos_x, this.pos_y);
 		var len = this.rad_list.length;
 		for (i = 0; i < len; i = i + 1) {
@@ -580,6 +561,7 @@ function alertFlash(category, message){
 	mato = new Mato(canvas.width, canvas.height);
 	function draw(){
 		mato.draw(canvas.width, canvas.height);
+		drawMark();
 	};
 	draw();
 
@@ -591,27 +573,30 @@ function alertFlash(category, message){
  *
  */
 
-$('#suggest-btn').click(function(){
+$('#upload').click(function(){
 	$(this).disabled = true;
-	var post_data = {
-		'title': '[Yo-Bo-] Anonymous say.',
-		'body': document.getElementById('send-text').value,
-		'assignee': 'yymm',
-		'milestone': 1,
-		'lebels': [
-			'bug',
-			'enhancement'
-		]
-	};
+	$('#upload-background').css('background-color', 'yellow');
 	$.ajax({
 		type: 'POST',
-		url: 'https://api.github.com/repos/yymm/Yoichi/issues',
-		data: post_data,
+		url: '/upload',
+		data: JSON.stringify(vm.$data),
+		contentType: 'application/json',
+		dataType: 'json',
 		success: function(json_data){
-			alertFlash('important', 'Success! Thank you.')
+			var data = JSON.parse(json_data);
+			if (data['status'] == 'success'){
+				alertFlash('Success to uplaod!', 'important');
+			}
+			else {
+				alertFlash('Server Error: Fail to uplaod.!', 'warning');
+			}
+			console.log(json_data);
+			$('#upload-background').css('background-color', '#aaa');
 		},
-		error: function(){
-			alertFlash('error', 'github issue post error.')
+		error: function(json_data){
+			alertFlash('Connection Error: Please retry.', 'error');
+			console.log(json_data);
+			$('#upload-background').css('background-color', '#aaa');
 		},
 		complete: function(){
 			$(this).disabled = false;

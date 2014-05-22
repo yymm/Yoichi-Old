@@ -70,6 +70,10 @@ html, body {
 	width: 90%;
 }
 .delete-btn {
+	background-color: #d9534f;
+	border: 2px solid #d43f3a;
+}
+.warn-btn {
 	background-color: #f0ad4e;
 	border: 2px solid #eea236;
 }

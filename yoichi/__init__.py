@@ -13,7 +13,7 @@ def not_found(error):
 @app.before_request
 def load_current_user():
     g.user = User.query.get(session['user_id']) \
-            if 'user_id' in session else None
+        if 'user_id' in session else None
 
 
 @app.teardown_request

@@ -71,7 +71,7 @@
 		<div class="flash-alert" id="{{ category }}">
 			<button class="close-btn">x</button>
 			{% if category == "error" %}Error: {% endif %}
-			{% if category == "information" %}Info: {% endif %}
+			{% if category == "information" %}{% endif %}
 			{% if category == "warning" %}Waring: {% endif %}
 			{% if category == "important" %}Notice: {% endif %}
 			{{ message }}

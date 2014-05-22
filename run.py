@@ -1,16 +1,7 @@
-import socket
+import os
 from yoichi import app
 
-host = None
-port = None
+port = int(os.environ['YOICHI_PORT']) \
+    if 'YOICHI_PORT' in os.environ else 5000
 
-if app.config["DEBUG"]:
-    try:
-        #host = socket.gethostbyname('%s.local' % socket.gethostname())
-        host = '127.0.0.1'
-        port = 5000
-    except:
-        host = '192.168.5.7'
-        port = 5000
-
-app.run(host=host, port=port)
+app.run(port=port)

@@ -1,0 +1,248 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+#header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	background-color: #555;
+	opacity: 0.9;
+	z-index: 1;
+}
+.blank {
+	height: 50px;
+}
+.container {
+	position: relative;
+	float: left;
+	height: 100%;
+	overflow: auto;
+	-moz-overflow-scrolling: touch;
+	-webkit-overflow-scrolling: touch;
+	z-index: 0;
+	font-size: 120%;
+}
+#user {
+	width: 30%;
+	background-color: #e8e6f3;
+}
+#result {
+	width: 35%;
+	background-color: #ebeddf;
+}
+#hits {
+	width: 35%;
+	background-color: #e4f0fc;
+}
+.info {
+	width: 100%;
+	height: 150px;
+	color: #eee;
+}
+.info h2 {
+	color: #555;
+	text-align: center;
+}
+.info p {
+	font-size: 1.2em;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div id='header'>
+	<span style='float: left; font-size: 2em; color: #de9610;'>Yoichi Admin Panel</span>
+	<span style='float: right; font-size: 1.5em; color: #65ace4;'>[session info] id: {{ session_id }}, user: {{ user }}</span>
+</div>
+<div class='container' id='user'>
+	<div class='blank'></div>
+	<div class='info' style='background-color: #444;'>
+		<h2 style='background-color: #aaa'>User table info</h2>
+		<p style='color: #a0c238; background-color: black;'>Number of user: {{ number_of_user }}</p>
+		Name: <span id='user-name'></span><br />
+		Team: <span id='user-team'></span>
+	</div>
+	<ul>
+		{% for user in users %}
+			{% if loop.index == user_number %}
+				<li><input type='radio' name='user' class='user-check' id='{{ user.id }}' checked>{{ user.id }} {{ user.twitter_id }}
+			{% else %}
+				<li><input type='radio' name='user' class='user-check' id='{{ user.id }}'>{{ user.id }} {{ user.twitter_id }}
+			{% endif %}
+		{% endfor %}
+	</ul>
+</div>
+<div class='container' id='result'>
+	<div class='blank'></div>
+	<div class='info' style='background-color: #555;'>
+		<h2 style='background-color: #ccc'>Result table info</h2>
+		Number of result: <span id='result-num'></span>
+	</div>
+	<ul id='result-list'>
+	</ul>
+</div>
+<div class='container' id='hits'>
+	<div class='blank'></div>
+	<div class='info' style='background-color: #666;'>
+		<h2 style='background-color: #eee'>Hit table info</h2>
+		Number of hit: <span id='hit-num'></span><br />
+		<p>1 : o</p>
+		<p>0 : x</p>
+	</div>
+	<ul id='hit-list'>
+	</ul>
+</div>
+<script>
+window.onload = function(){
+	var users = document.getElementsByClassName('user-check');
+	var len = users.length;
+	var data = {
+		id: 1
+	};
+	for (var i = 0; i < len; ++i){
+		if (users[i].checked == true){
+			var user_id = users[i].id;
+			data['id'] = user_id;
+			break;
+		}
+	}
+	ajaxPost(data);
+};
+$('.user-check').click(function(){
+	var data = {
+		id: this.id
+	}
+	ajaxPost(data);
+});
+function ajaxPost(data){
+	$.ajax({
+		type: 'POST',
+		url: '/admin/maid',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		dataType: 'json',
+		success: function(json_data){
+			var un = document.getElementById('user-name');
+			un.textContent = json_data['user_name'];
+			var ut = document.getElementById('user-team');
+			ut.textContent = json_data['user_team'];
+			addResults(json_data['date'], json_data['results'], json_data['result_num']);
+			addHits(json_data['hits'], json_data['hit_num'])
+			alertFlash('Fetch data!', 'important');
+		},
+		error: function(json_data){
+			alertFlash('Failure...', 'warning');
+			console.log(json_data);
+		},
+	});
+}
+function addResults(date, results, num){
+	var num_dom = document.getElementById('result-num');
+	num_dom.textContent = num;
+	var prnt = document.getElementById('result-list');
+	var child_len = prnt.childNodes.length;
+	for (var i = 0; i < child_len; ++i){
+		prnt.removeChild(prnt.childNodes[0]);
+	}
+	var len = results.length;
+	for (var i = 0; i < len; ++i){
+		var li = document.createElement('li');
+		var input = document.createElement('input');
+		input.type = 'radio';
+		input.name = 'result';
+		input.className = 'result-check';
+		input.id = results[i];
+		if (results[i] == date){
+			input.checked = true;
+		}
+		input.onclick = function clickCheckResult(){
+			var user_id = 0;
+			var users = document.getElementsByClassName('user-check');
+			for (var i = 0; i < users.length; ++i){
+				if (users[i].checked){
+					user_id = users[i].id;
+				}
+			}
+			var data = {
+				id: user_id,
+				date: this.parentNode.textContent
+			}
+			ajaxPost(data);
+		};
+		li.textContent = results[i];
+		li.appendChild(input);
+		prnt.appendChild(li);
+	}
+};
+function addHits(hits, num){
+	var num_dom = document.getElementById('hit-num');
+	num_dom.textContent = num;
+	var prnt = document.getElementById('hit-list');
+	var child_len = prnt.childNodes.length;
+	for (var i = 0; i < child_len; ++i){
+		prnt.removeChild(prnt.childNodes[0]);
+	}
+	var len = hits.length;
+	var table = document.createElement('table');
+	var tr_label = document.createElement('tr');
+	var th1 = document.createElement('th');
+	var th2 = document.createElement('th');
+	var th3 = document.createElement('th');
+	var th4 = document.createElement('th');
+	table.width = '300px';
+	table.border = '1';
+	tr_label.backgroundColor = '#ccc';
+	th1.textContent = 'num';
+	th2.textContent = 'hit';
+	th3.textContent = 'x';
+	th4.textContent = 'y';
+	tr_label.appendChild(th1);
+	tr_label.appendChild(th2);
+	tr_label.appendChild(th3);
+	tr_label.appendChild(th4);
+	table.appendChild(tr_label);
+	for (var i = 0; i < len; ++i){
+		num = hits[i][0].toString();
+		hit = hits[i][1];
+		x = hits[i][2].toFixed(1).toString();
+		y = hits[i][3].toFixed(1).toString();
+		var tr_label = document.createElement('tr');
+		var th1 = document.createElement('th');
+		var th2 = document.createElement('th');
+		var th3 = document.createElement('th');
+		var th4 = document.createElement('th');
+		th1.textContent = num;
+		th2.textContent = hit;
+		th3.textContent = x;
+		th4.textContent = y;
+		tr_label.appendChild(th1);
+		tr_label.appendChild(th2);
+		tr_label.appendChild(th3);
+		tr_label.appendChild(th4);
+		table.appendChild(tr_label);
+	}
+	prnt.appendChild(table);
+};
+function alertFlash(message, category){
+	var prnt = document.createElement('div');
+	var child = document.createElement('button');
+	prnt.className = 'flash-alert';
+	prnt.id = category === undefined ? 'important' : category;
+	prnt.textContent = message;
+	child.className = 'close-btn';
+	child.textContent = 'x';
+	child.onclick = function(){
+		var closest_div = $(this).closest("div");
+		closest_div.fadeOut('normal', function(){closest_div.remove();});
+	};
+	prnt.appendChild(child);
+	document.body.appendChild(prnt);
+	setTimeout(function(){
+		$('.flash-alert').fadeOut('normal', function(){$(this).remove();})}
+	, 3000);
+}
+</script>
+{% endblock %}
