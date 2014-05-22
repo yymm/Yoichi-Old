@@ -68,9 +68,9 @@
 	<ul>
 		{% for user in users %}
 			{% if loop.index == user_number %}
-				<li><input type='radio' name='user' class='user-check' id='{{ user.id }}' checked>{{ user.id }} {{ user.name }}
+				<li><input type='radio' name='user' class='user-check' id='{{ user.id }}' checked>{{ user.id }} {{ user.twitter_id }}
 			{% else %}
-				<li><input type='radio' name='user' class='user-check' id='{{ user.id }}'>{{ user.id }} {{ user.name }}
+				<li><input type='radio' name='user' class='user-check' id='{{ user.id }}'>{{ user.id }} {{ user.twitter_id }}
 			{% endif %}
 		{% endfor %}
 	</ul>

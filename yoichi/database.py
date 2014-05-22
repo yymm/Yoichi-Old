@@ -9,7 +9,7 @@ db_session = db.session
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    twitter_id = db.Column(db.String(60))
+    twitter_id = db.Column(db.String(60), unique=True)
     name = db.Column(db.String(60))
     team = db.Column(db.String(60))
     results = db.relationship('Result', backref='user')
@@ -114,7 +114,7 @@ def init_db():
 
 
 def add_user(twitter_id):
-    user = User.query.filter_by(name=twitter_id).first()
+    user = User.query.filter_by(twitter_id=twitter_id).first()
 
     if user is None:
         user = User(twitter_id)

@@ -33,7 +33,7 @@ twitter = RauthOauth1(
     base_url='https://api.twitter.com/1.1/')
 
 
-@mod.route('/', methods=['GET', 'POST'])
+@mod.route('/')
 def index():
     if g.user is not None:
         user = g.user
@@ -41,13 +41,14 @@ def index():
                 'name': user.name,
                 'team': user.team}
 
-        if 'date' in request.form:
-            data['date'] = request.form['date']
+        if 'date' in session:
+            data['date'] = session['date']
             result = user.fetch_result_by_date(data['date'])
             if result:
                 data['hits'] = result.fetch_hits_list()
             else:
                 data['hits'] = [[-1, 9999, 9999]]
+            del session['date']
         else:
             data['date'] = str(datetime.date.today())
             result = user.fetch_result_by_date(data['date'])
@@ -111,6 +112,7 @@ def upload():
 
     return json.dumps(ret_val)
 
+
 @mod.route('/change-name', methods=['POST'])
 def change_name():
     if request.method == 'POST':
@@ -120,13 +122,23 @@ def change_name():
     return redirect(url_for('view.index'))
 
 
+@mod.route('/change-date', methods=['POST'])
+def change_date():
+    if request.method == 'POST':
+        if 'date' in request.form:
+            session['date'] = request.form['date']
+
+    return redirect(url_for('view.index'))
+
+
+
 from yoichi.database import User
 
 
 @mod.route("/admin")
 @requires_admin
 def admin():
-    user = g.user.name
+    user = g.user.twitter_id
     session_id = session['user_id']
     users = User.query.all()
     number_of_user = len(users)
