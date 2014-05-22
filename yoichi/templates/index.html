@@ -2,8 +2,9 @@
 
 {% block head %}
 	{% if user is defined %}
+	<script src="{{ url_for('static', filename='js/jquery.confirm.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.confirm.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/slider-pages.css') }}">
 	{% else %}
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
@@ -141,7 +142,7 @@
 		<div class='controller' id='date'>[[date | toslashdate]]</div>
 		<div class='controller' id='upload-background'></div>
 		<div class='controller fa fa-cloud-upload fa-4x' id='upload'></div>
-		<div class='controller fa fa-exchange fa-4x' id='change-page'></div>
+		<div class='controller fa fa-times-circle fa-4x' id='all-clear'></div>
 		<div class='controller fa fa-arrow-left fa-4x' id='undo' onclick='onUndoBtnClk(this);'></div>
 		<div class='controller fa fa-arrow-right fa-4x' id='redo' onclick='onRedoBtnClk(this);'></div>
 	</div>

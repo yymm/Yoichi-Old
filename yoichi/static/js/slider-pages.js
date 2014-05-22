@@ -123,6 +123,20 @@ var vm = new Vue({
 			dom.style.opacity = '0.8';
 			dom.style.color = '#d16d16';
 		},
+		pop_all: function(){
+			var len = this.hits.length;
+			for (var i = 0; i < len; ++i){
+				this.hits.pop();
+			}
+			this.hits.push([-1,9999,9999]);
+			drawMark();
+			var dom = document.getElementById('undo');
+			dom.style.opacity = '0.2';
+			dom.style.color = '#222';
+			var dom = document.getElementById('redo');
+			dom.style.opacity = '0.2';
+			dom.style.color = '#222';
+		}
 	},
 	filters: {
 		tohit: function(int_val){
@@ -215,16 +229,28 @@ function getIntByHit(hit_val){
  *
  */
 
-// Page change icon event
-document.getElementById('change-page').onclick = function(){
-	var page1 = document.getElementById('page1');
-	var page2 = document.getElementById('page2');
-	if (page1.checked){
-		page2.checked = true;
-	}
-	else{
-		page1.checked = true;
-	}
+// All clear icon event
+document.getElementById('all-clear').onclick = function(){
+	$('#all-clear').css('color', '#c93a40');
+	$.confirm({
+		'title': 'All clear',
+		'message': 'Clear display data. (' + vm.date.replace(/-/g, '/') + ')',
+		'buttons': {
+				'Yes': {
+					'class': 'modal-yes',
+					'action' : function(){
+						vm.pop_all();
+						$('#all-clear').css('color',  '#56a764');
+					}
+				},
+				'No': {
+					'class': 'modal-no',
+					'action': function(){
+						$('#all-clear').css('color',  '#56a764');
+					}
+				}
+		}
+	});
 }
 // swipe page change event
 var mouse_x;
@@ -549,14 +575,7 @@ function alertFlash(message, category){
 
 $('#upload').click(function(){
 	$(this).disabled = true;
-	var dom = document.getElementById('upload-background');
-	dom.style.backgroundColor = 'yellow';
-	$('#upload-background')
-		.animate({width: '35px'}, {duration: 500})
-		.animate({height: '35px'}, {duration: 500})
-		.animate({width: '30px'}, {duration: 500})
-		.animate({backgroundColor: '#aaa'}, {duration: 1000})
-		.animate({height: '30px'}, {duration: 1000});
+	$('#upload-background').css('background-color', 'yellow');
 	$.ajax({
 		type: 'POST',
 		url: '/upload',
@@ -572,10 +591,12 @@ $('#upload').click(function(){
 				alertFlash('Server Error: Fail to uplaod.!', 'warning');
 			}
 			console.log(json_data);
+			$('#upload-background').css('background-color', '#aaa');
 		},
 		error: function(json_data){
 			alertFlash('Connection Error: Please retry.', 'error');
 			console.log(json_data);
+			$('#upload-background').css('background-color', '#aaa');
 		},
 		complete: function(){
 			$(this).disabled = false;

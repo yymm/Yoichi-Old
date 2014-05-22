@@ -302,10 +302,12 @@
 	-moz-transition: all 1000ms ease;
 	-webkit-transition: all 1000ms ease;
 }
-#change-page {
+#all-clear {
 	top: 0;
 	right: 0;
 	color: #56a764;
+	-moz-transition: all 1000ms ease;
+	-webkit-transition: all 1000ms ease;
 }
 #undo {
 	bottom: 0;
@@ -478,16 +480,16 @@ input[type="radio"] {
 #page4:checked ~ div #upload-background {
 	display: none;
 }
-#page1:checked ~ div #change-page {
+#page1:checked ~ div #all-clear {
 	display: block;
 }
-#page2:checked ~ div #change-page {
+#page2:checked ~ div #all-clear {
 	display: block;
 }
-#page3:checked ~ div #change-page {
+#page3:checked ~ div #all-clear {
 	display: none;
 }
-#page4:checked ~ div #change-page {
+#page4:checked ~ div #all-clear {
 	display: none;
 }
 /* footer */

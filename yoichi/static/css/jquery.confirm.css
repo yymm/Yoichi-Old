@@ -1,0 +1,65 @@
+#confirmOverlay{
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	background:url('ie.png');
+	background: -moz-linear-gradient(rgba(11,11,11,0.1), rgba(11,11,11,0.6)) repeat-x rgba(11,11,11,0.2);
+	background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(11,11,11,0.1)), to(rgba(11,11,11,0.6))) repeat-x rgba(11,11,11,0.2);
+	z-index:100000;
+}
+
+#confirmBox{
+	width: 250px;
+	height: 200px;
+	position:fixed;
+	left:0;
+	top:0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	background-color: #e74c3c;
+	color: #fff;
+	text-align: center;
+}
+#confirmBox h1,
+#confirmBox p{
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+#confirmBox h1{
+	padding: 10px 0;
+	margin: 0;
+	text-align: center;
+}
+
+#confirmBox p{
+	background:none;
+	font-size: 1em;
+	padding-top: 10px;
+}
+
+#confirmButtons{
+	text-align:center;
+}
+
+#confirmBox .button{
+	display:inline-block;
+	background-color: #c0392b;
+	color:white;
+	position:relative;
+	margin-right: 20px;
+	margin-top: 20px;
+	padding: 10px 40px;
+	text-decoration:none;
+	border:none;
+}
+#confirmBox .button:last-child{	margin-right:0;}
+
+#confirmBox .modal-yes{
+	background-color: #c0392b;
+}
+#confirmBox .modal-no{
+	background-color: #65ace4;
+}
