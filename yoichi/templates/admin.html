@@ -186,15 +186,45 @@ function addHits(hits, num){
 		prnt.removeChild(prnt.childNodes[0]);
 	}
 	var len = hits.length;
+	var table = document.createElement('table');
+	var tr_label = document.createElement('tr');
+	var th1 = document.createElement('th');
+	var th2 = document.createElement('th');
+	var th3 = document.createElement('th');
+	var th4 = document.createElement('th');
+	table.width = '300px';
+	table.border = '1';
+	tr_label.backgroundColor = '#ccc';
+	th1.textContent = 'num';
+	th2.textContent = 'hit';
+	th3.textContent = 'x';
+	th4.textContent = 'y';
+	tr_label.appendChild(th1);
+	tr_label.appendChild(th2);
+	tr_label.appendChild(th3);
+	tr_label.appendChild(th4);
+	table.appendChild(tr_label);
 	for (var i = 0; i < len; ++i){
-		var li = document.createElement('li');
 		num = hits[i][0].toString();
 		hit = hits[i][1];
 		x = hits[i][2].toFixed(1).toString();
 		y = hits[i][3].toFixed(1).toString();
-		li.textContent = num + ': ' + hit + ' (' + x + ', ' + y + ')';
-		prnt.appendChild(li);
+		var tr_label = document.createElement('tr');
+		var th1 = document.createElement('th');
+		var th2 = document.createElement('th');
+		var th3 = document.createElement('th');
+		var th4 = document.createElement('th');
+		th1.textContent = num;
+		th2.textContent = hit;
+		th3.textContent = x;
+		th4.textContent = y;
+		tr_label.appendChild(th1);
+		tr_label.appendChild(th2);
+		tr_label.appendChild(th3);
+		tr_label.appendChild(th4);
+		table.appendChild(tr_label);
 	}
+	prnt.appendChild(table);
 };
 function alertFlash(message, category){
 	var prnt = document.createElement('div');
