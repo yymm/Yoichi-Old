@@ -23,16 +23,6 @@ twitter_secret = os.environ['TWITTER_API_SECRET'] \
     config.get('twitter', 'TWITTER_API_SECRET') \
     if 'twitter' in config else None
 
-testing = os.environ['YOICHI_TESTING'] \
-    if 'YOICHI_TESTING' in os.environ else \
-    config.get('testing', 'TESTING') \
-    if 'testing' in config else False
-
-admin_password = os.environ['YOICHI_ADMIN_PASSWORD'] \
-    if 'YOICHI_ADMIN_PASSWORD' in os.environ else \
-    config.get('admin', 'ADMIN') \
-    if 'admin' in config else None
-
 twitter = RauthOauth1(
     name='twitter',
     consumer_key=twitter_key,
@@ -98,22 +88,20 @@ def authorized(rsession):
     session['user_id'] = user.id
     g.user = user
 
-    flash('Logged in.', 'information')
+    flash('Welcome! ' + g.user.name + '.', 'information')
     return redirect(url_for('view.index'))
 
 
 @mod.route('/upload', methods=['POST'])
 @requires_login
 def upload():
-    ret_val = None
+    ret_val = '{"status": "failure"}'
 
     if request.method == 'POST':
         json_data = request.json
         if 'date' in json_data and 'hits' in json_data:
             result = g.user.upload_by_json(json_data)
             ret_val = '{"status": "success"}'
-        else:
-            ret_val = '{"status": "failure"}'
     else:
         abort(404)
 

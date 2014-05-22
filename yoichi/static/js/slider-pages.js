@@ -563,12 +563,17 @@ $('#upload').click(function(){
 		contentType: 'application/json',
 		dataType: 'json',
 		success: function(json_data){
-			var jobj = $('#sv-user');
-			alertFlash('Success to uplaod!', 'important');
+			var data = JSON.parse(json_data);
+			if (data['status'] == 'success'){
+				alertFlash('Success to uplaod!', 'important');
+			}
+			else {
+				alertFlash('Server Error: Fail to uplaod.!', 'warning');
+			}
 			console.log(json_data);
 		},
 		error: function(json_data){
-			alertFlash('Fail to uplaod!', 'warning');
+			alertFlash('Connection Error: Please retry.', 'error');
 			console.log(json_data);
 		},
 		complete: function(){
