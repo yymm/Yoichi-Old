@@ -132,7 +132,6 @@ def change_date():
     return redirect(url_for('view.index'))
 
 
-
 from yoichi.database import User
 
 

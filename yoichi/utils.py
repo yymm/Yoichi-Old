@@ -37,13 +37,20 @@ def format_date_list(date_list):
         date = datetime.datetime.strptime(d, '%Y-%m-%d').date()
         w = date.weekday()
         week = ''
-        if w == 0: week = ' (Mon)'
-        elif w == 1: week = ' (Tue)'
-        elif w == 2: week = ' (Wed)'
-        elif w == 3: week = ' (Thu)'
-        elif w == 4: week = ' (Fri)'
-        elif w == 5: week = ' (Sat)'
-        elif w == 6: week = ' (Sun)'
+        if w == 0:
+            week = ' (Mon)'
+        elif w == 1:
+            week = ' (Tue)'
+        elif w == 2:
+            week = ' (Wed)'
+        elif w == 3:
+            week = ' (Thu)'
+        elif w == 4:
+            week = ' (Fri)'
+        elif w == 5:
+            week = ' (Sat)'
+        elif w == 6:
+            week = ' (Sun)'
         ret.append([date.strftime('%Y-%m-%d'),
                     date.strftime('%Y/%m/%d') + week])
     return ret
