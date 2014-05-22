@@ -73,6 +73,10 @@ html, body {
 	background-color: #f0ad4e;
 	border: 2px solid #eea236;
 }
+.warn-btn {
+	background-color: #f0ad4e;
+	border: 2px solid #eea236;
+}
 .btn {
 	border-radius: 3px;
 	padding: 6px 12px;
