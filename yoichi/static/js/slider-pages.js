@@ -234,21 +234,21 @@ document.getElementById('all-clear').onclick = function(){
 	$('#all-clear').css('color', '#c93a40');
 	$.confirm({
 		'title': 'All clear',
-		'message': 'Clear display data. (' + vm.date.replace(/-/g, '/') + ')',
+		'message': 'Clear this data on ' + vm.date.replace(/-/g, '/') + '.',
 		'buttons': {
-				'Yes': {
-					'class': 'modal-yes',
-					'action' : function(){
-						vm.pop_all();
-						$('#all-clear').css('color',  '#56a764');
-					}
-				},
-				'No': {
-					'class': 'modal-no',
-					'action': function(){
-						$('#all-clear').css('color',  '#56a764');
-					}
+			'Yes': {
+				'class': 'modal-yes',
+				'action' : function(){
+					vm.pop_all();
+					$('#all-clear').css('color',  '#56a764');
 				}
+			},
+			'No': {
+				'class': 'modal-no',
+				'action': function(){
+					$('#all-clear').css('color',  '#56a764');
+				}
+			}
 		}
 	});
 }
