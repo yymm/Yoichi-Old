@@ -67,7 +67,7 @@ def index():
     return render_template('index.html')
 
 
-@mod.route('/login')
+@mod.route('/login', methods=['GET', 'POST'])
 def login():
     return twitter.authorize()
 
