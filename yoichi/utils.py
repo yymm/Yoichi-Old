@@ -1,14 +1,14 @@
 import datetime
 from functools import wraps
-from flask import g, flash, redirect, abort
+from flask import g, flash, redirect, abort, url_for
 
 
 def requires_login(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if g.user is None:
-            flash('You need to be signed in.')
-            return redirect('view.index')
+            flash('You need to be signed in.', 'error')
+            return redirect(url_for('view.index'))
         return f(*args, **kwargs)
     return decorated_function
 

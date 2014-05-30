@@ -237,7 +237,8 @@
 	top: 0;
 	right: 100px;
 	left: 0px;
-	transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-webkit-transition: all .4s ease;
 }
 .switch {
 	display: block;
@@ -247,7 +248,8 @@
 	height: 40px;
 	top: 0;
 	background-color: #ddd;
-	transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-webkit-transition: all .4s ease;
 	z-index: 1;
 	border-radius: 10px;
 }

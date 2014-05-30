@@ -63,10 +63,11 @@ def index():
 
         return render_template('index.html', **data)
 
+    flash('Yoichi(Beta ver.0.10) Release!', 'important')
     return render_template('index.html')
 
 
-@mod.route('/login')
+@mod.route('/login', methods=['GET', 'POST'])
 def login():
     return twitter.authorize()
 
