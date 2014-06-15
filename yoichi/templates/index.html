@@ -196,25 +196,25 @@ hits_list = {{ hits }};
 		<div class="arrow left fa fa-arrow-circle-o-left fa-3x"></div>
 		<div class='login-slider'>
 			<div class='login-s'>
-				<a class="fa fa-twitter fa-5x twitter-icon" href="{{ url_for('view.login') }}"></a>
-			</div>
-			<div class='login-s'>
-				<form method='post' id='login-name-form'>
-					<input id='login-name' placeholder='your id'><br />
-					<button id='login-btn'type='submit'>Log in</button>
-				</form>
+				<a class="fa fa-twitter fa-5x twitter-icon" href="{{ url_for('view.twitter_login') }}"></a>
 			</div>
 			<div class='login-s'>
 				<div class='facebook-back-icon'></div>
 				<a class='fa fa-facebook-square fa-5x facebook-icon' href='#'></a>
 			</div>
+			<div class='login-s'>
+				<form method='post' id='login-name-form' action='/login'>
+					<input id='login-name' placeholder='your id' name='user_id'><br />
+					<button id='login-btn'type='submit'>Log in</button>
+				</form>
+			</div>
 		</div>
 	</section>
 	<section class="contents" id="sc-bottom">
 		<div style='height: 10px;'></div>
-		<p id='login-message-top'>You can login by ID!</p>
+		<p id='login-message-top'>Click icon!</p>
 		<div style='height: 10px;'></div>
-		<p id='login-message-bottom'>◀ Twitter or Facebook ▶</p>
+		<p id='login-message-bottom'>Twitter or Facebook ▶</p>
 		<div class='arrow-down fa fa-arrow-down fa-4x'></div>
 	</section>
 </article>
@@ -237,14 +237,14 @@ $('.arrow').click(function(){
 		if (now_login_slide == 0){
 			sl.animate({'marginLeft': '-100%'});
 			now_login_slide = 1;
-			lmtop.html('You can login by ID!');
-			lmbottom.html('◀ Twitter or Facebook ▶');
+			lmtop.html('Click icon!');
+			lmbottom.html('◀ Twitter or Facebook');
 		}
 		else if(now_login_slide == 1){
 			sl.animate({'marginLeft': '-200%'});
 			now_login_slide = 2;
-			lmtop.html('Click icon!');
-			lmbottom.html('Login by Facebook.');
+			lmtop.html('Login by name.');
+			lmbottom.html('Twitter or Facebook');
 		}
 	}
 	else{
@@ -252,16 +252,31 @@ $('.arrow').click(function(){
 			sl.animate({'marginLeft': '0%'});
 			now_login_slide = 0;
 			lmtop.html('Click icon!');
-			lmbottom.html('Login by Twitter.');
+			lmbottom.html('Twitter or Facebook ▶');
 		}
 		else if(now_login_slide == 2){
 			sl.animate({'marginLeft': '-100%'});
 			now_login_slide = 1;
-			lmtop.html('You can login by ID!');
-			lmbottom.html('◀ Twitter or Facebook ▶');
+			lmtop.html('Click icon');
+			lmbottom.html('◀ Twitter or Facebook');
 		}
 	}
 });
+$(document).ready(function(){
+	var sl = $('.login-slider');
+	var lmtop = $('#login-message-top');
+	var lmbottom = $('#login-message-bottom');
+	if (window.navigator.standalone){
+		now_login_slide = 2;
+		sl.css({'marginLeft': '-200%'});
+		lmtop.html('Login by name.');
+		lmbottom.html('Twitter or Facebook');
+	}
+	else{
+		now_login_slide = 0;
+	}
+});
+
 </script>
 <script src="{{ url_for('static', filename='js/season.js') }}"></script>
 

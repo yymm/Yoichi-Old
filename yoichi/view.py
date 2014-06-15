@@ -5,7 +5,7 @@ import configparser
 from flask import Blueprint, render_template, url_for, \
     redirect, request, session, flash, abort, g
 from yoichi.oauth import RauthOauth1
-from yoichi.database import add_user
+from yoichi.database import add_user, verify_user
 from yoichi.utils import requires_login, requires_admin, \
     format_date_list
 
@@ -66,9 +66,23 @@ def index():
     return render_template('index.html')
 
 
+@mod.route('/twitter-login', methods=['GET', 'POST'])
+def twitter_login():
+    return twitter.authorize()
+
+
 @mod.route('/login', methods=['GET', 'POST'])
 def login():
-    return twitter.authorize()
+    if request.method == 'POST':
+        if 'user_id' in request.form:
+            user = verify_user(request.form['user_id'])
+            if not user:
+                flash('Missed user id!', 'error')
+                return redirect(url_for('view.index'))
+            session['user_id'] = user.id
+            g.user = user
+
+    return redirect(url_for('view.index'))
 
 
 @mod.route('/logout')

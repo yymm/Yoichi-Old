@@ -140,3 +140,11 @@ def add_user(twitter_id):
         db_session.commit()
 
     return user
+
+def verify_user(user_id):
+    user = User.query.filter_by(twitter_id=user_id).first()
+
+    if user is None:
+        return None
+
+    return user

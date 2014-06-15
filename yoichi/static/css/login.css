@@ -128,7 +128,7 @@
 .login-slider {
 	height: 100%;
 	width: 400%;
-	margin-left: -100%;
+	margin-left: 0%;
 }
 .login-s {
 	position: relative;
